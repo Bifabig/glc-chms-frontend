@@ -1,7 +1,5 @@
 import React from 'react';
 
-const memberSlice = () => {
-  return <div>memberSlice</div>;
-};
+const memberSlice = () => <div>memberSlice</div>;
 
 export default memberSlice;
