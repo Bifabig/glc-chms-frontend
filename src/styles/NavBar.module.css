@@ -1,0 +1,27 @@
+.navbar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #26259c;
+  color: #fff;
+  width: 20%;
+  height: 100vh;
+  gap: 10%;
+  /* secondary color #CC471C */
+}
+
+.navItems {
+  display: flex;
+  flex-direction: column;
+  margin-right: 80px;
+  gap: 10px;
+}
+
+.navItems li {
+  list-style: none;
+}
+
+.navItems a {
+  text-decoration: none;
+  color: #fff;
+}
