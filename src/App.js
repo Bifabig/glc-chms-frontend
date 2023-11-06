@@ -1,17 +1,14 @@
-import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
-import { Provider } from 'react-redux';
+import { Route, Routes } from 'react-router-dom';
 import Members from './components/Members';
-import store from './redux/store';
+import Layout from './components/Layout';
 
 function App() {
   return (
-    <Provider store={store}>
-      <Router>
-        <Routes>
-          <Route path="/" element={<Members />} />
-        </Routes>
-      </Router>
-    </Provider>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route path="/members" element={<Members />} />
+      </Route>
+    </Routes>
   );
 }
 
