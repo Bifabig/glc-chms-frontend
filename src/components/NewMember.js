@@ -34,7 +34,6 @@
 //     navigate('/')
 //   }
 
-
 //   return (
 //   <div>
 //     <h2>NewMember</h2>
