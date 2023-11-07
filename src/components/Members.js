@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -6,13 +6,21 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import {
+  Box, Button, Modal, Typography,
+} from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import getMembers from '../redux/thunk';
 import styles from '../styles/Members.module.css';
+import NewMember from './NewMember';
 
 const Members = () => {
+  const [modalOpen, setModalOpen] = useState(false);
   const { members, isLoading, error } = useSelector((store) => store.members);
   const dispatch = useDispatch();
+
+  const handleModalOpen = () => setModalOpen(true);
+  const handleModalClose = () => setModalOpen(false);
 
   useEffect(() => {
     dispatch(getMembers());
@@ -25,6 +33,28 @@ const Members = () => {
   ) : (
     <div>
       <h1>Members</h1>
+      <Button onClick={handleModalOpen}>Add Member</Button>
+      <Modal
+        className={styles.modal}
+        open={modalOpen}
+        onClose={handleModalClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={{
+          ...styles.box, bgcolor: 'background.paper', boxShadow: 24, p: 4,
+        }}
+        >
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Member Form
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }} component="div">
+            <NewMember />
+            {' '}
+            <Button onClick={handleModalClose}>Close</Button>
+          </Typography>
+        </Box>
+      </Modal>
       <div>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
