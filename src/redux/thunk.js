@@ -13,4 +13,16 @@ const getMembers = createAsyncThunk('members/getMembers', async (thunkAPI) => {
   }
 });
 
+export const createMember = createAsyncThunk(
+  'members/createMember',
+  async (memberData, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(url, memberData);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue('Unable to add memeber');
+    }
+  },
+);
+
 export default getMembers;

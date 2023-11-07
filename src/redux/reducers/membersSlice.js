@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import getMembers from '../thunk';
+import getMembers, { createMember } from '../thunk';
 
 const initialState = {
   members: '',
@@ -24,7 +24,17 @@ const membersSlice = createSlice({
         state.isLoading = false;
         state.error = true;
         state.errorMsg = action.payload.error;
-      });
+      })
+      .addCase(createMember.fulfilled, (state, { payload }) => ({
+        ...state,
+        members: [...state.members, payload], // Add the created memeber to the existing list
+        isLoading: false,
+      }))
+      .addCase(createMember.rejected, (state, { payload }) => ({
+        ...state,
+        isLoading: false,
+        error: payload,
+      }));
   },
 });
 
