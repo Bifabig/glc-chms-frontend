@@ -42,7 +42,15 @@ const Members = () => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={{
-          ...styles.box, bgcolor: 'background.paper', boxShadow: 24, p: 4,
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%; -50%)',
+          width: 400,
+          border: '2px solid #000',
+          bgcolor: 'background.paper',
+          boxShadow: 24,
+          p: 4,
         }}
         >
           <Typography id="modal-modal-title" variant="h6" component="h2">
