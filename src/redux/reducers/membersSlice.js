@@ -25,11 +25,11 @@ const membersSlice = createSlice({
         state.error = true;
         state.errorMsg = action.payload.error;
       })
-      .addCase(createMember.fulfilled, (state, { payload }) => ({
-        ...state,
-        members: [...state.members, payload], // Add the created memeber to the existing list
-        isLoading: false,
-      }))
+      .addCase(createMember.fulfilled, (state, action) => {
+        const oldState = state.members;
+        state.members = [...oldState, action.payload];
+        state.isLoading = false;
+      })
       .addCase(createMember.rejected, (state, { payload }) => ({
         ...state,
         isLoading: false,

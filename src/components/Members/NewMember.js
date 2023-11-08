@@ -3,20 +3,21 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
-import Input from './Input';
-import { createMember } from '../redux/thunk';
-import styles from '../styles/NewMember.module.css';
+import Input from '../Input';
+import { createMember } from '../../redux/thunk';
+import styles from '../../styles/NewMember.module.css';
 
 const NewMember = () => {
   const [isdisabled, setIsDisabled] = useState(true);
+  const [msg, setMsg] = useState('');
   const [formData, setFormData] = useState({
     name: '',
     photo: '',
     address: '',
     phone_number: '',
     joined_at: '',
+    church_id: 1,
     // user_id: currentUser ? currentUser.id : 1,
-
   });
 
   const navigate = useNavigate();
@@ -32,17 +33,18 @@ const NewMember = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(createMember(formData));
+    dispatch(createMember(formData)).then(setMsg('Member Added Successfully!'));
     setFormData({
       name: '',
       photo: '',
       address: '',
       phone_number: '',
       joined_at: '',
+      church_id: 1,
       // user_id: currentUser ? currentUser.id : 1,
       // user_id: 1,
     });
-    navigate('/');
+    navigate('/members');
   };
 
   useEffect(() => {
@@ -100,10 +102,16 @@ const NewMember = () => {
           handleInput={handleFormInputs}
         />
         <div className="submit-btn">
-          <Button type="submit" variant="contained" color="success" disabled={isdisabled}>
+          <Button
+            type="submit"
+            variant="contained"
+            color="success"
+            disabled={isdisabled}
+          >
             Add Member
           </Button>
         </div>
+        <span>{msg}</span>
       </form>
     </div>
   );

@@ -1,5 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
-import Members from './components/Members';
+import Members from './components/Members/Members';
 import Layout from './components/Layout';
 
 function App() {
