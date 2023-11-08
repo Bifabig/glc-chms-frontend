@@ -4,6 +4,7 @@ import moment from 'moment/moment';
 import {
   Box, Button, Modal, Typography,
 } from '@mui/material';
+import { v4 as uuidv4 } from 'uuid';
 import { useDispatch, useSelector } from 'react-redux';
 import getMembers from '../../redux/thunk';
 import styles from '../../styles/Members.module.css';
@@ -96,6 +97,7 @@ const Members = () => {
         <DataGrid
           rows={members}
           columns={columns}
+          getRowId={() => uuidv4()}
           initialState={{
             pagination: {
               paginationModel: { page: 0, pageSize: 5 },
