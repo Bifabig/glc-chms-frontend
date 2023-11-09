@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import getMembers, { createMember } from '../thunk';
+import { createMember, getMembers } from '../thunk';
 
 const initialState = {
   members: '',
