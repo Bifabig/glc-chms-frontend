@@ -6,7 +6,7 @@ import {
 } from '@mui/material';
 import { v4 as uuidv4 } from 'uuid';
 import { useDispatch, useSelector } from 'react-redux';
-import getMembers from '../../redux/thunk';
+import { getMembers } from '../../redux/thunk';
 import styles from '../../styles/Members.module.css';
 import NewMember from './NewMember';
 
@@ -20,7 +20,7 @@ const Members = () => {
 
   const columns = [
     { field: 'id', headerName: 'ID', width: 70 },
-    { field: 'name', headerName: 'Name', width: 140 },
+    { field: 'name', headerName: 'Name', width: 240 },
     {
       field: 'photo',
       headerName: 'Photo',
@@ -57,11 +57,11 @@ const Members = () => {
   if (error) <h2>Something Went Wrong</h2>;
 
   return isLoading ? (
-    <h1>Loading...</h1>
+    <h2>Loading...</h2>
   ) : (
     <div>
-      <h1>Members</h1>
-      <Button onClick={handleModalOpen}>Add Member</Button>
+      <h2>Members</h2>
+      <Button onClick={handleModalOpen} variant="contained">Add Member</Button>
       <Modal
         className={styles.modal}
         open={modalOpen}

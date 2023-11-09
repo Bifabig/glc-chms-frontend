@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
 import Input from '../Input';
 import { createMember } from '../../redux/thunk';
-import styles from '../../styles/NewMember.module.css';
 
 const NewMember = () => {
   const [msg, setMsg] = useState('');
@@ -40,7 +39,7 @@ const NewMember = () => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit} className={styles.form}>
+      <form onSubmit={handleSubmit} className="form">
         <Input
           name="name"
           ref={name}
