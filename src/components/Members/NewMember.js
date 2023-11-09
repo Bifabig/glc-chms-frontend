@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import React, { useEffect, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
@@ -8,105 +8,75 @@ import { createMember } from '../../redux/thunk';
 import styles from '../../styles/NewMember.module.css';
 
 const NewMember = () => {
-  const [isdisabled, setIsDisabled] = useState(true);
   const [msg, setMsg] = useState('');
-  const [formData, setFormData] = useState({
-    name: '',
-    photo: '',
-    address: '',
-    phone_number: '',
-    joined_at: '',
-    church_id: 1,
-    // user_id: currentUser ? currentUser.id : 1,
-  });
+  const name = useRef();
+  const photo = useRef();
+  const address = useRef();
+  const phone_number = useRef();
+  const joined_at = useRef();
+  const church_id = '1';
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const handleFormInputs = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
+    const formData = {
+      name: name.current.value,
+      photo: photo.current.value,
+      address: address.current.value,
+      phone_number: phone_number.current.value,
+      joined_at: joined_at.current.value,
+      church_id,
+    };
     dispatch(createMember(formData)).then(setMsg('Member Added Successfully!'));
-    setFormData({
-      name: '',
-      photo: '',
-      address: '',
-      phone_number: '',
-      joined_at: '',
-      church_id: 1,
-      // user_id: currentUser ? currentUser.id : 1,
-      // user_id: 1,
-    });
+    name.current.value = '';
+    photo.current.value = '';
+    address.current.value = '';
+    phone_number.current.value = '';
+    joined_at.current.value = '';
     navigate('/members');
   };
-
-  useEffect(() => {
-    const {
-      name, photo, address, phone_number, joined_at,
-    } = formData;
-
-    if (name && photo && address && phone_number && joined_at) {
-      setIsDisabled(false);
-    } else {
-      setIsDisabled(true);
-    }
-  }, [formData]);
-
-  const {
-    name, photo, address, phone_number, joined_at,
-  } = formData;
 
   return (
     <div>
       <form onSubmit={handleSubmit} className={styles.form}>
         <Input
           name="name"
-          value={name}
+          ref={name}
           type="text"
           placeholder="Full Name"
-          handleInput={handleFormInputs}
         />
         <Input
           name="photo"
-          value={photo}
+          ref={photo}
           type="text"
           placeholder="Photo"
-          handleInput={handleFormInputs}
         />
         <Input
           name="address"
-          value={address}
+          ref={address}
           type="text"
           placeholder="Address"
-          handleInput={handleFormInputs}
         />
         <Input
           name="phone_number"
-          value={phone_number}
+          ref={phone_number}
           type="text"
           placeholder="Phone Number"
-          handleInput={handleFormInputs}
         />
         <Input
           name="joined_at"
-          value={joined_at}
+          ref={joined_at}
           type="date"
           placeholder="Member Since"
-          handleInput={handleFormInputs}
         />
+
         <div className="submit-btn">
           <Button
             type="submit"
             variant="contained"
             color="success"
-            disabled={isdisabled}
           >
             Add Member
           </Button>
