@@ -1,24 +1,23 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import PropTypes from 'prop-types';
 import styles from '../styles/Input.module.css';
 
-const Input = (props) => {
+const Input = forwardRef((props, ref) => {
   const {
-    name, value, placeholder, handleInput, type, step,
+    name, placeholder, type, step,
   } = props;
   return (
     <input
       className={styles.input}
       name={name}
       type={type}
-      value={value}
-      onChange={handleInput}
+      ref={ref}
       placeholder={placeholder}
       step={step}
       required
     />
   );
-};
+});
 
 Input.defaultProps = {
   step: '', // Add a default value for `step` prop
@@ -26,11 +25,11 @@ Input.defaultProps = {
 
 Input.propTypes = {
   name: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
   placeholder: PropTypes.string.isRequired,
-  handleInput: PropTypes.func.isRequired,
   type: PropTypes.string.isRequired,
   step: PropTypes.string,
 };
+
+Input.displayName = 'Input';
 
 export default Input;
