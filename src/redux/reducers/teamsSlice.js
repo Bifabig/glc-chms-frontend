@@ -23,16 +23,16 @@ const teamsSlice = createSlice({
       .addCase(getTeams.rejected, (state, action) => {
         state.isLoading = false;
         state.error = true;
-        state.errorMsg = action.payload.error;
+        state.errorMsg = action.payload;
       })
       .addCase(createTeam.fulfilled, (state, action) => {
         state.teams = [action.payload.team, ...state.teams];
         state.isLoading = false;
       })
-      .addCase(createTeam.rejected, (state, { payload }) => ({
+      .addCase(createTeam.rejected, (state, { error }) => ({
         ...state,
         isLoading: false,
-        error: payload,
+        error: error.stack,
       }));
   },
 });

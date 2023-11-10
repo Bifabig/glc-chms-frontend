@@ -1,35 +1,35 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { createChurch, getChurches } from '../thunk';
+import { createAttendance, getAttendances } from '../thunk';
 
 const initialState = {
-  churches: '',
+  attendances: '',
   isLoading: true,
   error: false,
   errorMsg: '',
 };
 
-const churchesSlice = createSlice({
-  name: 'churches',
+const attendancesSlice = createSlice({
+  name: 'attendances',
   initialState,
   extraReducers: (builder) => {
     builder
-      .addCase(getChurches.pending, (state) => {
+      .addCase(getAttendances.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getChurches.fulfilled, (state, action) => {
+      .addCase(getAttendances.fulfilled, (state, action) => {
         state.isLoading = false;
         state.churches = action.payload;
       })
-      .addCase(getChurches.rejected, (state, action) => {
+      .addCase(getAttendances.rejected, (state, action) => {
         state.isLoading = false;
         state.error = true;
         state.errorMsg = action.payload;
       })
-      .addCase(createChurch.fulfilled, (state, action) => {
+      .addCase(createAttendance.fulfilled, (state, action) => {
         state.churches = [action.payload.church, ...state.churches];
         state.isLoading = false;
       })
-      .addCase(createChurch.rejected, (state, { error }) => ({
+      .addCase(createAttendance.rejected, (state, { error }) => ({
         ...state,
         isLoading: false,
         error: error.stack,
@@ -37,4 +37,4 @@ const churchesSlice = createSlice({
   },
 });
 
-export default churchesSlice.reducer;
+export default attendancesSlice.reducer;
