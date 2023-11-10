@@ -23,16 +23,16 @@ const membersSlice = createSlice({
       .addCase(getMembers.rejected, (state, action) => {
         state.isLoading = false;
         state.error = true;
-        state.errorMsg = action.payload.error;
+        state.errorMsg = action.payload;
       })
       .addCase(createMember.fulfilled, (state, action) => {
         state.members = [action.payload.member, ...state.members];
         state.isLoading = false;
       })
-      .addCase(createMember.rejected, (state, { payload }) => ({
+      .addCase(createMember.rejected, (state, { error }) => ({
         ...state,
         isLoading: false,
-        error: payload,
+        error: error.stack,
       }));
   },
 });

@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
-import { useDispatch, useSelector } from 'react-redux';
+import { DataGrid, GridToolbar } from '@mui/x-data-grid';
+import moment from 'moment/moment';
 import {
   Box, Button, Modal, Typography,
 } from '@mui/material';
-import { DataGrid, GridToolbar } from '@mui/x-data-grid';
-import moment from 'moment';
-import { getTeams } from '../../redux/thunk';
-import NewTeam from './NewTeam';
+import { v4 as uuidv4 } from 'uuid';
+import { useDispatch, useSelector } from 'react-redux';
+import { getMembers } from '../../redux/thunk';
+import styles from '../../styles/Members.module.css';
+import NewMember from './NewMember';
 
-const Teams = () => {
+const Members = () => {
   const [modalOpen, setModalOpen] = useState(false);
-  const { teams, isLoading, error } = useSelector((store) => store.teams);
-
+  const {
+    members, isLoading, error, errorMsg,
+  } = useSelector((store) => store.members);
   const dispatch = useDispatch();
+
   const handleModalOpen = () => setModalOpen(true);
   const handleModalClose = () => setModalOpen(false);
 
@@ -21,18 +24,28 @@ const Teams = () => {
     { field: 'id', headerName: 'ID', width: 70 },
     { field: 'name', headerName: 'Name', width: 240 },
     {
-      field: 'main_leader_name',
-      headerName: 'Main Leader',
-      width: 200,
+      field: 'photo',
+      headerName: 'Photo',
+      width: 130,
+      renderCell: (params) => (
+        <img src={params.value} alt={params.name} className={styles.photo} />
+      ),
     },
     {
-      field: 'sub_leader_name',
-      headerName: 'Sub Leader',
-      width: 200,
+      field: 'address',
+      headerName: 'Address',
+      type: 'number',
+      width: 120,
     },
     {
-      field: 'established_at',
-      headerName: 'Established In',
+      field: 'phone_number',
+      headerName: 'Phone Number',
+      type: 'number',
+      width: 120,
+    },
+    {
+      field: 'joined_at',
+      headerName: 'Member Since',
       type: 'date',
       width: 120,
       valueFormatter: (params) => moment(params?.value).format('DD/MM/YYYY'),
@@ -40,16 +53,28 @@ const Teams = () => {
   ];
 
   useEffect(() => {
-    dispatch(getTeams());
+    dispatch(getMembers());
   }, [dispatch]);
 
-  if (error) <h2>Something Went Wrong</h2>;
+  if (error) {
+    return (
+      <span>
+        Something Went Wrong...
+        <br />
+        <br />
+        {errorMsg}
+      </span>
+    );
+  }
 
-  return isLoading ? <h2>Loading...</h2> : (
+  return isLoading ? (
+    <h2>Loading...</h2>
+  ) : (
     <div>
-      <h2>Teams</h2>
-      <Button onClick={handleModalOpen} variant="contained">Add Team</Button>
+      <h2>Members</h2>
+      <Button onClick={handleModalOpen} variant="contained">Add Member</Button>
       <Modal
+        className={styles.modal}
         open={modalOpen}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
@@ -66,14 +91,14 @@ const Teams = () => {
           }}
         >
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            Team Form
+            Member Form
           </Typography>
           <Typography
             id="modal-modal-description"
             sx={{ mt: 2 }}
             component="div"
           >
-            <NewTeam />
+            <NewMember />
             {' '}
             <Button onClick={handleModalClose}>Close</Button>
           </Typography>
@@ -81,7 +106,7 @@ const Teams = () => {
       </Modal>
       <div style={{ height: 400, width: '100%' }}>
         <DataGrid
-          rows={teams}
+          rows={members}
           columns={columns}
           getRowId={() => uuidv4()}
           initialState={{
@@ -98,4 +123,4 @@ const Teams = () => {
   );
 };
 
-export default Teams;
+export default Members;

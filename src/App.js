@@ -1,8 +1,9 @@
 import { Route, Routes } from 'react-router-dom';
-import Members from './components/Members/Members';
+import Members from './components/Members';
 import Layout from './components/Layout';
-import Churches from './components/Churches/Churches';
-import Teams from './components/Teams/Teams';
+import Churches from './components/Churches';
+import Teams from './components/Teams';
+import Programs from './components/Programs';
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
         <Route path="/members" element={<Members />} />
         <Route path="/churches" element={<Churches />} />
         <Route path="/teams" element={<Teams />} />
+        <Route path="/programs" element={<Programs />} />
       </Route>
     </Routes>
   );
