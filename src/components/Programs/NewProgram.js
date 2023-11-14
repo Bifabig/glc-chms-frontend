@@ -14,6 +14,7 @@ const NewProgram = () => {
   const attTaker = useRef();
   const church_id = '1';
   const team_id = '1';
+  const program_id = '1';
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -32,21 +33,27 @@ const NewProgram = () => {
     };
     const attendanceData = {
       att_taker: attTaker.current.value,
+      program_id,
     };
 
     if (hasAttendance && attTaker.current.value !== '') {
-      dispatch(createProgram(programData), createAttendance(attendanceData)).then(setMsg('Program Added Successfully'));
-    } else if (hasAttendance && attTaker.current.value !== '') {
+      dispatch(createProgram(programData));
+      dispatch(createAttendance(attendanceData))
+        .then(setMsg('Program Added Successfully'));
+      name.current.value = '';
+      date.current.value = '';
+      attTaker.current.value = '';
+
+      navigate('/programs');
+    } else if (hasAttendance && attTaker.current.value === '') {
       setMsg('Please add an attendance taker first');
     } else {
       dispatch(createProgram(programData)).then(setMsg('Program Added Successfully'));
+      name.current.value = '';
+      date.current.value = '';
+
+      navigate('/programs');
     }
-
-    name.current.value = '';
-    date.current.value = '';
-    attTaker.current.value = '';
-
-    navigate('/programs');
   };
 
   return (
@@ -71,7 +78,7 @@ const NewProgram = () => {
         </div>
 
         {hasAttendance && (
-          <input type="text" ref={attTaker} placeholder="Attendance Taker's Name" />
+          <Input name="att_taker" type="text" ref={attTaker} placeholder="Attendance Taker's Name" />
         )}
 
         <div className="submit-btn">

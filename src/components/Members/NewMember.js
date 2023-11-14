@@ -20,9 +20,12 @@ const NewMember = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const img = photo.current.files[0];
+    const photoObj = URL.createObjectURL(img);
+
     const formData = {
       name: name.current.value,
-      photo: photo.current.value,
+      photo: photoObj,
       address: address.current.value,
       phone_number: phone_number.current.value,
       joined_at: joined_at.current.value,
@@ -43,40 +46,45 @@ const NewMember = () => {
         <Input
           name="name"
           ref={name}
+          errorMsg="Name is required!"
           type="text"
           placeholder="Full Name"
+          required="true"
         />
         <Input
           name="photo"
           ref={photo}
-          type="text"
+          errorMsg="Image is required!"
+          type="file"
           placeholder="Photo"
+          required="true"
         />
         <Input
           name="address"
           ref={address}
+          errorMsg="Address is required"
           type="text"
           placeholder="Address"
+          required="true"
         />
         <Input
           name="phone_number"
           ref={phone_number}
+          errorMsg="Phone number is required"
           type="text"
           placeholder="Phone Number"
+          required="true"
         />
         <Input
           name="joined_at"
           ref={joined_at}
           type="date"
           placeholder="Member Since"
+          required="true"
         />
 
         <div className="submit-btn">
-          <Button
-            type="submit"
-            variant="contained"
-            color="success"
-          >
+          <Button type="submit" variant="contained" color="success">
             Add Member
           </Button>
         </div>
