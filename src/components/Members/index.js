@@ -16,19 +16,42 @@ const Members = () => {
     members, isLoading, error, errorMsg,
   } = useSelector((store) => store.members);
   const dispatch = useDispatch();
+  // console.log(members);
 
   const handleModalOpen = () => setModalOpen(true);
   const handleModalClose = () => setModalOpen(false);
 
   const columns = [
-    { field: 'id', headerName: 'ID', width: 70 },
-    { field: 'name', headerName: 'Name', width: 240 },
     {
-      field: 'photo',
+      field: 'id',
+      headerName: 'ID',
+      width: 70,
+      renderCell: (params) => (
+        // console.log(params.row)
+        params.row.attributes.id
+        // <img src={params.value} alt={params.name} className={styles.photo} />
+      ),
+    },
+    {
+      field: 'name',
+      headerName: 'Name',
+      width: 240,
+      renderCell: (params) => (
+        params.row.attributes.name
+        // params.id
+        // <img src={params.value} alt={params.name} className={styles.photo} />
+      ),
+    },
+    {
+      field: 'photo_url',
       headerName: 'Photo',
       width: 130,
       renderCell: (params) => (
-        <img src={params.value} alt={params.name} className={styles.photo} />
+        <img
+          src={params.row.attributes.photo_url}
+          alt={params.row.attributes.name}
+          className={styles.photo}
+        />
       ),
     },
     {
@@ -36,12 +59,22 @@ const Members = () => {
       headerName: 'Address',
       type: 'number',
       width: 120,
+      renderCell: (params) => (
+        params.row.attributes.address
+        // params.id
+        // <img src={params.value} alt={params.name} className={styles.photo} />
+      ),
     },
     {
       field: 'phone_number',
       headerName: 'Phone Number',
       type: 'number',
       width: 120,
+      renderCell: (params) => (
+        params.row.attributes.phone_number
+        // params.id
+        // <img src={params.value} alt={params.name} className={styles.photo} />
+      ),
     },
     {
       field: 'joined_at',
@@ -106,7 +139,7 @@ const Members = () => {
       </Modal>
       <div style={{ height: 400, width: '100%' }}>
         <DataGrid
-          rows={members}
+          rows={members.data}
           columns={columns}
           getRowId={() => uuidv4()}
           initialState={{
