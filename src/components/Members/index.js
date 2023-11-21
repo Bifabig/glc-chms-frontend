@@ -16,7 +16,6 @@ const Members = () => {
     members, isLoading, error, errorMsg,
   } = useSelector((store) => store.members);
   const dispatch = useDispatch();
-  // console.log(members);
 
   const handleModalOpen = () => setModalOpen(true);
   const handleModalClose = () => setModalOpen(false);
@@ -27,9 +26,7 @@ const Members = () => {
       headerName: 'ID',
       width: 70,
       renderCell: (params) => (
-        // console.log(params.row)
         params.row.attributes.id
-        // <img src={params.value} alt={params.name} className={styles.photo} />
       ),
     },
     {
@@ -38,8 +35,6 @@ const Members = () => {
       width: 240,
       renderCell: (params) => (
         params.row.attributes.name
-        // params.id
-        // <img src={params.value} alt={params.name} className={styles.photo} />
       ),
     },
     {
@@ -61,8 +56,6 @@ const Members = () => {
       width: 120,
       renderCell: (params) => (
         params.row.attributes.address
-        // params.id
-        // <img src={params.value} alt={params.name} className={styles.photo} />
       ),
     },
     {
@@ -72,8 +65,6 @@ const Members = () => {
       width: 120,
       renderCell: (params) => (
         params.row.attributes.phone_number
-        // params.id
-        // <img src={params.value} alt={params.name} className={styles.photo} />
       ),
     },
     {
@@ -81,7 +72,7 @@ const Members = () => {
       headerName: 'Member Since',
       type: 'date',
       width: 120,
-      valueFormatter: (params) => moment(params?.value).format('DD/MM/YYYY'),
+      renderCell: (params) => moment(params.row.attributes.joined_at).format('DD/MM/YYYY'),
     },
   ];
 

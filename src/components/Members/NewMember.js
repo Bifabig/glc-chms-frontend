@@ -16,6 +16,7 @@ const NewMember = () => {
   // const phone_number = useRef();
   // const joined_at = useRef();
   const church_id = '1';
+  const team_id = '1';
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -36,7 +37,6 @@ const NewMember = () => {
     //   joined_at: joined_at.current.value,
     //   church_id,
     // };
-    console.log(data);
     // const img = data.photo[0];
     // const photoObj = URL.createObjectURL(img);
 
@@ -48,6 +48,7 @@ const NewMember = () => {
     member.append('member[phone_number]', data.phone_number);
     member.append('member[joined_at]', data.joined_at);
     member.append('member[church_id]', church_id);
+    member.append('member[team_id]', team_id);
     dispatch(createMember(member)).then(setMsg('Member Added Successfully!'));
     // name.current.value = '';
     // photo.current.value = '';
