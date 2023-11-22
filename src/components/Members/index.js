@@ -20,11 +20,14 @@ const Members = () => {
   const handleModalOpen = () => setModalOpen(true);
   const handleModalClose = () => setModalOpen(false);
 
+  // const dayInMonthComparator = (v1, v2) => v1.getDate() - v2.getDate();
+
   const columns = [
     {
       field: 'id',
       headerName: 'ID',
-      width: 70,
+      width: 90,
+      type: 'number',
       renderCell: (params) => (
         params.row.attributes.id
       ),
@@ -33,14 +36,18 @@ const Members = () => {
       field: 'name',
       headerName: 'Name',
       width: 240,
+      type: 'string',
       renderCell: (params) => (
         params.row.attributes.name
       ),
+      // sortable: true,
+      // sortComparator: (rowA, rowB) => rowA.name.localeCompare(rowB.name),
     },
     {
       field: 'photo_url',
       headerName: 'Photo',
-      width: 130,
+      width: 120,
+      sortable: false,
       renderCell: (params) => (
         <img
           src={params.row.attributes.photo_url}
@@ -52,8 +59,8 @@ const Members = () => {
     {
       field: 'address',
       headerName: 'Address',
-      type: 'number',
-      width: 120,
+      width: 160,
+      sortable: false,
       renderCell: (params) => (
         params.row.attributes.address
       ),
@@ -61,8 +68,8 @@ const Members = () => {
     {
       field: 'phone_number',
       headerName: 'Phone Number',
-      type: 'number',
-      width: 120,
+      width: 160,
+      sortable: false,
       renderCell: (params) => (
         params.row.attributes.phone_number
       ),
@@ -71,8 +78,9 @@ const Members = () => {
       field: 'joined_at',
       headerName: 'Member Since',
       type: 'date',
-      width: 120,
+      width: 150,
       renderCell: (params) => moment(params.row.attributes.joined_at).format('DD/MM/YYYY'),
+      // sortComparator: dayInMonthComparator,
     },
   ];
 
