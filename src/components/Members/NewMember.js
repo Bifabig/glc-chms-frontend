@@ -9,8 +9,8 @@ import { createMember } from '../../redux/thunk';
 
 const NewMember = () => {
   const [msg, setMsg] = useState('');
-  const church_id = '1';
-  const team_id = '2';
+  const churchId = '1';
+  const teamId = '2';
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -25,8 +25,8 @@ const NewMember = () => {
     member.append('member[address]', data.address);
     member.append('member[phone_number]', data.phone_number);
     member.append('member[joined_at]', data.joined_at);
-    member.append('member[church_id]', church_id);
-    member.append('member[team_id]', team_id);
+    member.append('member[church_id]', churchId);
+    member.append('member[team_id]', teamId);
     dispatch(createMember(member)).then(setMsg('Member Added Successfully!'));
     reset();
     navigate('/members');
