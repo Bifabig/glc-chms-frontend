@@ -1,5 +1,4 @@
 import moment from 'moment';
-import { v4 as uuidv4 } from 'uuid';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -86,7 +85,7 @@ const Programs = () => {
           <DataGrid
             rows={programs}
             columns={columns}
-            getRowId={() => uuidv4()}
+            getRowId={(row) => row.id}
             initialState={{
               pagination: {
                 paginationModel: { page: 0, pageSize: 5 },

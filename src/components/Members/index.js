@@ -4,7 +4,6 @@ import moment from 'moment/moment';
 import {
   Box, Button, Modal, Typography,
 } from '@mui/material';
-import { v4 as uuidv4 } from 'uuid';
 import { useDispatch, useSelector } from 'react-redux';
 import { getMembers } from '../../redux/thunk';
 import styles from '../../styles/Members.module.css';
@@ -29,6 +28,7 @@ const Members = () => {
       renderCell: (params) => (
         params.row.attributes.id
       ),
+      filterable: false,
     },
     {
       field: 'name',
@@ -50,6 +50,7 @@ const Members = () => {
           className={styles.photo}
         />
       ),
+      filterable: false,
     },
     {
       field: 'address',
@@ -66,6 +67,7 @@ const Members = () => {
       headerName: 'Phone Number',
       width: 160,
       sortable: false,
+      valueGetter: (params) => params.row.attributes.phone_number,
       renderCell: (params) => (
         params.row.attributes.phone_number
       ),
@@ -136,7 +138,7 @@ const Members = () => {
         <DataGrid
           rows={members.data}
           columns={columns}
-          getRowId={() => uuidv4()}
+          getRowId={(row) => row.id}
           initialState={{
             pagination: {
               paginationModel: { page: 0, pageSize: 5 },

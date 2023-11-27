@@ -1,3 +1,29 @@
 .photo {
   width: 15%;
 }
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.inputField {
+  height: 20px;
+  width: 70%;
+  border: 1px black solid;
+  font-size: 12px;
+}
+
+.label {
+  font-size: 14px;
+}
+
+.errorMsg {
+  font-size: 12px;
+  color: red;
+
+  /* padding-left: 10px; */
+
+  /* display: none; */
+}
