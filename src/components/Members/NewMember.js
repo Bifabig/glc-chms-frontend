@@ -1,82 +1,78 @@
-/* eslint-disable camelcase */
-import React, { useRef, useState } from 'react';
+/* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable jsx-a11y/label-has-associated-control */
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
-import Input from '../Input';
+import { useForm } from 'react-hook-form';
 import { createMember } from '../../redux/thunk';
 
 const NewMember = () => {
   const [msg, setMsg] = useState('');
-  const name = useRef();
-  const photo = useRef();
-  const address = useRef();
-  const phone_number = useRef();
-  const joined_at = useRef();
-  const church_id = '1';
+  const churchId = '1';
+  const teamId = '2';
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const formData = {
-      name: name.current.value,
-      photo: photo.current.value,
-      address: address.current.value,
-      phone_number: phone_number.current.value,
-      joined_at: joined_at.current.value,
-      church_id,
-    };
-    dispatch(createMember(formData)).then(setMsg('Member Added Successfully!'));
-    name.current.value = '';
-    photo.current.value = '';
-    address.current.value = '';
-    phone_number.current.value = '';
-    joined_at.current.value = '';
+  const form = useForm();
+  const { register, handleSubmit, reset } = form;
+
+  const onSubmit = (data) => {
+    const member = new FormData();
+    member.append('member[name]', data.name);
+    member.append('member[photo]', data.photo[0]);
+    member.append('member[address]', data.address);
+    member.append('member[phone_number]', data.phone_number);
+    member.append('member[joined_at]', data.joined_at);
+    member.append('member[church_id]', churchId);
+    member.append('member[team_id]', teamId);
+    dispatch(createMember(member)).then(setMsg('Member Added Successfully!'));
+    reset();
     navigate('/members');
   };
 
   return (
     <div>
-      <form onSubmit={handleSubmit} className="form">
-        <Input
-          name="name"
-          ref={name}
+      <form onSubmit={handleSubmit(onSubmit)} className="form">
+        <label htmlFor="name">Full Name</label>
+        <input
           type="text"
+          id="name"
+          {...register('name')}
           placeholder="Full Name"
         />
-        <Input
-          name="photo"
-          ref={photo}
-          type="text"
+        <label htmlFor="photo">Photo</label>
+        <input
+          type="file"
+          id="photo"
+          {...register('photo')}
           placeholder="Photo"
         />
-        <Input
-          name="address"
-          ref={address}
+        <label htmlFor="address">Address</label>
+        <input
           type="text"
+          id="address"
+          {...register('address')}
           placeholder="Address"
         />
-        <Input
-          name="phone_number"
-          ref={phone_number}
+        <label htmlFor="phone_number">Phone Number</label>
+        <input
           type="text"
+          id="phone_number"
+          {...register('phone_number')}
           placeholder="Phone Number"
         />
-        <Input
-          name="joined_at"
-          ref={joined_at}
+        <label htmlFor="joined_at">Member Since</label>
+        <input
           type="date"
+          id="joined_at"
+          {...register('joined_at')}
           placeholder="Member Since"
         />
 
         <div className="submit-btn">
-          <Button
-            type="submit"
-            variant="contained"
-            color="success"
-          >
+          <Button type="submit" variant="contained" color="success">
             Add Member
           </Button>
         </div>

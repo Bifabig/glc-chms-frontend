@@ -21,34 +21,62 @@ const Members = () => {
   const handleModalClose = () => setModalOpen(false);
 
   const columns = [
-    { field: 'id', headerName: 'ID', width: 70 },
-    { field: 'name', headerName: 'Name', width: 240 },
     {
-      field: 'photo',
-      headerName: 'Photo',
-      width: 130,
+      field: 'id',
+      headerName: 'ID',
+      width: 90,
+      type: 'number',
       renderCell: (params) => (
-        <img src={params.value} alt={params.name} className={styles.photo} />
+        params.row.attributes.id
+      ),
+    },
+    {
+      field: 'name',
+      headerName: 'Name',
+      width: 240,
+      type: 'string',
+      valueGetter: (params) => params.row.attributes.name,
+      renderCell: (valueReceived) => valueReceived.row.attributes.name,
+    },
+    {
+      field: 'photo_url',
+      headerName: 'Photo',
+      width: 120,
+      sortable: false,
+      renderCell: (params) => (
+        <img
+          src={params.row.attributes.photo_url}
+          alt={params.row.attributes.name}
+          className={styles.photo}
+        />
       ),
     },
     {
       field: 'address',
       headerName: 'Address',
-      type: 'number',
-      width: 120,
+      width: 160,
+      type: 'string',
+      valueGetter: (params) => params.row.attributes.address,
+      renderCell: (params) => (
+        params.row.attributes.address
+      ),
     },
     {
       field: 'phone_number',
       headerName: 'Phone Number',
-      type: 'number',
-      width: 120,
+      width: 160,
+      sortable: false,
+      renderCell: (params) => (
+        params.row.attributes.phone_number
+      ),
     },
     {
       field: 'joined_at',
       headerName: 'Member Since',
-      type: 'date',
-      width: 120,
-      valueFormatter: (params) => moment(params?.value).format('DD/MM/YYYY'),
+      type: 'Date',
+      width: 150,
+      valueGetter: (params) => moment(params.row.attributes.joined_at).format('YYYY/MM/DD'),
+      renderCell: (params) => moment(params.row.attributes.joined_at).format('DD/MM/YYYY'),
     },
   ];
 
@@ -106,7 +134,7 @@ const Members = () => {
       </Modal>
       <div style={{ height: 400, width: '100%' }}>
         <DataGrid
-          rows={members}
+          rows={members.data}
           columns={columns}
           getRowId={() => uuidv4()}
           initialState={{

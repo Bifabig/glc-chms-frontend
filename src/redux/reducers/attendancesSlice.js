@@ -26,7 +26,7 @@ const attendancesSlice = createSlice({
         state.errorMsg = action.payload;
       })
       .addCase(createAttendance.fulfilled, (state, action) => {
-        state.churches = [action.payload.church, ...state.churches];
+        state.attendances = [action.payload.attendance, ...state.attendances];
         state.isLoading = false;
       })
       .addCase(createAttendance.rejected, (state, { error }) => ({
