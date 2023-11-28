@@ -4,15 +4,25 @@
 
 .form {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
 }
 
 .inputField {
-  height: 20px;
-  width: 70%;
-  border: 1px black solid;
-  font-size: 12px;
+  height: 38px;
+  width: 250px;
+  border: 1px rgb(203, 203, 203) solid;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.selectorDropdown {
+  height: 38px;
+  width: 250px;
+  font-size: 14px;
 }
 
 .label {
@@ -26,4 +36,15 @@
   /* padding-left: 10px; */
 
   /* display: none; */
+}
+
+.formInput{
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex: 1;
+}
+
+.submitBtn {
+  width: 100%;
 }
