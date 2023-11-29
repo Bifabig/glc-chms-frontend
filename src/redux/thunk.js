@@ -18,6 +18,33 @@ export const getMembers = createAsyncThunk('members/getMembers', async (_, { rej
   }
 });
 
+export const fetchMemberDetail = createAsyncThunk('members/fetchMemberDetail', async (memberId, { rejectWithValue }) => {
+  try {
+    const response = await axios.get(`${url}/members/${memberId}`);
+    return response.data;
+  } catch (error) {
+    const message = (error.response
+      && error.response.data
+      && error.response.data.message)
+    || error.message
+    || error.toString();
+    return rejectWithValue(message);
+  }
+});
+
+// export const fetchMemberDetail = createAsyncThunk(
+//   'memberDetail/fetchMemberDetail',
+
+//   async (memberId) => {
+//     try {
+//       const response = await axios.get(`${url}/members/${memberId}`);
+//       return response.data;
+//     } catch (error) {
+//       return error.message;
+//     }
+//   },
+// );
+
 export const createMember = createAsyncThunk(
   'members/createMember',
   async (memberData, { rejectWithValue }) => {
