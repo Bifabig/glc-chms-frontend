@@ -5,6 +5,7 @@ import {
   Box, Button, Modal, Typography,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { getMembers } from '../../redux/thunk';
 import styles from '../../styles/Members.module.css';
 import NewMember from './NewMember';
@@ -79,6 +80,12 @@ const Members = () => {
       width: 150,
       valueGetter: (params) => moment(params.row.attributes.joined_at).format('YYYY/MM/DD'),
       renderCell: (params) => moment(params.row.attributes.joined_at).format('DD/MM/YYYY'),
+    },
+    {
+      field: 'Detail',
+      renderCell: (params) => (
+        <Link to={`/members/${params.row.attributes.id}`}>Detail</Link>
+      ),
     },
   ];
 
