@@ -1,8 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { createMember, getMembers } from '../thunk';
+import { createMember, fetchMemberDetail, getMembers } from '../thunk';
 
 const initialState = {
   members: '',
+  memberDetail: '',
   isLoading: true,
   error: false,
   errorMsg: '',
@@ -21,6 +22,23 @@ const membersSlice = createSlice({
         state.members = action.payload;
       })
       .addCase(getMembers.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = true;
+        state.errorMsg = action.payload;
+      })
+      .addCase(fetchMemberDetail.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchMemberDetail.fulfilled, (state, { payload }) => {
+        const { data } = payload;
+        const memberChurch = payload.included.filter((church) => ((church.type === 'church')));
+        const memberTeams = payload.included.filter((team) => ((team.type === 'team')));
+        // console.log(data, memberChurch, memberTeams);
+        state.memberDetail = { data, memberChurch, memberTeams };
+        state.isLoading = false;
+        state.error = false;
+      })
+      .addCase(fetchMemberDetail.rejected, (state, action) => {
         state.isLoading = false;
         state.error = true;
         state.errorMsg = action.payload;
