@@ -32,19 +32,6 @@ export const fetchMemberDetail = createAsyncThunk('members/fetchMemberDetail', a
   }
 });
 
-// export const fetchMemberDetail = createAsyncThunk(
-//   'memberDetail/fetchMemberDetail',
-
-//   async (memberId) => {
-//     try {
-//       const response = await axios.get(`${url}/members/${memberId}`);
-//       return response.data;
-//     } catch (error) {
-//       return error.message;
-//     }
-//   },
-// );
-
 export const createMember = createAsyncThunk(
   'members/createMember',
   async (memberData, { rejectWithValue }) => {
@@ -53,6 +40,18 @@ export const createMember = createAsyncThunk(
       return response.data;
     } catch (error) {
       return rejectWithValue('Unable to add memeber');
+    }
+  },
+);
+
+export const deleteMember = createAsyncThunk(
+  'members/deleteMember',
+  async (member, { rejectWithValue }) => {
+    try {
+      const resp = await axios.delete(`${url}/members/${member}`);
+      return resp.data;
+    } catch (error) {
+      return rejectWithValue('Unable to delete member');
     }
   },
 );
