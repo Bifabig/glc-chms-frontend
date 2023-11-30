@@ -2,6 +2,8 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
+import { Button } from '@mui/material';
+import { ArrowBack } from '@mui/icons-material';
 import { fetchMemberDetail } from '../../redux/thunk';
 import styles from '../../styles/Members.module.css';
 
@@ -32,18 +34,19 @@ const MemberDetail = () => {
       </span>
     );
   }
-  return isLoading ? <span>Loading...</span> : (
+  return isLoading ? <span>Loading...</span> : memberDetail && (
     <>
-      <button onClick={goBack} type="submit">Back</button>
+      <Button onClick={goBack} variant="contained" className={styles.backBtn} startIcon={<ArrowBack />}>
+        Back
+      </Button>
       <div className={styles.memberDetail}>
-        {/* {console.log(memberDetail)} */}
         <h2>Member Detail</h2>
         <div className={styles.memberDetailHeader}>
-          <img src={memberDetail.data.attributes.photo_url} alt="member detail" className={styles.memberDetailImg} />
+          <img src={memberDetail.attributes.photo_url} alt="member detail" className={styles.memberDetailImg} />
           <h3>
             Full Name:
             {' '}
-            {memberDetail.data.attributes.name}
+            {memberDetail.attributes.name}
           </h3>
         </div>
         <div className={styles.basicInfo}>
@@ -51,19 +54,19 @@ const MemberDetail = () => {
 
             Address:
             {' '}
-            {memberDetail.data.attributes.address}
+            {memberDetail.attributes.address}
           </strong>
           <strong>
 
             Phone Number:
             {' '}
-            {memberDetail.data.attributes.phone_number}
+            {memberDetail.attributes.phone_number}
           </strong>
           <strong>
 
             Member Since:
             {' '}
-            {memberDetail.data.attributes.joined_at}
+            {memberDetail.attributes.joined_at}
           </strong>
         </div>
         <div className={styles.memberMinistry}>

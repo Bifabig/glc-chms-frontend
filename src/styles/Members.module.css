@@ -74,3 +74,11 @@
 .memberMinistry {
   margin-top: 20px;
 }
+
+.backBtn {
+  /* background: #CC471C; */
+  height: 40px;
+  color: white;
+  border: none;
+  margin-top: 20px;
+}

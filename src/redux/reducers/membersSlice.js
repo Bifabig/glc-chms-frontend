@@ -1,8 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { createMember, fetchMemberDetail, getMembers } from '../thunk';
+import {
+  createMember, deleteMember, fetchMemberDetail, getMembers,
+} from '../thunk';
 
 const initialState = {
-  members: '',
+  members: [],
   memberDetail: '',
   isLoading: true,
   error: false,
@@ -34,7 +36,7 @@ const membersSlice = createSlice({
         const memberChurch = payload.included.filter((church) => ((church.type === 'church')));
         const memberTeams = payload.included.filter((team) => ((team.type === 'team')));
         // console.log(data, memberChurch, memberTeams);
-        state.memberDetail = { data, memberChurch, memberTeams };
+        state.memberDetail = { ...data, memberChurch, memberTeams };
         state.isLoading = false;
         state.error = false;
       })
@@ -52,6 +54,15 @@ const membersSlice = createSlice({
         ...state,
         isLoading: false,
         error: error.stack,
+      }))
+      .addCase(deleteMember.fulfilled, (state, { payload }) => {
+        state.members = payload;
+        state.isLoading = false;
+      })
+      .addCase(deleteMember.rejected, (state, { payload }) => ({
+        ...state,
+        isLoading: false,
+        error: payload,
       }));
   },
 });
