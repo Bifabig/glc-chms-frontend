@@ -56,6 +56,18 @@ export const deleteMember = createAsyncThunk(
   },
 );
 
+export const updateMember = createAsyncThunk(
+  'members/updateMember',
+  async (member, { rejectWithValue }) => {
+    try {
+      const resp = await axios.put(`${url}/members/${member}`);
+      return resp.data;
+    } catch (error) {
+      return rejectWithValue('Unable to delete member');
+    }
+  },
+);
+
 // Churches API
 export const getChurches = createAsyncThunk('churches/getChurches', async (_, { rejectWithValue }) => {
   try {
