@@ -59,9 +59,10 @@
 }
 
 .memberDetailImg {
-  width: 50%;
+  display: block;
+  width: 15%;
   border: 1px grey solid;
-  border-radius: 10%;
+  border-radius: 50%;
 }
 
 .basicInfo {

@@ -96,7 +96,7 @@ const Members = () => {
       ),
     },
     {
-      field: 'edit',
+      field: 'delete',
       headerName: '',
       sortable: false,
       renderCell: (params) => (

@@ -13,19 +13,10 @@ import TeamsDropdown from '../Teams/TeamsDropdown';
 const NewMember = () => {
   const [msg, setMsg] = useState('');
   const [selectedTeams, setSelectedTeams] = useState([]);
-  // const [churchDropdown, setChurchDropdown] = useState()
-  // const churchId = '1';
-  // const teamId = '2';
 
   const {
     churches, isLoading,
   } = useSelector((store) => store.churches);
-  // console.log(selectedTeams);
-
-  // const churchDropdown = churches.map((church) => ({
-  //   value: church.id,
-  //   label: church.name,
-  // }));
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
