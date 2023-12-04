@@ -19,9 +19,6 @@ const UpdateMember = ({ memberDetail }) => {
     churches, isLoading,
   } = useSelector((store) => store.churches);
 
-  // const myChurch = churches.map((church) => church.id === memberDetail.memberChurch[0].id);
-  // console.log(myChurch);
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -132,24 +129,16 @@ const UpdateMember = ({ memberDetail }) => {
         </div>
         <div className={styles.formInput}>
           <label htmlFor="church_id" className={styles.label}>Branch</label>
-          <select id="church_id" name="church_id" defaultValue={memberDetail.memberChurch[0].id} {...register('church_id', { required: 'Please Select a Church' })} className={styles.inputField}>
+          <select id="church_id" name="church_id" defaultValue={2} {...register('church_id', { required: 'Please Select a Church' })} className={styles.inputField}>
             {isLoading ? <option>Loading...</option> : churches.map((church) => (
-              <>
-                <option
-                  key={church.id}
-                  value={memberDetail.memberChurch[0].id}
-                >
-                  Select Church
 
-                </option>
-                <option
-                  value={church.id}
-                  key={church.id}
-                >
-                  {church.name}
-                </option>
+              <option
+                value={church.id}
+                key={church.id}
+              >
+                {church.name}
+              </option>
 
-              </>
             ))}
           </select>
           <span className={styles.errorMsg}>{ errors.church_id?.message }</span>
@@ -162,11 +151,15 @@ const UpdateMember = ({ memberDetail }) => {
             errors={errors}
             selectedTeams={selectedTeams}
             setSelectedTeams={setSelectedTeams}
+            defaultValue={{
+              label: 'hi',
+              value: 'hello',
+            }}
           />
         </div>
         <div className={styles.submitBtn}>
           <Button type="submit" variant="contained" color="success">
-            Add Member
+            Update Member
           </Button>
         </div>
         <span>{msg}</span>

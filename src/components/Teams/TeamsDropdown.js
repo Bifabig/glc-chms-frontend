@@ -7,7 +7,7 @@ import { getTeams } from '../../redux/thunk';
 import styles from '../../styles/Members.module.css';
 
 const TeamsDropdown = ({
-  register, control, errors, selectedTeams, setSelectedTeams,
+  register, control, errors, selectedTeams, setSelectedTeams, defaultValue,
 }) => {
   const dispatch = useDispatch();
   // console.log(selectedTeams);
@@ -43,6 +43,7 @@ const TeamsDropdown = ({
             onChange={handleOnChange}
             value={selectedTeams.length > 0 ? selectedTeams.name : []}
             inputRef={ref}
+            defaultValue={defaultValue}
           />
         )}
       />
@@ -53,9 +54,15 @@ const TeamsDropdown = ({
   );
 };
 
-TeamsDropdown.defaultProps = { setSelectedTeams: {} };
+TeamsDropdown.defaultProps = { setSelectedTeams: {}, defaultValue: {} };
 TeamsDropdown.propTypes = {
   register: PropTypes.func.isRequired,
+  defaultValue: PropTypes.objectOf(PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.number,
+    PropTypes.string,
+    PropTypes.object,
+  ])),
   // control: PropTypes.objectOf(PropTypes.func).isRequired,
   control: PropTypes.objectOf(
     PropTypes.oneOfType([

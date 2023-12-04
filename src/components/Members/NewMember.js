@@ -119,7 +119,12 @@ const NewMember = () => {
         </div>
         <div className={styles.formInput}>
           <label htmlFor="church_id" className={styles.label}>Branch</label>
-          <select id="church_id" name="church_id" {...register('church_id', { required: 'Please Select a Church' })} className={styles.inputField}>
+          <select
+            id="church_id"
+            name="church_id"
+            {...register('church_id', { required: 'Please Select a Church' })}
+            className={styles.inputField}
+          >
             <option value="">Select Church</option>
             {isLoading ? <option>Loading...</option> : churches.map((church) => (
               <option
