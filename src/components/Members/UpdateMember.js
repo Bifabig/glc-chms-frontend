@@ -7,17 +7,23 @@ import PropTypes from 'prop-types';
 import { Button } from '@mui/material';
 import { useForm } from 'react-hook-form';
 
-import { createMember, getChurches } from '../../redux/thunk';
+import { getChurches, updateMember } from '../../redux/thunk';
 import styles from '../../styles/Members.module.css';
 import TeamsDropdown from '../Teams/TeamsDropdown';
 
 const UpdateMember = ({ memberDetail }) => {
   const [msg, setMsg] = useState('');
   const [selectedTeams, setSelectedTeams] = useState([]);
+  const [fileImg, setFileImg] = useState(memberDetail.attributes.photo_url);
 
   const {
     churches, isLoading,
   } = useSelector((store) => store.churches);
+
+  function handleImgUpload(e) {
+    // console.log(e.target.files);
+    setFileImg(URL.createObjectURL(e.target.files[0]));
+  }
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -40,7 +46,8 @@ const UpdateMember = ({ memberDetail }) => {
     selectedTeams.forEach((team) => {
       member.append('member[teams][]', team.id);
     });
-    dispatch(createMember(member)).then(setMsg('Member Added Successfully!'));
+    console.log(member);
+    dispatch(updateMember(member)).then(setMsg('Member Added Successfully!'));
     setTimeout(() => {
       setMsg('');
     }, 3000);
@@ -60,7 +67,7 @@ const UpdateMember = ({ memberDetail }) => {
           <label htmlFor="name" className={styles.label}>Full Name</label>
           <input
             type="text"
-            value={memberDetail.attributes.name}
+            defaultValue={memberDetail.attributes.name}
             id="name"
             {...register('name', {
               required:
@@ -79,9 +86,10 @@ const UpdateMember = ({ memberDetail }) => {
             id="photo"
             {...register('photo', { required: 'Photo is required' })}
             placeholder="Photo"
+            onChange={handleImgUpload}
           />
           <img
-            src={memberDetail.attributes.photo_url}
+            src={fileImg}
             alt={memberDetail.attributes.name}
             className={styles.memberDetailImg}
           />
@@ -92,7 +100,7 @@ const UpdateMember = ({ memberDetail }) => {
           <input
             type="text"
             id="address"
-            value={memberDetail.attributes.address}
+            defaultValue={memberDetail.attributes.address}
             {...register('address', { required: 'Address is required' })}
             placeholder="Address"
             className={styles.inputField}
@@ -104,7 +112,7 @@ const UpdateMember = ({ memberDetail }) => {
           <input
             type="text"
             id="phone_number"
-            value={memberDetail.attributes.phone_number}
+            defaultValue={memberDetail.attributes.phone_number}
             {...register('phone_number', {
               required: 'Phone number is required',
               pattern:
@@ -120,7 +128,7 @@ const UpdateMember = ({ memberDetail }) => {
           <input
             type="date"
             id="joined_at"
-            value={memberDetail.attributes.joined_at}
+            defaultValue={memberDetail.attributes.joined_at}
             {...register('joined_at', { required: 'Joined date is required' })}
             placeholder="Member Since"
             className={styles.inputField}
@@ -129,7 +137,7 @@ const UpdateMember = ({ memberDetail }) => {
         </div>
         <div className={styles.formInput}>
           <label htmlFor="church_id" className={styles.label}>Branch</label>
-          <select id="church_id" name="church_id" defaultValue={2} {...register('church_id', { required: 'Please Select a Church' })} className={styles.inputField}>
+          <select id="church_id" name="church_id" defaultValue={memberDetail.memberChurch[0].id} {...register('church_id', { required: 'Please Select a Church' })} className={styles.inputField}>
             {isLoading ? <option>Loading...</option> : churches.map((church) => (
 
               <option
@@ -149,12 +157,9 @@ const UpdateMember = ({ memberDetail }) => {
             register={register}
             control={control}
             errors={errors}
-            selectedTeams={selectedTeams}
             setSelectedTeams={setSelectedTeams}
-            defaultValue={{
-              label: 'hi',
-              value: 'hello',
-            }}
+            selectedTeams={selectedTeams}
+            memberTeams={memberDetail.memberTeams}
           />
         </div>
         <div className={styles.submitBtn}>
