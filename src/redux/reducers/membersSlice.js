@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import {
-  createMember, deleteMember, fetchMemberDetail, getMembers,
+  createMember, deleteMember, fetchMemberDetail, getMembers, updateMember,
 } from '../thunk';
 
 const initialState = {
@@ -51,6 +51,16 @@ const membersSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(createMember.rejected, (state, { error }) => ({
+        ...state,
+        isLoading: false,
+        error: error.stack,
+      }))
+      .addCase(updateMember.fulfilled, (state, action) => {
+        state.members.data.push(action.payload.member.data);
+        state.members.included.push(action.payload.included);
+        state.isLoading = false;
+      })
+      .addCase(updateMember.rejected, (state, { error }) => ({
         ...state,
         isLoading: false,
         error: error.stack,

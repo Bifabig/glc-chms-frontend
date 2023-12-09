@@ -135,7 +135,6 @@ const Members = () => {
       <h2>Members</h2>
       <Button onClick={handleModalOpen} variant="contained">Add Member</Button>
       <Modal
-        className={styles.modal}
         open={modalOpen}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
@@ -143,9 +142,9 @@ const Members = () => {
         <Box
           sx={{
             position: 'absolute',
-            left: '20%',
+            left: '19%',
             transform: 'translate(-50%; -50%)',
-            width: 400,
+            width: 600,
             bgcolor: 'background.paper',
             boxShadow: 24,
             p: 4,

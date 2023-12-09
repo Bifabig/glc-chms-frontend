@@ -21,7 +21,6 @@ const UpdateMember = ({ memberDetail }) => {
   } = useSelector((store) => store.churches);
 
   function handleImgUpload(e) {
-    // console.log(e.target.files);
     setFileImg(URL.createObjectURL(e.target.files[0]));
   }
 
@@ -42,11 +41,9 @@ const UpdateMember = ({ memberDetail }) => {
     member.append('member[phone_number]', data.phone_number);
     member.append('member[joined_at]', data.joined_at);
     member.append('member[church_id]', data.church_id);
-    // member.append('member[teams]', selectedTeams);
     selectedTeams.forEach((team) => {
       member.append('member[teams][]', team.id);
     });
-    console.log(member);
     dispatch(updateMember(member)).then(setMsg('Member Added Successfully!'));
     setTimeout(() => {
       setMsg('');

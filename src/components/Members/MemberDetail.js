@@ -12,8 +12,8 @@ import UpdateMember from './UpdateMember';
 
 const MemberDetail = () => {
   const { memberId } = useParams();
-  const dispatch = useDispatch();
   const [modalOpen, setModalOpen] = useState(false);
+  const dispatch = useDispatch();
 
   const {
     memberDetail, isLoading, error, errorMsg,
@@ -64,9 +64,9 @@ const MemberDetail = () => {
         <Box
           sx={{
             position: 'absolute',
-            left: '20%',
+            left: '19%',
             transform: 'translate(-50%; -50%)',
-            width: 400,
+            width: 600,
             bgcolor: 'background.paper',
             boxShadow: 24,
             p: 4,

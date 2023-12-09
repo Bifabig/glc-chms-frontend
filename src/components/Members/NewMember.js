@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 
 import { createMember, getChurches } from '../../redux/thunk';
 import styles from '../../styles/Members.module.css';
@@ -13,6 +13,7 @@ import TeamsDropdown from '../Teams/TeamsDropdown';
 const NewMember = () => {
   const [msg, setMsg] = useState('');
   const [selectedTeams, setSelectedTeams] = useState([]);
+  const [fileImg, setFileImg] = useState('');
 
   const {
     churches, isLoading,
@@ -27,6 +28,11 @@ const NewMember = () => {
   } = form;
   const { errors } = formState;
 
+  function handleImgUpload(e) {
+    // console.log(e.target.files);
+    setFileImg(URL.createObjectURL(e.target.files[0]));
+  }
+
   const onSubmit = (data) => {
     const member = new FormData();
     member.append('member[name]', data.name);
@@ -35,7 +41,6 @@ const NewMember = () => {
     member.append('member[phone_number]', data.phone_number);
     member.append('member[joined_at]', data.joined_at);
     member.append('member[church_id]', data.church_id);
-    // member.append('member[teams]', selectedTeams);
     selectedTeams.forEach((team) => {
       member.append('member[teams][]', team.id);
     });
@@ -45,6 +50,8 @@ const NewMember = () => {
     }, 3000);
 
     reset();
+    setFileImg('');
+    setSelectedTeams([]);
     navigate('/members');
   };
 
@@ -77,7 +84,9 @@ const NewMember = () => {
             id="photo"
             {...register('photo', { required: 'Photo is required' })}
             placeholder="Photo"
+            onChange={handleImgUpload}
           />
+          {fileImg === '' ? '' : <img src={fileImg} alt="member" className={styles.memberDetailImg} />}
           <span className={styles.errorMsg}>{ errors.photo?.message }</span>
         </div>
         <div className={styles.formInput}>
@@ -118,7 +127,7 @@ const NewMember = () => {
           <span className={styles.errorMsg}>{ errors.joined_at?.message }</span>
         </div>
         <div className={styles.formInput}>
-          <label htmlFor="church_id" className={styles.label}>Branch</label>
+          <label htmlFor="church_id" className={styles.label}>Branch Church</label>
           <select
             id="church_id"
             name="church_id"
@@ -139,13 +148,23 @@ const NewMember = () => {
         </div>
         <div className={styles.formInput}>
           <label htmlFor="teams" className={styles.label}>Teams</label>
-          <TeamsDropdown
-            register={register}
+          <Controller
             control={control}
-            errors={errors}
-            selectedTeams={selectedTeams}
-            setSelectedTeams={setSelectedTeams}
+            name="teams"
+            render={({ field }) => (
+
+              <TeamsDropdown
+                field={field}
+                // register={register}
+                control={control}
+                errors={errors}
+                selectedTeams={selectedTeams}
+                setSelectedTeams={setSelectedTeams}
+              />
+
+            )}
           />
+
         </div>
         <div className={styles.submitBtn}>
           <Button type="submit" variant="contained" color="success">
@@ -153,7 +172,6 @@ const NewMember = () => {
           </Button>
         </div>
         <span>{msg}</span>
-
       </form>
     </div>
   );
