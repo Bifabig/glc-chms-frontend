@@ -5,7 +5,6 @@ import {
   Box, Button, Modal, Typography,
 } from '@mui/material';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
-import { v4 as uuidv4 } from 'uuid';
 import { getChurches } from '../../redux/thunk';
 import NewChurch from './NewChurch';
 
@@ -90,7 +89,7 @@ const Churches = () => {
           <DataGrid
             rows={churches}
             columns={columns}
-            getRowId={() => uuidv4()}
+            getRowId={(row) => row.id}
             initialState={{
               pagination: {
                 paginationModel: { page: 0, pageSize: 5 },

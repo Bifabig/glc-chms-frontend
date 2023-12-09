@@ -4,9 +4,10 @@ import moment from 'moment/moment';
 import {
   Box, Button, Modal, Typography,
 } from '@mui/material';
-import { v4 as uuidv4 } from 'uuid';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { useDispatch, useSelector } from 'react-redux';
-import { getMembers } from '../../redux/thunk';
+import { Link } from 'react-router-dom';
+import { getMembers, deleteMember } from '../../redux/thunk';
 import styles from '../../styles/Members.module.css';
 import NewMember from './NewMember';
 
@@ -20,20 +21,26 @@ const Members = () => {
   const handleModalOpen = () => setModalOpen(true);
   const handleModalClose = () => setModalOpen(false);
 
+  const handleDeleteMember = (e, id) => {
+    e.stopPropagation();
+    dispatch(deleteMember(id));
+  };
+
   const columns = [
     {
       field: 'id',
       headerName: 'ID',
-      width: 90,
+      width: 60,
       type: 'number',
       renderCell: (params) => (
         params.row.attributes.id
       ),
+      filterable: false,
     },
     {
       field: 'name',
       headerName: 'Name',
-      width: 240,
+      width: 200,
       type: 'string',
       valueGetter: (params) => params.row.attributes.name,
       renderCell: (valueReceived) => valueReceived.row.attributes.name,
@@ -41,7 +48,7 @@ const Members = () => {
     {
       field: 'photo_url',
       headerName: 'Photo',
-      width: 120,
+      width: 80,
       sortable: false,
       renderCell: (params) => (
         <img
@@ -50,6 +57,7 @@ const Members = () => {
           className={styles.photo}
         />
       ),
+      filterable: false,
     },
     {
       field: 'address',
@@ -64,8 +72,9 @@ const Members = () => {
     {
       field: 'phone_number',
       headerName: 'Phone Number',
-      width: 160,
+      width: 140,
       sortable: false,
+      valueGetter: (params) => params.row.attributes.phone_number,
       renderCell: (params) => (
         params.row.attributes.phone_number
       ),
@@ -74,9 +83,33 @@ const Members = () => {
       field: 'joined_at',
       headerName: 'Member Since',
       type: 'Date',
-      width: 150,
+      width: 130,
       valueGetter: (params) => moment(params.row.attributes.joined_at).format('YYYY/MM/DD'),
       renderCell: (params) => moment(params.row.attributes.joined_at).format('DD/MM/YYYY'),
+    },
+    {
+      field: 'detail',
+      headerName: '',
+      sortable: false,
+      renderCell: (params) => (
+        <Link to={`/members/${params.row.attributes.id}`}><Button variant="contained"> Detail</Button></Link>
+      ),
+    },
+    {
+      field: 'delete',
+      headerName: '',
+      sortable: false,
+      renderCell: (params) => (
+        <Button
+          variant="contained"
+          sx={{ color: 'white', background: 'red' }}
+          size="medium"
+          startIcon={<DeleteIcon />}
+          onClick={(e) => handleDeleteMember(e, params.row.attributes.id)}
+        >
+          Delete
+        </Button>
+      ),
     },
   ];
 
@@ -97,12 +130,11 @@ const Members = () => {
 
   return isLoading ? (
     <h2>Loading...</h2>
-  ) : (
+  ) : members && (
     <div>
       <h2>Members</h2>
       <Button onClick={handleModalOpen} variant="contained">Add Member</Button>
       <Modal
-        className={styles.modal}
         open={modalOpen}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
@@ -110,9 +142,9 @@ const Members = () => {
         <Box
           sx={{
             position: 'absolute',
-            left: '20%',
+            left: '19%',
             transform: 'translate(-50%; -50%)',
-            width: 400,
+            width: 600,
             bgcolor: 'background.paper',
             boxShadow: 24,
             p: 4,
@@ -132,20 +164,22 @@ const Members = () => {
           </Typography>
         </Box>
       </Modal>
-      <div style={{ height: 400, width: '100%' }}>
+      <div style={{ height: 460, width: '100%' }}>
+        {members && (
         <DataGrid
-          rows={members.data}
+          rows={members?.data}
           columns={columns}
-          getRowId={() => uuidv4()}
+          getRowId={(row) => row.id}
           initialState={{
             pagination: {
-              paginationModel: { page: 0, pageSize: 5 },
+              paginationModel: { page: 0, pageSize: 10 },
             },
           }}
           slots={{ toolbar: GridToolbar }}
-          pageSizeOptions={[5, 10]}
+          pageSizeOptions={[10, 20]}
           checkboxSelection
         />
+        )}
       </div>
     </div>
   );

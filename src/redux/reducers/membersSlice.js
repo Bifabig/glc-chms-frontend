@@ -1,8 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { createMember, getMembers } from '../thunk';
+import {
+  createMember, deleteMember, fetchMemberDetail, getMembers, updateMember,
+} from '../thunk';
 
 const initialState = {
-  members: '',
+  members: [],
+  memberDetail: '',
   isLoading: true,
   error: false,
   errorMsg: '',
@@ -25,6 +28,23 @@ const membersSlice = createSlice({
         state.error = true;
         state.errorMsg = action.payload;
       })
+      .addCase(fetchMemberDetail.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchMemberDetail.fulfilled, (state, { payload }) => {
+        const { data } = payload;
+        const memberChurch = payload.included.filter((church) => ((church.type === 'church')));
+        const memberTeams = payload.included.filter((team) => ((team.type === 'team')));
+        // console.log(data, memberChurch, memberTeams);
+        state.memberDetail = { ...data, memberChurch, memberTeams };
+        state.isLoading = false;
+        state.error = false;
+      })
+      .addCase(fetchMemberDetail.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = true;
+        state.errorMsg = action.payload;
+      })
       .addCase(createMember.fulfilled, (state, action) => {
         state.members.data.push(action.payload.member.data);
         state.members.included.push(action.payload.included);
@@ -34,6 +54,25 @@ const membersSlice = createSlice({
         ...state,
         isLoading: false,
         error: error.stack,
+      }))
+      .addCase(updateMember.fulfilled, (state, action) => {
+        state.members.data.push(action.payload.member.data);
+        state.members.included.push(action.payload.included);
+        state.isLoading = false;
+      })
+      .addCase(updateMember.rejected, (state, { error }) => ({
+        ...state,
+        isLoading: false,
+        error: error.stack,
+      }))
+      .addCase(deleteMember.fulfilled, (state, { payload }) => {
+        state.members = payload;
+        state.isLoading = false;
+      })
+      .addCase(deleteMember.rejected, (state, { payload }) => ({
+        ...state,
+        isLoading: false,
+        error: payload,
       }));
   },
 });

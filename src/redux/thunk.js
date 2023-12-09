@@ -18,6 +18,20 @@ export const getMembers = createAsyncThunk('members/getMembers', async (_, { rej
   }
 });
 
+export const fetchMemberDetail = createAsyncThunk('members/fetchMemberDetail', async (memberId, { rejectWithValue }) => {
+  try {
+    const response = await axios.get(`${url}/members/${memberId}`);
+    return response.data;
+  } catch (error) {
+    const message = (error.response
+      && error.response.data
+      && error.response.data.message)
+    || error.message
+    || error.toString();
+    return rejectWithValue(message);
+  }
+});
+
 export const createMember = createAsyncThunk(
   'members/createMember',
   async (memberData, { rejectWithValue }) => {
@@ -26,6 +40,30 @@ export const createMember = createAsyncThunk(
       return response.data;
     } catch (error) {
       return rejectWithValue('Unable to add memeber');
+    }
+  },
+);
+
+export const deleteMember = createAsyncThunk(
+  'members/deleteMember',
+  async (member, { rejectWithValue }) => {
+    try {
+      const resp = await axios.delete(`${url}/members/${member}`);
+      return resp.data;
+    } catch (error) {
+      return rejectWithValue('Unable to delete member');
+    }
+  },
+);
+
+export const updateMember = createAsyncThunk(
+  'members/updateMember',
+  async (member, { rejectWithValue }) => {
+    try {
+      const resp = await axios.put(`${url}/members/${member}`);
+      return resp.data;
+    } catch (error) {
+      return rejectWithValue('Unable to delete member');
     }
   },
 );

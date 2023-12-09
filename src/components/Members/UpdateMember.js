@@ -3,21 +3,26 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import { Button } from '@mui/material';
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 
-import { createMember, getChurches } from '../../redux/thunk';
+import { getChurches, updateMember } from '../../redux/thunk';
 import styles from '../../styles/Members.module.css';
 import TeamsDropdown from '../Teams/TeamsDropdown';
 
-const NewMember = () => {
+const UpdateMember = ({ memberDetail }) => {
   const [msg, setMsg] = useState('');
   const [selectedTeams, setSelectedTeams] = useState([]);
-  const [fileImg, setFileImg] = useState('');
+  const [fileImg, setFileImg] = useState(memberDetail.attributes.photo_url);
 
   const {
     churches, isLoading,
   } = useSelector((store) => store.churches);
+
+  function handleImgUpload(e) {
+    setFileImg(URL.createObjectURL(e.target.files[0]));
+  }
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -27,11 +32,6 @@ const NewMember = () => {
     register, handleSubmit, reset, formState, control,
   } = form;
   const { errors } = formState;
-
-  function handleImgUpload(e) {
-    // console.log(e.target.files);
-    setFileImg(URL.createObjectURL(e.target.files[0]));
-  }
 
   const onSubmit = (data) => {
     const member = new FormData();
@@ -44,14 +44,12 @@ const NewMember = () => {
     selectedTeams.forEach((team) => {
       member.append('member[teams][]', team.id);
     });
-    dispatch(createMember(member)).then(setMsg('Member Added Successfully!'));
+    dispatch(updateMember(member)).then(setMsg('Member Added Successfully!'));
     setTimeout(() => {
       setMsg('');
     }, 3000);
 
     reset();
-    setFileImg('');
-    setSelectedTeams([]);
     navigate('/members');
   };
 
@@ -66,6 +64,7 @@ const NewMember = () => {
           <label htmlFor="name" className={styles.label}>Full Name</label>
           <input
             type="text"
+            defaultValue={memberDetail.attributes.name}
             id="name"
             {...register('name', {
               required:
@@ -86,7 +85,11 @@ const NewMember = () => {
             placeholder="Photo"
             onChange={handleImgUpload}
           />
-          {fileImg === '' ? '' : <img src={fileImg} alt="member" className={styles.memberDetailImg} />}
+          <img
+            src={fileImg}
+            alt={memberDetail.attributes.name}
+            className={styles.memberDetailImg}
+          />
           <span className={styles.errorMsg}>{ errors.photo?.message }</span>
         </div>
         <div className={styles.formInput}>
@@ -94,6 +97,7 @@ const NewMember = () => {
           <input
             type="text"
             id="address"
+            defaultValue={memberDetail.attributes.address}
             {...register('address', { required: 'Address is required' })}
             placeholder="Address"
             className={styles.inputField}
@@ -105,6 +109,7 @@ const NewMember = () => {
           <input
             type="text"
             id="phone_number"
+            defaultValue={memberDetail.attributes.phone_number}
             {...register('phone_number', {
               required: 'Phone number is required',
               pattern:
@@ -120,6 +125,7 @@ const NewMember = () => {
           <input
             type="date"
             id="joined_at"
+            defaultValue={memberDetail.attributes.joined_at}
             {...register('joined_at', { required: 'Joined date is required' })}
             placeholder="Member Since"
             className={styles.inputField}
@@ -127,54 +133,54 @@ const NewMember = () => {
           <span className={styles.errorMsg}>{ errors.joined_at?.message }</span>
         </div>
         <div className={styles.formInput}>
-          <label htmlFor="church_id" className={styles.label}>Branch Church</label>
-          <select
-            id="church_id"
-            name="church_id"
-            {...register('church_id', { required: 'Please Select a Church' })}
-            className={styles.inputField}
-          >
-            <option value="">Select Church</option>
+          <label htmlFor="church_id" className={styles.label}>Branch</label>
+          <select id="church_id" name="church_id" defaultValue={memberDetail.memberChurch[0].id} {...register('church_id', { required: 'Please Select a Church' })} className={styles.inputField}>
             {isLoading ? <option>Loading...</option> : churches.map((church) => (
+
               <option
                 value={church.id}
                 key={church.id}
               >
                 {church.name}
               </option>
+
             ))}
           </select>
           <span className={styles.errorMsg}>{ errors.church_id?.message }</span>
         </div>
         <div className={styles.formInput}>
           <label htmlFor="teams" className={styles.label}>Teams</label>
-          <Controller
+          <TeamsDropdown
+            register={register}
             control={control}
-            name="teams"
-            render={({ field }) => (
-
-              <TeamsDropdown
-                field={field}
-                // register={register}
-                control={control}
-                errors={errors}
-                selectedTeams={selectedTeams}
-                setSelectedTeams={setSelectedTeams}
-              />
-
-            )}
+            errors={errors}
+            setSelectedTeams={setSelectedTeams}
+            selectedTeams={selectedTeams}
+            memberTeams={memberDetail.memberTeams}
           />
-
         </div>
         <div className={styles.submitBtn}>
           <Button type="submit" variant="contained" color="success">
-            Add Member
+            Update Member
           </Button>
         </div>
         <span>{msg}</span>
+
       </form>
     </div>
   );
 };
 
-export default NewMember;
+UpdateMember.propTypes = {
+  memberDetail: PropTypes.objectOf(
+    PropTypes.oneOfType([
+      PropTypes.func,
+      PropTypes.number,
+      PropTypes.string,
+      PropTypes.object,
+      PropTypes.array,
+    ]),
+  ).isRequired,
+};
+
+export default UpdateMember;
