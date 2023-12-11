@@ -21,8 +21,9 @@
 
 .selectorDropdown {
   height: 38px;
-  width: 250px;
+  width: 75%;
   font-size: 14px;
+  /* margin-left: 400px; */
 }
 
 .label {
@@ -37,11 +38,19 @@
 .formInput {
   display: flex;
   flex-direction: column;
-  flex-basis: 100%;
+  flex: 1;
+}
+
+.selectorInput {
+  margin-left: 51%;
+  width: 100%;
+  /* border: 2px solid black; */
 }
 
 .submitBtn {
+  /* margin-right: 0; */
   width: 100%;
+  margin-top: -60px;
 }
 
 .memberDetail {
