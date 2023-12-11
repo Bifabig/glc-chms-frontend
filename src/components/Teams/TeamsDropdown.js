@@ -7,7 +7,7 @@ import { getTeams } from '../../redux/thunk';
 import styles from '../../styles/Members.module.css';
 
 const TeamsDropdown = ({
-  field, errors, selectedTeams, setSelectedTeams,
+  defaultValue, field, selectedTeams, setSelectedTeams,
 }) => {
   const dispatch = useDispatch();
   const {
@@ -21,6 +21,7 @@ const TeamsDropdown = ({
   const handleOnChange = (selectedOptions) => {
     const newSelectedTeams = selectedOptions.map((option) => option.value);
     const selectedTeamObjects = teams.filter((team) => newSelectedTeams.includes(team.id));
+    // console.log(selectedTeamObjects);
     setSelectedTeams(selectedTeamObjects);
   };
   return (
@@ -34,6 +35,7 @@ const TeamsDropdown = ({
         // {...register('teams', { required: 'Please Select a Church' })}
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...field}
+        // defaultValue={defaultValue}
         isMulti
         options={isLoading ? <span>Loading...</span> : teams.map((team) => ({
           value: team.id,
@@ -42,12 +44,14 @@ const TeamsDropdown = ({
         className={styles.selectorDropdown}
         classNamePrefix="select"
         onChange={handleOnChange}
-        value={selectedTeams.length > 0 ? selectedTeams.value : []}
+        value={selectedTeams.length > 0
+          ? selectedTeams.value
+          : defaultValue.map((val) => ({ value: val.id, label: val.attributes.name }))}
         // inputRef={ref}
       />
       {/* )} */}
       {/* /> */}
-      <span className={styles.errorMsg}>{errors.teams?.message}</span>
+      {/* <span className={styles.errorMsg}>{errors.teams?.message}</span> */}
 
     </>
 
@@ -64,7 +68,7 @@ TeamsDropdown.propTypes = {
       PropTypes.object,
     ]),
   ).isRequired,
-  errors: PropTypes.objectOf(
+  defaultValue: PropTypes.arrayOf(
     PropTypes.oneOfType([
       PropTypes.func,
       PropTypes.number,
