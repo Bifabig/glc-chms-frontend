@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Button } from '@mui/material';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 
 import { getChurches, updateMember } from '../../redux/thunk';
 import styles from '../../styles/Members.module.css';
@@ -148,16 +148,35 @@ const UpdateMember = ({ memberDetail }) => {
           </select>
           <span className={styles.errorMsg}>{ errors.church_id?.message }</span>
         </div>
-        <div className={styles.formInput}>
+        <div className={styles.selectorInput}>
           <label htmlFor="teams" className={styles.label}>Teams</label>
-          <TeamsDropdown
+          {/* {setSelectedTeams(memberDetail.memberTeams)} */}
+          <Controller
+            control={control}
+            name="teams"
+            rules={{ required: 'Please Select a Church' }}
+            render={({ field }) => (
+
+              <TeamsDropdown
+                field={field}
+                defaultValue={memberDetail.memberTeams}
+                // register={register}
+                control={control}
+                errors={errors}
+                selectedTeams={selectedTeams}
+                setSelectedTeams={setSelectedTeams}
+              />
+
+            )}
+          />
+          {/* <TeamsDropdown
             register={register}
             control={control}
             errors={errors}
             setSelectedTeams={setSelectedTeams}
             selectedTeams={selectedTeams}
             memberTeams={memberDetail.memberTeams}
-          />
+          /> */}
         </div>
         <div className={styles.submitBtn}>
           <Button type="submit" variant="contained" color="success">

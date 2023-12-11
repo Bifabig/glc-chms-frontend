@@ -34,6 +34,7 @@ const NewMember = () => {
   }
 
   const onSubmit = (data) => {
+    console.log(data, selectedTeams);
     const member = new FormData();
     member.append('member[name]', data.name);
     member.append('member[photo]', data.photo[0]);
@@ -146,24 +147,26 @@ const NewMember = () => {
           </select>
           <span className={styles.errorMsg}>{ errors.church_id?.message }</span>
         </div>
-        <div className={styles.formInput}>
+        <div className={styles.selectorInput}>
           <label htmlFor="teams" className={styles.label}>Teams</label>
           <Controller
             control={control}
             name="teams"
+            rules={{ required: 'Please Select Teams' }}
             render={({ field }) => (
 
               <TeamsDropdown
                 field={field}
+                defaultValue={[]}
                 // register={register}
-                control={control}
-                errors={errors}
+                // control={control}
                 selectedTeams={selectedTeams}
                 setSelectedTeams={setSelectedTeams}
               />
 
             )}
           />
+          <span className={styles.errorMsg}>{errors.teams?.message}</span>
 
         </div>
         <div className={styles.submitBtn}>

@@ -172,11 +172,11 @@ const Members = () => {
           getRowId={(row) => row.id}
           initialState={{
             pagination: {
-              paginationModel: { page: 0, pageSize: 10 },
+              paginationModel: { page: 0, pageSize: 5 },
             },
           }}
           slots={{ toolbar: GridToolbar }}
-          pageSizeOptions={[10, 20]}
+          pageSizeOptions={[5, 10]}
           checkboxSelection
         />
         )}
