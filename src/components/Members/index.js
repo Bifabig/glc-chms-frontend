@@ -130,7 +130,7 @@ const Members = () => {
 
   return isLoading ? (
     <h2>Loading...</h2>
-  ) : members && (
+  ) : (
     <div>
       <h2>Members</h2>
       <Button onClick={handleModalOpen} variant="contained">Add Member</Button>
