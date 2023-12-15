@@ -37,7 +37,6 @@ const membersSlice = createSlice({
         const { data } = payload;
         const memberChurch = payload.included.filter((church) => ((church.type === 'church')));
         const memberTeams = payload.included.filter((team) => ((team.type === 'team')));
-        // console.log(data, memberChurch, memberTeams);
         state.memberDetail = { ...data, memberChurch, memberTeams };
         state.isLoading = false;
         state.error = false;
@@ -48,8 +47,8 @@ const membersSlice = createSlice({
         state.errorMsg = action.payload;
       })
       .addCase(createMember.fulfilled, (state, action) => {
-        state.members.data.push(action.payload.member.data);
-        state.members.included.push(action.payload.included);
+        state.members.data = [action.payload.member.data, ...state.members.data];
+        state.members.included = [action.payload.included, ...state.members.included];
         state.isLoading = false;
       })
       .addCase(createMember.rejected, (state, { error }) => ({
@@ -58,8 +57,8 @@ const membersSlice = createSlice({
         error: error.stack,
       }))
       .addCase(updateMember.fulfilled, (state, action) => {
-        state.members.data.push(action.payload.member.data);
-        state.members.included.push(action.payload.included);
+        state.members.data = [action.payload.member.data, ...state.members.data];
+        state.members.included = [action.payload.included, ...state.members.included];
         state.isLoading = false;
       })
       .addCase(updateMember.rejected, (state, { error }) => ({

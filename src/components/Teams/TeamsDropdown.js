@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Select from 'react-select';
-// import { Controller } from 'react-hook-form';
 import PropTypes from 'prop-types';
 import { getTeams } from '../../redux/thunk';
 import styles from '../../styles/Members.module.css';
@@ -21,21 +20,13 @@ const TeamsDropdown = ({
   const handleOnChange = (selectedOptions) => {
     const newSelectedTeams = selectedOptions.map((option) => option.value);
     const selectedTeamObjects = teams.filter((team) => newSelectedTeams.includes(team.id));
-    // console.log(selectedTeamObjects);
     setSelectedTeams(selectedTeamObjects);
   };
   return (
     <>
-      {/* <Controller
-        control={control}
-        name="teams"
-        render={({ ref }) => ( */}
       <Select
-          // eslint-disable-next-line react/jsx-props-no-spreading
-        // {...register('teams', { required: 'Please Select a Church' })}
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...field}
-        // defaultValue={defaultValue}
         isMulti
         options={isLoading ? <span>Loading...</span> : teams.map((team) => ({
           value: team.id,
@@ -44,22 +35,15 @@ const TeamsDropdown = ({
         className={styles.selectorDropdown}
         classNamePrefix="select"
         onChange={handleOnChange}
-        value={selectedTeams.length > 0
-          ? selectedTeams.value
-          : defaultValue.map((val) => ({ value: val.id, label: val.attributes.name }))}
-        // inputRef={ref}
+        value={selectedTeams?.value}
+        defaultValue={defaultValue.map((val) => ({ value: val.id, label: val.attributes.name }))}
       />
-      {/* )} */}
-      {/* /> */}
-      {/* <span className={styles.errorMsg}>{errors.teams?.message}</span> */}
-
     </>
 
   );
 };
 
 TeamsDropdown.propTypes = {
-  // register: PropTypes.func.isRequired,
   field: PropTypes.objectOf(
     PropTypes.oneOfType([
       PropTypes.func,

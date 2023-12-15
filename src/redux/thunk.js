@@ -60,7 +60,8 @@ export const updateMember = createAsyncThunk(
   'members/updateMember',
   async (member, { rejectWithValue }) => {
     try {
-      const resp = await axios.put(`${url}/members/${member}`);
+      const { id, memberData } = member;
+      const resp = await axios.put(`${url}/members/${id}`, memberData);
       return resp.data;
     } catch (error) {
       return rejectWithValue('Unable to delete member');
