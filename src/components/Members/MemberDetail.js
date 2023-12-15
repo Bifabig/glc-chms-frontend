@@ -27,12 +27,6 @@ const MemberDetail = () => {
     navigate('/members');
   };
 
-  // const handleUpdate = (e) => {
-  //   e.preventDefault();
-  //   // dispatch(updateMember(memberId));
-  //     ;
-  // };
-
   useEffect(() => {
     dispatch(fetchMemberDetail(memberId));
   }, [dispatch, memberId]);

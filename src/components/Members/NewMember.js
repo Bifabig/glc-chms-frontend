@@ -29,12 +29,10 @@ const NewMember = () => {
   const { errors } = formState;
 
   function handleImgUpload(e) {
-    // console.log(e.target.files);
     setFileImg(URL.createObjectURL(e.target.files[0]));
   }
 
   const onSubmit = (data) => {
-    console.log(data, selectedTeams);
     const member = new FormData();
     member.append('member[name]', data.name);
     member.append('member[photo]', data.photo[0]);
@@ -152,14 +150,12 @@ const NewMember = () => {
           <Controller
             control={control}
             name="teams"
-            rules={{ required: 'Please Select Teams' }}
+            // rules={{ required: 'Please Select Teams' }}
             render={({ field }) => (
 
               <TeamsDropdown
                 field={field}
                 defaultValue={[]}
-                // register={register}
-                // control={control}
                 selectedTeams={selectedTeams}
                 setSelectedTeams={setSelectedTeams}
               />

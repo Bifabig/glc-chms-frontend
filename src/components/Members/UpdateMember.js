@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Button } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
@@ -24,17 +24,18 @@ const UpdateMember = ({ memberDetail }) => {
     setFileImg(URL.createObjectURL(e.target.files[0]));
   }
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  console.log(memberDetail.memberTeams, selectedTeams);
   const form = useForm();
   const {
-    register, handleSubmit, reset, formState, control,
+    register, handleSubmit, formState, control,
   } = form;
   const { errors } = formState;
 
   const onSubmit = (data) => {
     const member = new FormData();
+    member.append('member[id]', memberDetail.attributes.id);
     member.append('member[name]', data.name);
     member.append('member[photo]', data.photo[0]);
     member.append('member[address]', data.address);
@@ -44,13 +45,14 @@ const UpdateMember = ({ memberDetail }) => {
     selectedTeams.forEach((team) => {
       member.append('member[teams][]', team.id);
     });
-    dispatch(updateMember(member)).then(setMsg('Member Added Successfully!'));
+    dispatch(updateMember({ id: memberDetail.attributes.id, memberData: member })).then(setMsg('Member Updated Successfully!'));
+    // console.log(memberDetail.attributes.id);
     setTimeout(() => {
       setMsg('');
     }, 3000);
 
-    reset();
-    navigate('/members');
+    // reset();
+    // navigate('/members');
   };
 
   useEffect(() => {
@@ -150,33 +152,18 @@ const UpdateMember = ({ memberDetail }) => {
         </div>
         <div className={styles.selectorInput}>
           <label htmlFor="teams" className={styles.label}>Teams</label>
-          {/* {setSelectedTeams(memberDetail.memberTeams)} */}
           <Controller
             control={control}
             name="teams"
-            rules={{ required: 'Please Select a Church' }}
             render={({ field }) => (
-
               <TeamsDropdown
                 field={field}
                 defaultValue={memberDetail.memberTeams}
-                // register={register}
-                control={control}
-                errors={errors}
                 selectedTeams={selectedTeams}
                 setSelectedTeams={setSelectedTeams}
               />
-
             )}
           />
-          {/* <TeamsDropdown
-            register={register}
-            control={control}
-            errors={errors}
-            setSelectedTeams={setSelectedTeams}
-            selectedTeams={selectedTeams}
-            memberTeams={memberDetail.memberTeams}
-          /> */}
         </div>
         <div className={styles.submitBtn}>
           <Button type="submit" variant="contained" color="success">
