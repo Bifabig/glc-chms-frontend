@@ -16,6 +16,7 @@ const TeamsDropdown = ({
   useEffect(() => {
     dispatch(getTeams());
   }, [dispatch]);
+  // console.log(defaultValue);
 
   const handleOnChange = (selectedOptions) => {
     const newSelectedTeams = selectedOptions.map((option) => option.value);
@@ -35,8 +36,16 @@ const TeamsDropdown = ({
         className={styles.selectorDropdown}
         classNamePrefix="select"
         onChange={handleOnChange}
-        value={selectedTeams?.value}
-        defaultValue={defaultValue.map((val) => ({ value: val.id, label: val.attributes.name }))}
+        value={selectedTeams?.name}
+        // defaultValue={defaultValue.map((val)
+        // => ({ value: `${val.id}`, label: `${val.attributes.name}` }))}
+        defaultValue={isLoading ? <span>Loading...</span>
+          : teams.filter((val) => defaultValue.includes(`${val.id}`)).map(
+            (team) => ({
+              value: team.id,
+              label: team.name,
+            }),
+          )}
       />
     </>
 
