@@ -13,7 +13,7 @@ import TeamsDropdown from '../Teams/TeamsDropdown';
 
 const UpdateMember = ({ memberDetail }) => {
   const [msg, setMsg] = useState('');
-  const [selectedTeams, setSelectedTeams] = useState([]);
+  const [selectedTeams, setSelectedTeams] = useState(memberDetail.memberTeams);
   const [fileImg, setFileImg] = useState(memberDetail.attributes.photo_url);
 
   const {
@@ -24,14 +24,14 @@ const UpdateMember = ({ memberDetail }) => {
     setFileImg(URL.createObjectURL(e.target.files[0]));
   }
 
-  // const navigate = useNavigate();
   const dispatch = useDispatch();
-  console.log(memberDetail.memberTeams, selectedTeams);
   const form = useForm();
   const {
     register, handleSubmit, formState, control,
   } = form;
   const { errors } = formState;
+
+  // console.log(selectedTeams);
 
   const onSubmit = (data) => {
     const member = new FormData();
@@ -46,13 +46,9 @@ const UpdateMember = ({ memberDetail }) => {
       member.append('member[teams][]', team.id);
     });
     dispatch(updateMember({ id: memberDetail.attributes.id, memberData: member })).then(setMsg('Member Updated Successfully!'));
-    // console.log(memberDetail.attributes.id);
     setTimeout(() => {
       setMsg('');
     }, 3000);
-
-    // reset();
-    // navigate('/members');
   };
 
   useEffect(() => {
@@ -83,7 +79,8 @@ const UpdateMember = ({ memberDetail }) => {
           <input
             type="file"
             id="photo"
-            {...register('photo', { required: 'Photo is required' })}
+            {...register('photo')}
+            defaultValue={[]}
             placeholder="Photo"
             onChange={handleImgUpload}
           />
@@ -158,7 +155,7 @@ const UpdateMember = ({ memberDetail }) => {
             render={({ field }) => (
               <TeamsDropdown
                 field={field}
-                defaultValue={memberDetail.memberTeams}
+                defaultValue={memberDetail.memberTeams.map((val) => val.id)}
                 selectedTeams={selectedTeams}
                 setSelectedTeams={setSelectedTeams}
               />
