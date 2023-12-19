@@ -16,7 +16,6 @@ const TeamsDropdown = ({
   useEffect(() => {
     dispatch(getTeams());
   }, [dispatch]);
-  // console.log(defaultValue);
 
   const handleOnChange = (selectedOptions) => {
     const newSelectedTeams = selectedOptions.map((option) => option.value);
@@ -24,30 +23,32 @@ const TeamsDropdown = ({
     setSelectedTeams(selectedTeamObjects);
   };
   return (
-    <>
-      <Select
-        // eslint-disable-next-line react/jsx-props-no-spreading
-        {...field}
-        isMulti
-        options={isLoading ? <span>Loading...</span> : teams.map((team) => ({
-          value: team.id,
-          label: team.name,
-        }))}
-        className={styles.selectorDropdown}
-        classNamePrefix="select"
-        onChange={handleOnChange}
-        value={selectedTeams?.name}
-        // defaultValue={defaultValue.map((val)
-        // => ({ value: `${val.id}`, label: `${val.attributes.name}` }))}
-        defaultValue={isLoading ? <span>Loading...</span>
-          : teams.filter((val) => defaultValue.includes(`${val.id}`)).map(
-            (team) => ({
+    isLoading ? <span>Loading...</span>
+      : (
+        <>
+          <Select
+            key={teams.map((team) => team.id)}
+            // eslint-disable-next-line react/jsx-props-no-spreading
+            {...field}
+            isMulti
+            options={teams.map((team) => ({
               value: team.id,
               label: team.name,
-            }),
-          )}
-      />
-    </>
+            }))}
+            className={styles.selectorDropdown}
+            classNamePrefix="select"
+            onChange={handleOnChange}
+            value={selectedTeams?.name}
+            defaultValue={teams.filter((val) => defaultValue.includes(`${val.id}`))
+              .map(
+                (team) => ({
+                  value: team.id,
+                  label: team.name,
+                }),
+              )}
+          />
+        </>
+      )
 
   );
 };
