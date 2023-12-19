@@ -37,7 +37,9 @@ const UpdateMember = ({ memberDetail }) => {
     const member = new FormData();
     member.append('member[id]', memberDetail.attributes.id);
     member.append('member[name]', data.name);
-    member.append('member[photo]', data.photo[0]);
+    if (data.photo[0]) {
+      member.append('member[photo]', data.photo[0]);
+    }
     member.append('member[address]', data.address);
     member.append('member[phone_number]', data.phone_number);
     member.append('member[joined_at]', data.joined_at);
