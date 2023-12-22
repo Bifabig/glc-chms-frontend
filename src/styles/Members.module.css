@@ -23,6 +23,7 @@
   height: 38px;
   width: 75%;
   font-size: 14px;
+
   /* margin-left: 400px; */
 }
 
@@ -44,6 +45,7 @@
 .selectorInput {
   margin-left: 51%;
   width: 100%;
+
   /* border: 2px solid black; */
 }
 
