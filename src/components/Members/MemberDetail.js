@@ -42,13 +42,14 @@ const MemberDetail = () => {
     );
   }
   return isLoading ? <span>Loading...</span> : memberDetail && (
-    <>
-      <Button onClick={goBack} variant="contained" className={styles.backBtn} startIcon={<ArrowBack />}>
-        Back
-      </Button>
-      <Button onClick={handleModalOpen} variant="contained" className={styles.backBtn}>
-        Update
-      </Button>
+    <div className={styles.memberDetailPage}>
+      <Button
+        onClick={goBack}
+        variant="outlined"
+        className={styles.backBtn}
+        size="medium"
+        startIcon={<ArrowBack />}
+      />
       <Modal
         className={styles.modal}
         open={modalOpen}
@@ -81,48 +82,53 @@ const MemberDetail = () => {
         </Box>
       </Modal>
       <div className={styles.memberDetail}>
-        <h2>Member Detail</h2>
         <div className={styles.memberDetailHeader}>
+          <h2>Member Detail</h2>
           <img src={memberDetail.attributes.photo_url} alt="member detail" className={styles.memberDetailImg} />
-          <h3>
-            Full Name:
-            {' '}
-            {memberDetail.attributes.name}
-          </h3>
         </div>
-        <div className={styles.basicInfo}>
+        <div className={styles.memberInfo}>
           <strong>
-
-            Address:
-            {' '}
-            {memberDetail.attributes.address}
+            {`Full Name: ${memberDetail.attributes.name}`}
           </strong>
           <strong>
-
-            Phone Number:
-            {' '}
-            {memberDetail.attributes.phone_number}
+            {`Address: ${memberDetail.attributes.address}`}
           </strong>
           <strong>
-
-            Member Since:
-            {' '}
-            {memberDetail.attributes.joined_at}
+            {`Phone Number: ${memberDetail.attributes.phone_number}`}
           </strong>
+          <strong>
+            {`Member Since: ${memberDetail.attributes.joined_at}`}
+          </strong>
+          <div className={styles.memberDetailExtra}>
+            <strong>Church</strong>
+            <ul>
+              {memberDetail.memberChurch.map((church) => (
+                <li key={church.id}>
+                  {church.attributes.name}
+                </li>
+              ))}
+            </ul>
+            <strong>Teams</strong>
+            <ul>
+              {memberDetail.memberTeams.map((team) => (
+                <li key={team.id}>
+                  {team.attributes.name}
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
-        <div className={styles.memberMinistry}>
-          <strong>Church</strong>
-          <ul>
-            {memberDetail.memberChurch.map((church) => <li key={church.id}>{church.attributes.name}</li>)}
-          </ul>
-          <strong>Teams</strong>
-          <ul>
-            {memberDetail.memberTeams.map((team) => <li key={team.id}>{team.attributes.name}</li>)}
-          </ul>
-        </div>
+        <Button
+          onClick={handleModalOpen}
+          variant="outlined"
+          className={styles.updateBtn}
+          size="small"
+        >
+          Update
+        </Button>
       </div>
 
-    </>
+    </div>
   );
 };
 
