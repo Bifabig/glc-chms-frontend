@@ -59,25 +59,9 @@ const UpdateMember = ({ memberDetail }) => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit(onSubmit)} className={styles.form} noValidate>
-        <div className={styles.formInput}>
-          <label htmlFor="name" className={styles.label}>Full Name</label>
-          <input
-            type="text"
-            defaultValue={memberDetail.attributes.name}
-            id="name"
-            {...register('name', {
-              required:
-            { value: true, message: 'Full name is required' },
-            })
-          }
-            placeholder="Full Name"
-            className={styles.inputField}
-          />
-          <span className={styles.errorMsg}>{ errors.name?.message }</span>
-        </div>
-        <div className={styles.formInput}>
-          <label htmlFor="photo" className={styles.label}>Photo</label>
+      <form onSubmit={handleSubmit(onSubmit)} className="form" noValidate>
+        <div className="formInput">
+          <label htmlFor="photo" className="label">Photo</label>
           <input
             type="file"
             id="photo"
@@ -89,24 +73,40 @@ const UpdateMember = ({ memberDetail }) => {
           <img
             src={fileImg}
             alt={memberDetail.attributes.name}
-            className={styles.memberDetailImg}
+            className={styles.memberUpdateImg}
           />
-          <span className={styles.errorMsg}>{ errors.photo?.message }</span>
+          <span className="errorMsg">{ errors.photo?.message }</span>
         </div>
-        <div className={styles.formInput}>
-          <label htmlFor="address" className={styles.label}>Address</label>
+        <div className="formInput">
+          <label htmlFor="name" className="label">Full Name</label>
+          <input
+            type="text"
+            defaultValue={memberDetail.attributes.name}
+            id="name"
+            {...register('name', {
+              required:
+            { value: true, message: 'Full name is required' },
+            })
+          }
+            placeholder="Full Name"
+            className="inputField"
+          />
+          <span className="errorMsg">{ errors.name?.message }</span>
+        </div>
+        <div className="formInput">
+          <label htmlFor="address" className="label">Address</label>
           <input
             type="text"
             id="address"
             defaultValue={memberDetail.attributes.address}
             {...register('address', { required: 'Address is required' })}
             placeholder="Address"
-            className={styles.inputField}
+            className="inputField"
           />
-          <span className={styles.errorMsg}>{ errors.address?.message }</span>
+          <span className="errorMsg">{ errors.address?.message }</span>
         </div>
-        <div className={styles.formInput}>
-          <label htmlFor="phone_number" className={styles.label}>Phone Number</label>
+        <div className="formInput">
+          <label htmlFor="phone_number" className="label">Phone Number</label>
           <input
             type="text"
             id="phone_number"
@@ -117,25 +117,25 @@ const UpdateMember = ({ memberDetail }) => {
             { value: /^[0-9]*$/, message: 'Add correct phone number' },
             })}
             placeholder="Phone Number"
-            className={styles.inputField}
+            className="inputField"
           />
-          <span className={styles.errorMsg}>{ errors.phone_number?.message }</span>
+          <span className="errorMsg">{ errors.phone_number?.message }</span>
         </div>
-        <div className={styles.formInput}>
-          <label htmlFor="joined_at" className={styles.label}>Member Since</label>
+        <div className="formInput">
+          <label htmlFor="joined_at" className="label">Member Since</label>
           <input
             type="date"
             id="joined_at"
             defaultValue={memberDetail.attributes.joined_at}
             {...register('joined_at', { required: 'Joined date is required' })}
             placeholder="Member Since"
-            className={styles.inputField}
+            className="inputField"
           />
-          <span className={styles.errorMsg}>{ errors.joined_at?.message }</span>
+          <span className="errorMsg">{ errors.joined_at?.message }</span>
         </div>
-        <div className={styles.formInput}>
-          <label htmlFor="church_id" className={styles.label}>Branch</label>
-          <select id="church_id" name="church_id" defaultValue={memberDetail.memberChurch[0].id} {...register('church_id', { required: 'Please Select a Church' })} className={styles.inputField}>
+        <div className="formInput">
+          <label htmlFor="church_id" className="label">Branch</label>
+          <select id="church_id" name="church_id" defaultValue={memberDetail.memberChurch[0].id} {...register('church_id', { required: 'Please Select a Church' })} className="inputField">
             {isLoading ? <option>Loading...</option> : churches.map((church) => (
 
               <option
@@ -147,10 +147,10 @@ const UpdateMember = ({ memberDetail }) => {
 
             ))}
           </select>
-          <span className={styles.errorMsg}>{ errors.church_id?.message }</span>
+          <span className="errorMsg">{ errors.church_id?.message }</span>
         </div>
-        <div className={styles.selectorInput}>
-          <label htmlFor="teams" className={styles.label}>Teams</label>
+        <div className="selectorInput">
+          <label htmlFor="teams" className="label">Teams</label>
           <Controller
             control={control}
             name="teams"
@@ -164,7 +164,7 @@ const UpdateMember = ({ memberDetail }) => {
             )}
           />
         </div>
-        <div className={styles.submitBtn}>
+        <div className="submitBtn">
           <Button type="submit" variant="contained" color="success">
             Update Member
           </Button>

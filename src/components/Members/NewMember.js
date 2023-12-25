@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
-
 import { createMember, getChurches } from '../../redux/thunk';
 import styles from '../../styles/Members.module.css';
 import TeamsDropdown from '../Teams/TeamsDropdown';
@@ -65,24 +64,27 @@ const NewMember = () => {
     isLoading ? <option>Loading...</option>
       : (
         <div>
-          <form onSubmit={handleSubmit(onSubmit)} className={styles.form} noValidate>
-            <div className={styles.formInput}>
-              <label htmlFor="name" className={styles.label}>Full Name</label>
+          <form onSubmit={handleSubmit(onSubmit)} className="form" noValidate>
+            <div className="formInput">
+              <label htmlFor="name" className="label">Full Name</label>
               <input
                 type="text"
                 id="name"
                 {...register('name', {
                   required:
-            { value: true, message: 'Full name is required' },
+                    {
+                      value: true,
+                      message: 'Full name is required',
+                    },
                 })
-          }
+                }
                 placeholder="Full Name"
-                className={styles.inputField}
+                className="inputField"
               />
-              <span className={styles.errorMsg}>{ errors.name?.message }</span>
+              <span className="errorMsg">{ errors.name?.message }</span>
             </div>
-            <div className={styles.formInput}>
-              <label htmlFor="photo" className={styles.label}>Photo</label>
+            <div className="formInput">
+              <label htmlFor="photo" className="label">Photo</label>
               <input
                 type="file"
                 id="photo"
@@ -91,21 +93,22 @@ const NewMember = () => {
                 onChange={handleImgUpload}
               />
               {fileImg === '' ? '' : <img src={fileImg} alt="member" className={styles.memberDetailImg} />}
-              <span className={styles.errorMsg}>{ errors.photo?.message }</span>
+              <span className="errorMsg">{ errors.photo?.message }</span>
             </div>
-            <div className={styles.formInput}>
-              <label htmlFor="address" className={styles.label}>Address</label>
+            <div className="formInput">
+              <label htmlFor="address" className="label">Address</label>
               <input
                 type="text"
                 id="address"
                 {...register('address', { required: 'Address is required' })}
                 placeholder="Address"
-                className={styles.inputField}
+                className="inputField"
+
               />
-              <span className={styles.errorMsg}>{ errors.address?.message }</span>
+              <span className="errorMsg">{ errors.address?.message }</span>
             </div>
-            <div className={styles.formInput}>
-              <label htmlFor="phone_number" className={styles.label}>Phone Number</label>
+            <div className="formInput">
+              <label htmlFor="phone_number" className="label">Phone Number</label>
               <input
                 type="text"
                 id="phone_number"
@@ -115,28 +118,31 @@ const NewMember = () => {
             { value: /^[0-9]*$/, message: 'Add correct phone number' },
                 })}
                 placeholder="Phone Number"
-                className={styles.inputField}
+                className="inputField"
+
               />
-              <span className={styles.errorMsg}>{ errors.phone_number?.message }</span>
+              <span className="errorMsg">{ errors.phone_number?.message }</span>
             </div>
-            <div className={styles.formInput}>
-              <label htmlFor="joined_at" className={styles.label}>Member Since</label>
+            <div className="formInput">
+              <label htmlFor="joined_at" className="label">Member Since</label>
               <input
                 type="date"
                 id="joined_at"
                 {...register('joined_at', { required: 'Joined date is required' })}
                 placeholder="Member Since"
-                className={styles.inputField}
+                className="inputField"
+
               />
-              <span className={styles.errorMsg}>{ errors.joined_at?.message }</span>
+              <span className="errorMsg">{ errors.joined_at?.message }</span>
             </div>
-            <div className={styles.formInput}>
-              <label htmlFor="church_id" className={styles.label}>Branch Church</label>
+            <div className="formInput">
+              <label htmlFor="church_id" className="label">Branch Church</label>
               <select
                 id="church_id"
                 name="church_id"
                 {...register('church_id', { required: 'Please Select a Church' })}
-                className={styles.inputField}
+                className="inputField"
+
               >
                 <option value="">Select Church</option>
                 {churches.map((church) => (
@@ -148,10 +154,10 @@ const NewMember = () => {
                   </option>
                 ))}
               </select>
-              <span className={styles.errorMsg}>{ errors.church_id?.message }</span>
+              <span className="errorMsg">{ errors.church_id?.message }</span>
             </div>
-            <div className={styles.selectorInput}>
-              <label htmlFor="teams" className={styles.label}>Teams</label>
+            <div className="selectorInput">
+              <label htmlFor="teams" className="label">Teams</label>
               <Controller
                 control={control}
                 name="teams"
@@ -166,10 +172,10 @@ const NewMember = () => {
 
                 )}
               />
-              <span className={styles.errorMsg}>{errors.teams?.message}</span>
+              <span className="errorMsg">{errors.teams?.message}</span>
 
             </div>
-            <div className={styles.submitBtn}>
+            <div className="submitBtn">
               <Button type="submit" variant="contained" color="success">
                 Add Member
               </Button>

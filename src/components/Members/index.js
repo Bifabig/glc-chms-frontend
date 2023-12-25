@@ -5,6 +5,7 @@ import {
   Box, Button, Modal, Typography,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import InfoIcon from '@mui/icons-material/Info';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { getMembers, deleteMember } from '../../redux/thunk';
@@ -91,19 +92,29 @@ const Members = () => {
       field: 'detail',
       headerName: '',
       sortable: false,
+      width: 100,
       renderCell: (params) => (
-        <Link to={`/members/${params.row.attributes.id}`}><Button variant="contained"> Detail</Button></Link>
+        <Link to={`/members/${params.row.attributes.id}`}>
+          <Button
+            variant="contained"
+            size="small"
+            startIcon={<InfoIcon />}
+          >
+            Detail
+          </Button>
+        </Link>
       ),
     },
     {
       field: 'delete',
       headerName: '',
       sortable: false,
+      width: 110,
       renderCell: (params) => (
         <Button
           variant="contained"
-          sx={{ color: 'white', background: 'red' }}
-          size="medium"
+          sx={{ color: 'white', background: 'red', ':hover': { color: 'red', background: 'white' } }}
+          size="small"
           startIcon={<DeleteIcon />}
           onClick={(e) => handleDeleteMember(e, params.row.attributes.id)}
         >
@@ -159,7 +170,6 @@ const Members = () => {
             component="div"
           >
             <NewMember />
-            {' '}
             <Button onClick={handleModalClose}>Close</Button>
           </Typography>
         </Box>
