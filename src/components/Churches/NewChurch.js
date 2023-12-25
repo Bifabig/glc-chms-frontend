@@ -1,63 +1,95 @@
-/* eslint-disable camelcase */
-import React, { useRef, useState } from 'react';
+/* eslint-disable jsx-a11y/label-has-associated-control */
+/* eslint-disable react/jsx-props-no-spreading */
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
+import { useForm } from 'react-hook-form';
 import { createChurch } from '../../redux/thunk';
-import Input from '../Input';
+import styles from '../../styles/Churches.module.css';
 
 const NewChurch = () => {
   const [msg, setMsg] = useState('');
-  const name = useRef();
-  const location = useRef();
-  const established_at = useRef();
-  const user_id = '1';
-
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const form = useForm();
+  const {
+    register, handleSubmit, reset, formState,
+  } = form;
+  const { errors } = formState;
 
-    const formData = {
-      name: name.current.value,
-      location: location.current.value,
-      established_at: established_at.current.value,
-      user_id,
-    };
+  const onSubmit = (data) => {
+    const church = new FormData();
+    church.append('church[name]', data.name);
+    church.append('church[location]', data.location);
+    church.append('church[established_at]', data.established_at);
+    church.append('church[user_id]', '1');
 
-    dispatch(createChurch(formData)).then(setMsg('Church Added Successfully!'));
+    dispatch(createChurch(church)).then(setMsg('Church Added Successfully!'));
+    setTimeout(() => {
+      setMsg('');
+    }, 3000);
 
-    name.current.value = '';
-    location.current.value = '';
-    established_at.current.value = '';
-
-    navigate('/churches');
+    reset();
   };
 
   return (
     <div>
-      <form onSubmit={handleSubmit} className="form">
-        <Input
-          name="name"
-          ref={name}
-          type="text"
-          placeholder="Church Name"
-        />
-        <Input
-          name="location"
-          ref={location}
-          type="text"
-          placeholder="Location"
-        />
-        <Input
-          name="established_at"
-          ref={established_at}
-          type="date"
-          placeholder="Established In"
-        />
-
-        <div className="submit-btn">
+      <form onSubmit={handleSubmit(onSubmit)} className={styles.form} noValidate>
+        <div className="formInput">
+          <label htmlFor="name" className={styles.label}>Church Name</label>
+          <input
+            type="text"
+            id="name"
+            {...register('name', {
+              required:
+                    {
+                      value: true,
+                      message: 'Church name is required',
+                    },
+            })
+                }
+            placeholder="Church Name"
+            className="inputField"
+          />
+          <span className="errorMsg">{ errors.name?.message }</span>
+        </div>
+        <div className="formInput">
+          <label htmlFor="location" className={styles.label}>Location</label>
+          <input
+            type="text"
+            id="location"
+            {...register('location', {
+              required:
+                    {
+                      value: true,
+                      message: 'Location is required',
+                    },
+            })
+                }
+            placeholder="Location"
+            className="inputField"
+          />
+          <span className="errorMsg">{ errors.location?.message }</span>
+        </div>
+        <div className="formInput">
+          <label htmlFor="established_at" className={styles.label}>Established In</label>
+          <input
+            type="date"
+            id="established_at"
+            {...register('established_at', {
+              required:
+                    {
+                      value: true,
+                      message: 'Established date is required',
+                    },
+            })
+                }
+            placeholder="Established In"
+            className="inputField"
+          />
+          <span className="errorMsg">{ errors.established_at?.message }</span>
+        </div>
+        <div className="submitBtn">
           <Button
             type="submit"
             variant="contained"
