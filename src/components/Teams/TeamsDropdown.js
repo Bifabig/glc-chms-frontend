@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import Select from 'react-select';
 import PropTypes from 'prop-types';
 import { getTeams } from '../../redux/thunk';
-import styles from '../../styles/Members.module.css';
 
 const TeamsDropdown = ({
   defaultValue, field, selectedTeams, setSelectedTeams,
@@ -35,7 +34,7 @@ const TeamsDropdown = ({
               value: team.id,
               label: team.name,
             }))}
-            className={styles.selectorDropdown}
+            className="selectorDropdown"
             classNamePrefix="select"
             onChange={handleOnChange}
             value={selectedTeams?.name}
