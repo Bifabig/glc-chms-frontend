@@ -69,7 +69,7 @@ const Teams = () => {
             position: 'absolute',
             left: '20%',
             transform: 'translate(-50%; -50%)',
-            width: 400,
+            width: 600,
             bgcolor: 'background.paper',
             boxShadow: 24,
             p: 4,
@@ -84,7 +84,6 @@ const Teams = () => {
             component="div"
           >
             <NewTeam />
-            {' '}
             <Button onClick={handleModalClose}>Close</Button>
           </Typography>
         </Box>
