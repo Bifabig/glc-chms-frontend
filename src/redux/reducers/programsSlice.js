@@ -17,6 +17,8 @@ const programsSlice = createSlice({
       })
       .addCase(getPrograms.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.error = false;
+        state.errorMsg = '';
         state.programs = action.payload;
       })
       .addCase(getPrograms.rejected, (state, action) => {
@@ -25,7 +27,8 @@ const programsSlice = createSlice({
         state.errorMsg = action.payload;
       })
       .addCase(createProgram.fulfilled, (state, action) => {
-        state.programs = [action.payload.program, ...state.programs];
+        state.programs.data = [action.payload.program.data, ...state.programs.data];
+        state.programs.included = [action.payload.included, ...state.programs.included];
         state.isLoading = false;
       })
       .addCase(createProgram.rejected, (state, { error }) => ({

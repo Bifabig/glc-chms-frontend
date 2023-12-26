@@ -19,15 +19,31 @@ const Programs = () => {
   const handleModalClose = () => setModalOpen(false);
 
   const columns = [
-    { field: 'id', headerName: 'ID', width: 70 },
-    { field: 'name', headerName: 'Name', width: 240 },
-    { field: 'team_id', headerName: 'Team ID', width: 240 },
+    {
+      field: 'id',
+      headerName: 'ID',
+      width: 70,
+      type: 'number',
+      renderCell: (params) => (
+        params.row.attributes.id
+      ),
+      filterable: false,
+    },
+    {
+      field: 'name',
+      headerName: 'Name',
+      width: 200,
+      type: 'string',
+      valueGetter: (params) => params.row.attributes.name,
+      renderCell: (valueReceived) => valueReceived.row.attributes.name,
+    },
     {
       field: 'date',
       headerName: 'Date',
-      type: 'date',
-      width: 120,
-      valueFormatter: (params) => moment(params?.value).format('DD/MM/YYYY'),
+      type: 'Date',
+      width: 130,
+      valueGetter: (params) => moment(params.row.attributes.date).format('YYYY/MM/DD'),
+      renderCell: (params) => moment(params.row.attributes.date).format('DD/MM/YYYY'),
     },
   ];
 
@@ -61,7 +77,7 @@ const Programs = () => {
               position: 'absolute',
               left: '20%',
               transform: 'translate(-50%; -50%)',
-              width: 400,
+              width: 500,
               bgcolor: 'background.paper',
               boxShadow: 24,
               p: 4,
@@ -83,7 +99,7 @@ const Programs = () => {
         </Modal>
         <div style={{ height: 400, width: '100%' }}>
           <DataGrid
-            rows={programs}
+            rows={programs?.data}
             columns={columns}
             getRowId={(row) => row.id}
             initialState={{
