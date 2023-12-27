@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { createProgram, getPrograms } from '../thunk';
 
 const initialState = {
-  programs: '',
+  programs: [],
   isLoading: true,
   error: false,
   errorMsg: '',
@@ -27,8 +27,14 @@ const programsSlice = createSlice({
         state.errorMsg = action.payload;
       })
       .addCase(createProgram.fulfilled, (state, action) => {
-        state.programs.data = [action.payload.program.data, ...state.programs.data];
-        state.programs.included = [action.payload.included, ...state.programs.included];
+        state.programs.data = [
+          action.payload.program.data,
+          ...state.programs.data,
+        ];
+        state.programs.included = [
+          action.payload.included,
+          ...state.programs.included,
+        ];
         state.isLoading = false;
       })
       .addCase(createProgram.rejected, (state, { error }) => ({
@@ -37,7 +43,6 @@ const programsSlice = createSlice({
         error: error.stack,
       }));
   },
-
 });
 
 export default programsSlice.reducer;
