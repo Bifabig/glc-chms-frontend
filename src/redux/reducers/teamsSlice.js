@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { createTeam, getTeams } from '../thunk';
+import { createTeam, deleteTeam, getTeams } from '../thunk';
 
 const initialState = {
-  teams: '',
+  teams: [],
   isLoading: true,
   error: false,
   errorMsg: '',
@@ -33,6 +33,15 @@ const teamsSlice = createSlice({
         ...state,
         isLoading: false,
         error: error.stack,
+      }))
+      .addCase(deleteTeam.fulfilled, (state, { payload }) => {
+        state.teams = payload;
+        state.isLoading = false;
+      })
+      .addCase(deleteTeam.rejected, (state, { payload }) => ({
+        ...state,
+        isLoading: false,
+        error: payload,
       }));
   },
 });

@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { createChurch, getChurches } from '../thunk';
+import { createChurch, deleteChurch, getChurches } from '../thunk';
 
 const initialState = {
   churches: '',
@@ -33,6 +33,15 @@ const churchesSlice = createSlice({
         ...state,
         isLoading: false,
         error: error.stack,
+      }))
+      .addCase(deleteChurch.fulfilled, (state, { payload }) => {
+        state.churches = payload;
+        state.isLoading = false;
+      })
+      .addCase(deleteChurch.rejected, (state, { payload }) => ({
+        ...state,
+        isLoading: false,
+        error: payload,
       }));
   },
 });

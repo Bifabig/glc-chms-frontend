@@ -69,11 +69,13 @@ const membersSlice = createSlice({
       .addCase(deleteMember.fulfilled, (state, { payload }) => {
         state.members = payload;
         state.isLoading = false;
+        state.error = false;
       })
       .addCase(deleteMember.rejected, (state, { payload }) => ({
         ...state,
         isLoading: false,
-        error: payload,
+        error: true,
+        errorMsg: `something went wrong ${payload}`,
       }));
   },
 });

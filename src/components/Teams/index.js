@@ -3,9 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   Box, Button, Modal, Typography,
 } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import moment from 'moment';
-import { getTeams } from '../../redux/thunk';
+import { deleteTeam, getTeams } from '../../redux/thunk';
 import NewTeam from './NewTeam';
 
 const Teams = () => {
@@ -17,6 +18,11 @@ const Teams = () => {
   const dispatch = useDispatch();
   const handleModalOpen = () => setModalOpen(true);
   const handleModalClose = () => setModalOpen(false);
+
+  const handleDeleteTeam = (e, id) => {
+    e.stopPropagation();
+    dispatch(deleteTeam(id));
+  };
 
   const columns = [
     { field: 'id', headerName: 'ID', width: 70 },
@@ -37,6 +43,23 @@ const Teams = () => {
       type: 'date',
       width: 120,
       valueFormatter: (params) => moment(params?.value).format('DD/MM/YYYY'),
+    },
+    {
+      field: 'delete',
+      headerName: '',
+      sortable: false,
+      width: 110,
+      renderCell: (params) => (
+        <Button
+          variant="contained"
+          sx={{ color: 'white', background: 'red', ':hover': { color: 'red', background: 'white' } }}
+          size="small"
+          startIcon={<DeleteIcon />}
+          onClick={(e) => handleDeleteTeam(e, params.id)}
+        >
+          Delete
+        </Button>
+      ),
     },
   ];
 

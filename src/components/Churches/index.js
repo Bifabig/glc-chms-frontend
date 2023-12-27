@@ -4,8 +4,9 @@ import moment from 'moment';
 import {
   Box, Button, Modal, Typography,
 } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
-import { getChurches } from '../../redux/thunk';
+import { getChurches, deleteChurch } from '../../redux/thunk';
 import NewChurch from './NewChurch';
 
 const Churches = () => {
@@ -17,6 +18,11 @@ const Churches = () => {
 
   const handleModalOpen = () => setModalOpen(true);
   const handleModalClose = () => setModalOpen(false);
+
+  const handleDeleteChurch = (e, id) => {
+    e.stopPropagation();
+    dispatch(deleteChurch(id));
+  };
 
   const columns = [
     { field: 'id', headerName: 'ID', width: 70 },
@@ -32,6 +38,23 @@ const Churches = () => {
       type: 'date',
       width: 180,
       valueFormatter: (params) => moment(params?.value).format('DD/MM/YYYY'),
+    },
+    {
+      field: 'delete',
+      headerName: '',
+      sortable: false,
+      width: 110,
+      renderCell: (params) => (
+        <Button
+          variant="contained"
+          sx={{ color: 'white', background: 'red', ':hover': { color: 'red', background: 'white' } }}
+          size="small"
+          startIcon={<DeleteIcon />}
+          onClick={(e) => handleDeleteChurch(e, params.id)}
+        >
+          Delete
+        </Button>
+      ),
     },
   ];
 

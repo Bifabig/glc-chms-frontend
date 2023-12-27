@@ -96,6 +96,18 @@ export const createChurch = createAsyncThunk(
   },
 );
 
+export const deleteChurch = createAsyncThunk(
+  'churches/deleteChurch',
+  async (church, { rejectWithValue }) => {
+    try {
+      const resp = await axios.delete(`${url}/churches/${church}`);
+      return resp.data;
+    } catch (error) {
+      return rejectWithValue('Unable to delete church');
+    }
+  },
+);
+
 // Teams API
 
 export const getTeams = createAsyncThunk('teams/getTeams', async (_, { rejectWithValue }) => {
@@ -120,6 +132,18 @@ export const createTeam = createAsyncThunk(
       return response.data;
     } catch (error) {
       return rejectWithValue('Unable to add team');
+    }
+  },
+);
+
+export const deleteTeam = createAsyncThunk(
+  'teams/deleteTeam',
+  async (team, { rejectWithValue }) => {
+    try {
+      const resp = await axios.delete(`${url}/teams/${team}`);
+      return resp.data;
+    } catch (error) {
+      return rejectWithValue('Unable to delete team');
     }
   },
 );
