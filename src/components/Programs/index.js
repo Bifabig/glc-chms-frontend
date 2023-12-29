@@ -4,8 +4,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   Box, Button, Modal, Typography,
 } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
-import { getPrograms } from '../../redux/thunk';
+import { deleteProgram, getPrograms } from '../../redux/thunk';
 import NewProgram from './NewProgram';
 
 const Programs = () => {
@@ -17,6 +18,10 @@ const Programs = () => {
   const dispatch = useDispatch();
   const handleModalOpen = () => setModalOpen(true);
   const handleModalClose = () => setModalOpen(false);
+  const handleDeleteProgram = (e, id) => {
+    e.stopPropagation();
+    dispatch(deleteProgram(id));
+  };
 
   const columns = [
     {
@@ -38,12 +43,37 @@ const Programs = () => {
       renderCell: (valueReceived) => valueReceived.row.attributes.name,
     },
     {
+      field: 'attendance_taker',
+      headerName: 'Attendance Taker',
+      width: 200,
+      type: 'string',
+      valueGetter: (params) => params.row.attributes.attendance_taker,
+      renderCell: (valueReceived) => valueReceived.row.attributes.attendance_taker,
+    },
+    {
       field: 'date',
       headerName: 'Date',
       type: 'Date',
       width: 130,
       valueGetter: (params) => moment(params.row.attributes.date).format('YYYY/MM/DD'),
       renderCell: (params) => moment(params.row.attributes.date).format('DD/MM/YYYY'),
+    },
+    {
+      field: 'delete',
+      headerName: '',
+      sortable: false,
+      width: 110,
+      renderCell: (params) => (
+        <Button
+          variant="contained"
+          sx={{ color: 'white', background: 'red', ':hover': { color: 'red', background: 'white' } }}
+          size="small"
+          startIcon={<DeleteIcon />}
+          onClick={(e) => handleDeleteProgram(e, params.id)}
+        >
+          Delete
+        </Button>
+      ),
     },
   ];
 
