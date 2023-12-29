@@ -96,6 +96,20 @@ export const createChurch = createAsyncThunk(
   },
 );
 
+export const fetchChurchDetail = createAsyncThunk('churches/fetchChurchDetail', async (churchId, { rejectWithValue }) => {
+  try {
+    const response = await axios.get(`${url}/churches/${churchId}`);
+    return response.data;
+  } catch (error) {
+    const message = (error.response
+      && error.response.data
+      && error.response.data.message)
+    || error.message
+    || error.toString();
+    return rejectWithValue(message);
+  }
+});
+
 export const deleteChurch = createAsyncThunk(
   'churches/deleteChurch',
   async (church, { rejectWithValue }) => {

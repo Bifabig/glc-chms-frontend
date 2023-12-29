@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import moment from 'moment';
 import {
   Box, Button, Modal, Typography,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import InfoIcon from '@mui/icons-material/Info';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import { getChurches, deleteChurch } from '../../redux/thunk';
 import NewChurch from './NewChurch';
@@ -38,6 +40,23 @@ const Churches = () => {
       type: 'date',
       width: 180,
       valueFormatter: (params) => moment(params?.value).format('DD/MM/YYYY'),
+    },
+    {
+      field: 'detail',
+      headerName: '',
+      sortable: false,
+      width: 100,
+      renderCell: (params) => (
+        <Link to={`/churches/${params.id}`}>
+          <Button
+            variant="contained"
+            size="small"
+            startIcon={<InfoIcon />}
+          >
+            Detail
+          </Button>
+        </Link>
+      ),
     },
     {
       field: 'delete',

@@ -5,6 +5,7 @@ import Churches from './components/Churches';
 import Teams from './components/Teams';
 import Programs from './components/Programs';
 import MemberDetail from './components/Members/MemberDetail';
+import ChurchDetail from './components/Churches/ChurchDetail';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/members" element={<Members />} />
         <Route path="/members/:memberId" element={<MemberDetail />} />
         <Route path="/churches" element={<Churches />} />
+        <Route path="/churches/:churchId" element={<ChurchDetail />} />
         <Route path="/teams" element={<Teams />} />
         <Route path="/programs" element={<Programs />} />
       </Route>
