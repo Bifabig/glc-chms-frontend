@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { createProgram, getPrograms } from '../thunk';
+import { createProgram, getPrograms, deleteProgram } from '../thunk';
 
 const initialState = {
   programs: [],
@@ -41,6 +41,17 @@ const programsSlice = createSlice({
         ...state,
         isLoading: false,
         error: error.stack,
+      }))
+      .addCase(deleteProgram.fulfilled, (state, { payload }) => {
+        state.members = payload;
+        state.isLoading = false;
+        state.error = false;
+      })
+      .addCase(deleteProgram.rejected, (state, { payload }) => ({
+        ...state,
+        isLoading: false,
+        error: true,
+        errorMsg: `something went wrong ${payload}`,
       }));
   },
 });

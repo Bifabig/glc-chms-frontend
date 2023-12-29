@@ -176,6 +176,17 @@ export const createProgram = createAsyncThunk(
   },
 );
 
+export const deleteProgram = createAsyncThunk(
+  'programs/deleteProgram',
+  async (program, { rejectWithValue }) => {
+    try {
+      const resp = await axios.delete(`${url}/programs/${program}`);
+      return resp.data;
+    } catch (error) {
+      return rejectWithValue('Unable to delete program');
+    }
+  },
+);
 // Attendaces API
 
 export const getAttendances = createAsyncThunk('attendances/getAttendaces', async (_, { rejectWithValue }) => {

@@ -11,7 +11,7 @@ import TeamsDropdown from '../Teams/TeamsDropdown';
 
 const NewProgram = () => {
   const [msg, setMsg] = useState('');
-  // const [hasAttendance, setHasAttendance] = useState(false);
+  const [hasAttendance, setHasAttendance] = useState(false);
   const [selectedTeams, setSelectedTeams] = useState([]);
   // const name = useRef();
   // const date = useRef();
@@ -33,15 +33,16 @@ const NewProgram = () => {
   } = form;
   const { errors } = formState;
 
-  // const onChangeCheckBox = (e) => {
-  //   setHasAttendance(e.target.checked);
-  // };
+  const onChangeCheckBox = (e) => {
+    setHasAttendance(e.target.checked);
+  };
 
   const onSubmit = (data) => {
     const program = new FormData();
     program.append('program[name]', data.name);
     program.append('program[date]', data.date);
     program.append('program[church_id]', data.church_id);
+    program.append('program[attendance_taker]', data.attendance_taker);
     // console.log(selectedTeams);
     if (selectedTeams.length > 0) {
       selectedTeams.forEach((team) => {
@@ -101,7 +102,7 @@ const NewProgram = () => {
     (
       <div>
         <form onSubmit={handleSubmit(onSubmit)} className="form" noValidate>
-          {/* <div className="formInput">
+          <div className="formInput">
             <span>Take Attendance</span>
             <input
               type="checkbox"
@@ -117,11 +118,11 @@ const NewProgram = () => {
           //   placeholder="Attendance Taker's Name"
           // />
           <div className="formInput">
-            <label htmlFor="att_taker" className="label">Attendance Taker</label>
+            <label htmlFor="attendance_taker" className="label">Attendance Taker</label>
             <input
               type="text"
-              id="att_taker"
-              {...register('att_taker', {
+              id="attendance_taker"
+              {...register('attendance_taker', {
                 required:
                     {
                       value: true,
@@ -131,9 +132,9 @@ const NewProgram = () => {
                 }
               className="inputField"
             />
-            <span className="errorMsg">{ errors.att_taker?.message }</span>
+            <span className="errorMsg">{ errors.attendance_taker?.message }</span>
           </div>
-          )} */}
+          )}
           <div className="formInput">
             <label htmlFor="name" className="label">Program Name</label>
             <input

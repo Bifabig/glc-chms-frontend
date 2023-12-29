@@ -56,9 +56,10 @@ const membersSlice = createSlice({
         isLoading: false,
         error: error.stack,
       }))
-      .addCase(updateMember.fulfilled, (state, action) => {
-        state.members.data = [action.payload.member.data, ...state.members.data];
-        state.members.included = [action.payload.included, ...state.members.included];
+      .addCase(updateMember.fulfilled, (state, { payload }) => {
+        const memberChurch = payload.member.included.filter((church) => ((church.type === 'church')));
+        const memberTeams = payload.member.included.filter((team) => ((team.type === 'team')));
+        state.memberDetail = { ...payload.member.data, memberChurch, memberTeams };
         state.isLoading = false;
       })
       .addCase(updateMember.rejected, (state, { error }) => ({
