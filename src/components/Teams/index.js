@@ -4,8 +4,10 @@ import {
   Box, Button, Modal, Typography,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import InfoIcon from '@mui/icons-material/Info';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import moment from 'moment';
+import { Link } from 'react-router-dom';
 import { deleteTeam, getTeams } from '../../redux/thunk';
 import NewTeam from './NewTeam';
 
@@ -30,19 +32,36 @@ const Teams = () => {
     {
       field: 'main_leader_name',
       headerName: 'Main Leader',
-      width: 200,
+      width: 180,
     },
     {
       field: 'sub_leader_name',
       headerName: 'Sub Leader',
-      width: 200,
+      width: 180,
     },
     {
       field: 'established_at',
       headerName: 'Established In',
       type: 'date',
-      width: 120,
+      width: 100,
       valueFormatter: (params) => moment(params?.value).format('DD/MM/YYYY'),
+    },
+    {
+      field: 'detail',
+      headerName: '',
+      sortable: false,
+      width: 100,
+      renderCell: (params) => (
+        <Link to={`/teams/${params.id}`}>
+          <Button
+            variant="contained"
+            size="small"
+            startIcon={<InfoIcon />}
+          >
+            Detail
+          </Button>
+        </Link>
+      ),
     },
     {
       field: 'delete',

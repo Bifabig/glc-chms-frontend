@@ -69,7 +69,7 @@ const Programs = () => {
           sx={{ color: 'white', background: 'red', ':hover': { color: 'red', background: 'white' } }}
           size="small"
           startIcon={<DeleteIcon />}
-          onClick={(e) => handleDeleteProgram(e, params.id)}
+          onClick={(e) => handleDeleteProgram(e, params.row.attributes.id)}
         >
           Delete
         </Button>
