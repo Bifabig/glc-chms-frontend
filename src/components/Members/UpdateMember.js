@@ -31,11 +31,10 @@ const UpdateMember = ({ memberDetail }) => {
   } = form;
   const { errors } = formState;
 
-  // console.log(selectedTeams);
+  console.log(memberDetail);
 
   const onSubmit = (data) => {
     const member = new FormData();
-    member.append('member[id]', memberDetail.attributes.id);
     member.append('member[name]', data.name);
     if (data.photo[0]) {
       member.append('member[photo]', data.photo[0]);
@@ -135,18 +134,26 @@ const UpdateMember = ({ memberDetail }) => {
         </div>
         <div className="formInput">
           <label htmlFor="church_id" className="label">Branch</label>
-          <select id="church_id" name="church_id" defaultValue={memberDetail.memberChurch[0].id} {...register('church_id', { required: 'Please Select a Church' })} className="inputField">
-            {isLoading ? <option>Loading...</option> : churches.map((church) => (
-
-              <option
-                value={church.id}
-                key={church.id}
+          {isLoading ? <option>Loading...</option>
+            : (
+              <select
+                id="church_id"
+                name="church_id"
+                defaultValue={memberDetail.memberChurch[0].id}
+                {...register('church_id', { required: 'Please Select a Church' })}
+                className="inputField"
               >
-                {church.name}
-              </option>
+                {churches.map((church) => (
+                  <option
+                    key={church.id}
+                    value={church.id}
+                  >
+                    {church.name}
+                  </option>
 
-            ))}
-          </select>
+                ))}
+              </select>
+            )}
           <span className="errorMsg">{ errors.church_id?.message }</span>
         </div>
         <div className="selectorInput">
