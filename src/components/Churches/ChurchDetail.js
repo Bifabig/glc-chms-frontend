@@ -1,20 +1,21 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-// import {
-//   Box, Button, Modal, Typography,
-// } from '@mui/material';
 import {
-  Button,
+  Box, Button, Modal, Typography,
 } from '@mui/material';
+// import {
+//   Button,
+// } from '@mui/material';
 import { ArrowBack } from '@mui/icons-material';
 import { fetchChurchDetail } from '../../redux/thunk';
-import styles from '../../styles/Members.module.css';
+import styles from '../../styles/Churches.module.css';
+import UpdateChurch from './UpdateChurch';
 // import UpdateChurch from './UpdateChurch';
 
 const ChurchDetail = () => {
   const { churchId } = useParams();
-  // const [modalOpen, setModalOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
   const dispatch = useDispatch();
 
   const {
@@ -22,8 +23,8 @@ const ChurchDetail = () => {
   } = useSelector((store) => store.churches);
 
   const navigate = useNavigate();
-  // const handleModalOpen = () => setModalOpen(true);
-  // const handleModalClose = () => setModalOpen(false);
+  const handleModalOpen = () => setModalOpen(true);
+  const handleModalClose = () => setModalOpen(false);
 
   const goBack = () => {
     navigate('/churches');
@@ -44,8 +45,7 @@ const ChurchDetail = () => {
     );
   }
   return isLoading ? <span>Loading...</span> : churchDetail && (
-    <div className={styles.memberDetailPage}>
-      {console.log(churchDetail)}
+    <div className={styles.churchDetailPage}>
       <Button
         onClick={goBack}
         variant="outlined"
@@ -53,7 +53,7 @@ const ChurchDetail = () => {
         size="medium"
         startIcon={<ArrowBack />}
       />
-      {/* <Modal
+      <Modal
         className={styles.modal}
         open={modalOpen}
         aria-labelledby="modal-modal-title"
@@ -83,14 +83,14 @@ const ChurchDetail = () => {
             <Button onClick={handleModalClose}>Close</Button>
           </Typography>
         </Box>
-      </Modal> */}
-      <div className={styles.memberDetail}>
-        <div className={styles.memberDetailHeader}>
+      </Modal>
+      <div className={styles.chruchDetail}>
+        <div className={styles.churchDetailHeader}>
           <h2>Church Detail</h2>
           {/* <img src={churchDetail.attributes.photo_url}
           alt="member detail" className={styles.memberDetailImg} /> */}
         </div>
-        <div className={styles.memberInfo}>
+        <div className={styles.churchInfo}>
           <strong>
             {`Church Name: ${churchDetail.name}`}
           </strong>
@@ -122,14 +122,14 @@ const ChurchDetail = () => {
             </ul>
           </div> */}
         </div>
-        {/* <Button
+        <Button
           onClick={handleModalOpen}
           variant="outlined"
           className={styles.updateBtn}
           size="small"
         >
           Update
-        </Button> */}
+        </Button>
       </div>
     </div>
   );
