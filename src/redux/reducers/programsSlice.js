@@ -26,16 +26,17 @@ const programsSlice = createSlice({
         state.error = true;
         state.errorMsg = action.payload;
       })
-      .addCase(createProgram.fulfilled, (state, action) => {
+      .addCase(createProgram.fulfilled, (state, { payload }) => {
         state.programs.data = [
-          action.payload.program.data,
+          payload.program.data,
           ...state.programs.data,
         ];
         state.programs.included = [
-          action.payload.included,
+          payload.included,
           ...state.programs.included,
         ];
         state.isLoading = false;
+        state.error = false;
       })
       .addCase(createProgram.rejected, (state, { error }) => ({
         ...state,
@@ -43,7 +44,7 @@ const programsSlice = createSlice({
         error: error.stack,
       }))
       .addCase(deleteProgram.fulfilled, (state, { payload }) => {
-        state.members = payload;
+        state.programs = payload;
         state.isLoading = false;
         state.error = false;
       })

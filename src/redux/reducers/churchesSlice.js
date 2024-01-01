@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import {
-  createChurch, deleteChurch, fetchChurchDetail, getChurches,
+  createChurch, deleteChurch, fetchChurchDetail, getChurches, updateChurch,
 } from '../thunk';
 
 const initialState = {
@@ -37,14 +37,19 @@ const churchesSlice = createSlice({
         isLoading: false,
         error: error.stack,
       }))
+      .addCase(updateChurch.fulfilled, (state, { payload }) => {
+        state.churchDetail = payload;
+        state.isLoading = false;
+      })
+      .addCase(updateChurch.rejected, (state, { error }) => ({
+        ...state,
+        isLoading: false,
+        error: error.stack,
+      }))
       .addCase(fetchChurchDetail.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(fetchChurchDetail.fulfilled, (state, { payload }) => {
-        // const { data } = payload;
-        // const memberChurch = payload.included.filter((church) => ((church.type === 'church')));
-        // const memberTeams = payload.included.filter((team) => ((team.type === 'team')));
-        // console.log(payload);
         state.churchDetail = payload;
         state.isLoading = false;
         state.error = false;

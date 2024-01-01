@@ -21,7 +21,7 @@ const reducer = combineReducers({
   attendances: attendanceReducer,
 });
 
-// persistConfig.storage.removeItem('persist:root');
+persistConfig.storage.removeItem('persist:root');
 
 const persistedReducer = persistReducer(persistConfig, reducer);
 

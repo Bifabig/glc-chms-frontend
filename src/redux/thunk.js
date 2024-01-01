@@ -96,6 +96,19 @@ export const createChurch = createAsyncThunk(
   },
 );
 
+export const updateChurch = createAsyncThunk(
+  'churches/updateChurch',
+  async (church, { rejectWithValue }) => {
+    try {
+      const { id, churchData } = church;
+      const resp = await axios.put(`${url}/churches/${id}`, churchData);
+      return resp.data;
+    } catch (error) {
+      return rejectWithValue('Unable to delete church');
+    }
+  },
+);
+
 export const fetchChurchDetail = createAsyncThunk('churches/fetchChurchDetail', async (churchId, { rejectWithValue }) => {
   try {
     const response = await axios.get(`${url}/churches/${churchId}`);
@@ -146,6 +159,34 @@ export const createTeam = createAsyncThunk(
       return response.data;
     } catch (error) {
       return rejectWithValue('Unable to add team');
+    }
+  },
+);
+
+export const fetchTeamDetail = createAsyncThunk('teams/fetchTeamDetail', async (teamId, { rejectWithValue }) => {
+  try {
+    const response = await axios.get(`${url}/teams/${teamId}`);
+    return response.data;
+  } catch (error) {
+    const message = (error.response
+      && error.response.data
+      && error.response.data.message)
+    || error.message
+    || error.toString();
+    return rejectWithValue(message);
+  }
+});
+
+export const updateTeam = createAsyncThunk(
+  'teams/updateTeam',
+  async (team, { rejectWithValue }) => {
+    try {
+      console.log(team);
+      const { id, teamData } = team;
+      const resp = await axios.put(`${url}/teams/${id}`, teamData);
+      return resp.data;
+    } catch (error) {
+      return rejectWithValue('Unable to delete team');
     }
   },
 );
