@@ -1,8 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { createProgram, getPrograms, deleteProgram } from '../thunk';
+import {
+  createProgram, getPrograms, deleteProgram, fetchProgramDetail, updateProgram,
+} from '../thunk';
 
 const initialState = {
   programs: [],
+  programDetail: '',
   isLoading: true,
   error: false,
   errorMsg: '',
@@ -26,6 +29,33 @@ const programsSlice = createSlice({
         state.error = true;
         state.errorMsg = action.payload;
       })
+      .addCase(fetchProgramDetail.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchProgramDetail.fulfilled, (state, { payload }) => {
+        const { data } = payload;
+        const programChurch = payload.included.filter((church) => ((church.type === 'church')));
+        const programTeams = payload.included.filter((team) => ((team.type === 'team')));
+        state.programDetail = { ...data, programChurch, programTeams };
+        state.isLoading = false;
+        state.error = false;
+      })
+      .addCase(fetchProgramDetail.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = true;
+        state.errorMsg = action.payload;
+      })
+      .addCase(updateProgram.fulfilled, (state, { payload }) => {
+        const programChurch = payload.program.included.filter((church) => ((church.type === 'church')));
+        const programTeams = payload.program.included.filter((team) => ((team.type === 'team')));
+        state.programDetail = { ...payload.program.data, programChurch, programTeams };
+        state.isLoading = false;
+      })
+      .addCase(updateProgram.rejected, (state, { error }) => ({
+        ...state,
+        isLoading: false,
+        error: error.stack,
+      }))
       .addCase(createProgram.fulfilled, (state, { payload }) => {
         state.programs.data = [
           payload.program.data,
