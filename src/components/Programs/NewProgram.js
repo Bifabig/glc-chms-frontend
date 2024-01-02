@@ -107,12 +107,12 @@ const NewProgram = () => {
             <span className="errorMsg">{ errors.name?.message }</span>
           </div>
           <div className="formInput">
-            <label htmlFor="date" className="label">Member Since</label>
+            <label htmlFor="date" className="label">Program Date</label>
             <input
               type="date"
               id="date"
               {...register('date', { required: 'Joined date is required' })}
-              placeholder="Member Since"
+              placeholder="Program Date"
               className="inputField"
             />
             <span className="errorMsg">{ errors.date?.message }</span>

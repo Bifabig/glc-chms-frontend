@@ -31,8 +31,6 @@ const UpdateMember = ({ memberDetail }) => {
   } = form;
   const { errors } = formState;
 
-  console.log(memberDetail);
-
   const onSubmit = (data) => {
     const member = new FormData();
     member.append('member[name]', data.name);

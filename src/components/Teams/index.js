@@ -28,7 +28,7 @@ const Teams = () => {
 
   const columns = [
     { field: 'id', headerName: 'ID', width: 70 },
-    { field: 'name', headerName: 'Name', width: 240 },
+    { field: 'name', headerName: 'Name', width: 180 },
     {
       field: 'main_leader_name',
       headerName: 'Main Leader',

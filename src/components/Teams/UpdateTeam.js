@@ -16,7 +16,6 @@ const UpdateTeam = ({ teamDetail }) => {
     churches, isLoading,
   } = useSelector((store) => store.churches);
 
-  console.log(teamDetail);
   const form = useForm();
   const {
     register, handleSubmit, formState,
