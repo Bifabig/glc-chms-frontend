@@ -5,6 +5,8 @@ import {
   Box, Button, Modal, Typography,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import InfoIcon from '@mui/icons-material/Info';
+import { Link } from 'react-router-dom';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import { deleteProgram, getPrograms } from '../../redux/thunk';
 import NewProgram from './NewProgram';
@@ -47,8 +49,13 @@ const Programs = () => {
       headerName: 'Attendance Taker',
       width: 200,
       type: 'string',
-      valueGetter: (params) => params.row.attributes.attendance_taker,
-      renderCell: (valueReceived) => valueReceived.row.attributes.attendance_taker,
+      valueGetter: (params) => (params.row.attributes.attendance_taker),
+      renderCell: (valueReceived) => {
+        if (valueReceived.row.attributes.attendance_taker === 'undefined') {
+          return 'N/A';
+        }
+        return valueReceived.row.attributes.attendance_taker;
+      },
     },
     {
       field: 'date',
@@ -57,6 +64,23 @@ const Programs = () => {
       width: 130,
       valueGetter: (params) => moment(params.row.attributes.date).format('YYYY/MM/DD'),
       renderCell: (params) => moment(params.row.attributes.date).format('DD/MM/YYYY'),
+    },
+    {
+      field: 'detail',
+      headerName: '',
+      sortable: false,
+      width: 100,
+      renderCell: (params) => (
+        <Link to={`/programs/${params.row.attributes.id}`}>
+          <Button
+            variant="contained"
+            size="small"
+            startIcon={<InfoIcon />}
+          >
+            Detail
+          </Button>
+        </Link>
+      ),
     },
     {
       field: 'delete',
