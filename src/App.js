@@ -7,6 +7,7 @@ import Programs from './components/Programs';
 import MemberDetail from './components/Members/MemberDetail';
 import ChurchDetail from './components/Churches/ChurchDetail';
 import TeamDetail from './components/Teams/TeamDetail';
+import ProgramDetail from './components/Programs/ProgramDetail';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/teams" element={<Teams />} />
         <Route path="/teams/:teamId" element={<TeamDetail />} />
         <Route path="/programs" element={<Programs />} />
+        <Route path="/programs/:programId" element={<ProgramDetail />} />
       </Route>
     </Routes>
   );
