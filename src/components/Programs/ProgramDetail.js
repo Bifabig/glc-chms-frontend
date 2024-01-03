@@ -5,9 +5,17 @@ import {
   Box, Button, Modal, Typography,
 } from '@mui/material';
 import { ArrowBack } from '@mui/icons-material';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
 import { fetchProgramDetail } from '../../redux/thunk';
-import styles from '../../styles/Members.module.css';
+// import styles from '../../styles/Members.module.css';
 import UpdateProgram from './UpdateProgram';
+import Attendances from '../Attendances';
 
 const ProgramDetail = () => {
   const { programId } = useParams();
@@ -41,16 +49,24 @@ const ProgramDetail = () => {
     );
   }
   return isLoading ? <span>Loading...</span> : programDetail && (
-    <div className={styles.memberDetailPage}>
+    <div>
       <Button
         onClick={goBack}
         variant="outlined"
-        className={styles.backBtn}
+        // className={styles.backBtn}
         size="medium"
         startIcon={<ArrowBack />}
       />
+      <Button
+        onClick={handleModalOpen}
+        variant="outlined"
+        // className={styles.updateBtn}
+        size="small"
+      >
+        Update
+      </Button>
       <Modal
-        className={styles.modal}
+        // className={styles.modal}
         open={modalOpen}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
@@ -75,61 +91,54 @@ const ProgramDetail = () => {
             component="div"
           >
             <UpdateProgram programDetail={programDetail} />
-            {' '}
             <Button onClick={handleModalClose}>Close</Button>
           </Typography>
         </Box>
       </Modal>
-      <div className={styles.memberDetail}>
-        <div className={styles.memberDetailHeader}>
+      <div>
+        <TableContainer component={Paper}>
           <h2>Program Detail</h2>
-          {/* <img src={programDetail.attributes.photo_url}
-          alt="member detail" className={styles.memberDetailImg} /> */}
-        </div>
-        <div className={styles.memberInfo}>
-          <strong>
-            {
-            programDetail.attributes.attendance_taker === 'undefined'
-              ? 'Attendance taker: N/A'
-              : `Attendance taker: ${programDetail.attributes.attendance_taker}`
-            }
-          </strong>
-          <strong>
-            {`Program Name: ${programDetail.attributes.name}`}
-          </strong>
-          {/* <strong>
-            {`Phone Number: ${programDetail.attributes.phone_number}`}
-          </strong> */}
-          <strong>
-            {`Program Date: ${programDetail.attributes.date}`}
-          </strong>
-          <div className={styles.memberDetailExtra}>
-            <strong>Church</strong>
-            <ul>
-              {programDetail.programChurch.map((church) => (
-                <li key={church.id}>
-                  {church.attributes.name}
-                </li>
-              ))}
-            </ul>
-            <strong>Teams</strong>
-            <ul>
-              {programDetail.programTeams.map((team) => (
-                <li key={team.id}>
-                  {team.attributes.name}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-        <Button
-          onClick={handleModalOpen}
-          variant="outlined"
-          className={styles.updateBtn}
-          size="small"
-        >
-          Update
-        </Button>
+          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>Event Name</TableCell>
+                <TableCell align="right">Attendance Taker</TableCell>
+                <TableCell align="right">Date</TableCell>
+                <TableCell align="right">Church Name</TableCell>
+                <TableCell align="right">Teams</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              <TableRow
+                key={programDetail.attributes.id}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell component="th" scope="row">
+                  {programDetail.attributes.name}
+                </TableCell>
+                <TableCell align="right">
+                  {
+                      programDetail.attributes.attendance_taker === 'undefined'
+                        ? 'N/A'
+                        : `${programDetail.attributes.attendance_taker}`
+                    }
+                </TableCell>
+                <TableCell align="right">{programDetail.attributes.date}</TableCell>
+                <TableCell align="right">
+                  {programDetail.programChurch.map((church) => (
+                    `${church.attributes.name} `
+                  ))}
+                </TableCell>
+                <TableCell align="right">
+                  {programDetail.programTeams.map((team) => (
+                    `${team.attributes.name} `
+                  ))}
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <Attendances />
       </div>
 
     </div>
