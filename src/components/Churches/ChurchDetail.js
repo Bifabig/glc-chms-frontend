@@ -27,7 +27,7 @@ const ChurchDetail = () => {
   const handleModalClose = () => setModalOpen(false);
 
   const goBack = () => {
-    navigate('/churches');
+    navigate(-1);
   };
 
   useEffect(() => {

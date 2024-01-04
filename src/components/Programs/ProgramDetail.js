@@ -13,7 +13,6 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { fetchProgramDetail } from '../../redux/thunk';
-// import styles from '../../styles/Members.module.css';
 import UpdateProgram from './UpdateProgram';
 import Attendances from '../Attendances';
 
@@ -31,7 +30,7 @@ const ProgramDetail = () => {
   const handleModalClose = () => setModalOpen(false);
 
   const goBack = () => {
-    navigate('/programs');
+    navigate(-1);
   };
 
   useEffect(() => {
@@ -57,14 +56,6 @@ const ProgramDetail = () => {
         size="medium"
         startIcon={<ArrowBack />}
       />
-      <Button
-        onClick={handleModalOpen}
-        variant="outlined"
-        // className={styles.updateBtn}
-        size="small"
-      >
-        Update
-      </Button>
       <Modal
         // className={styles.modal}
         open={modalOpen}
@@ -96,8 +87,15 @@ const ProgramDetail = () => {
         </Box>
       </Modal>
       <div>
+        <h2>Program Detail</h2>
+        <Button
+          onClick={handleModalOpen}
+          variant="contained"
+          size="small"
+        >
+          Update
+        </Button>
         <TableContainer component={Paper}>
-          <h2>Program Detail</h2>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
               <TableRow>
@@ -131,14 +129,17 @@ const ProgramDetail = () => {
                 </TableCell>
                 <TableCell align="right">
                   {programDetail.programTeams.map((team) => (
-                    `${team.attributes.name} `
+                    `${team.attributes.name}, `
                   ))}
                 </TableCell>
               </TableRow>
             </TableBody>
           </Table>
         </TableContainer>
-        <Attendances />
+        <Attendances
+          programId={programDetail.id}
+          programTeams={programDetail.programTeams}
+        />
       </div>
 
     </div>

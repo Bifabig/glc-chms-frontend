@@ -23,7 +23,7 @@ const MemberDetail = () => {
   const handleModalClose = () => setModalOpen(false);
 
   const goBack = () => {
-    navigate('/members');
+    navigate(-1);
   };
 
   useEffect(() => {

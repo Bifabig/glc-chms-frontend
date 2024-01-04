@@ -26,7 +26,7 @@ const TeamDetail = () => {
   const handleModalClose = () => setModalOpen(false);
 
   const goBack = () => {
-    navigate('/teams');
+    navigate(-1);
   };
 
   useEffect(() => {
