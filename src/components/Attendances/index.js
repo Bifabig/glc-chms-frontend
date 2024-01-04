@@ -1,23 +1,59 @@
+// import React from 'react';
 import React, { useEffect } from 'react';
+import moment from 'moment';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
-// import moment from 'moment/moment';
-// import {
-//   Button,
-// } from '@mui/material';
+import {
+  Button,
+} from '@mui/material';
 // import DeleteIcon from '@mui/icons-material/Delete';
 // import InfoIcon from '@mui/icons-material/Info';
 import { useDispatch, useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
+import MemberAttendance from './MemberAttendance';
+import { createAttendance, getAttendances } from '../../redux/thunk';
 // import { Link } from 'react-router-dom';
-import { getMembers } from '../../redux/thunk';
-import styles from '../../styles/Members.module.css';
+// import { createAttendance, getMembers } from '../../redux/thunk';
+// import styles from '../../styles/Members.module.css';
 // import NewMember from './NewMember';
 
-const Attendances = () => {
-  // const [modalOpen, setModalOpen] = useState(false);
+const Attendances = ({ programTeams, programId }) => {
+// const [modalOpen, setModalOpen] = useState(false);
+  // const [newAttendance, setNewAttendance] = useState({});
   const {
-    members, isLoading, error, errorMsg,
-  } = useSelector((store) => store.members);
+    attendances, isLoading, error, errorMsg,
+  } = useSelector((store) => store.attendances);
   const dispatch = useDispatch();
+
+  const saveAttendance = ({
+    name, status, remark, programId,
+  }) => {
+    const attendance = new FormData();
+    attendance.append('attendance[member_name]', name);
+    attendance.append('attendance[status]', status);
+    attendance.append('attendance[remark]', remark);
+    attendance.append('attendance[program_id]', programId);
+    dispatch(createAttendance(attendance));
+  };
+
+  // const [anchorEl, setAnchorEl] = useState(null);
+  // const [attendanceText, setAttendanceText] = useState('Attendance');
+  // const open = Boolean(anchorEl);
+  // const handleClick = (event) => {
+  //   setAnchorEl(event.currentTarget);
+  // };
+  // const handleClose = (e, row) => {
+  //   e.stopPropagation();
+  //   // console.log(row, e.currentTarget.dataset.myValue);
+  //   const attendance = new FormData();
+  //   attendance.append('attendance[member_name]', row.attributes.name);
+  //   attendance.append('attendance[status]', e.currentTarget.dataset.myValue);
+  //   attendance.append('attendance[remark]', 'good');
+  //   attendance.append('attendance[program_id]', programId);
+
+  //   dispatch(createAttendance(attendance));
+  //   setAttendanceText(e.currentTarget.dataset.myValue);
+  //   setAnchorEl(null);
+  // };
 
   // const handleModalOpen = () => setModalOpen(true);
   // const handleModalClose = () => setModalOpen(false);
@@ -39,94 +75,157 @@ const Attendances = () => {
       filterable: false,
     },
     {
-      field: 'name',
+      field: 'member_name',
       headerName: 'Name',
       width: 200,
       type: 'string',
-      valueGetter: (params) => params.row.attributes.name,
-      renderCell: (valueReceived) => valueReceived.row.attributes.name,
+      valueGetter: (params) => params.row.attributes.member_name,
+      renderCell: (valueReceived) => valueReceived.row.member_name,
     },
     {
-      field: 'photo_url',
-      headerName: 'Photo',
-      width: 80,
-      sortable: false,
-      renderCell: (params) => (
-        <img
-          src={params.row.attributes.photo_url}
-          alt={params.row.attributes.name}
-          className={styles.photo}
-        />
-      ),
-      filterable: false,
+      field: 'status',
+      headerName: 'Satus',
+      width: 200,
+      type: 'string',
+      valueGetter: (params) => params.row.attributes.status,
+      renderCell: (valueReceived) => {
+        if (valueReceived.row.attributes.status === 'Present') {
+          return (
+            <Button
+              variant="contained"
+              color="success"
+              size="small"
+            >
+              Present
+            </Button>
+          );
+        } if (valueReceived.row.attributes.status === 'Permission') {
+          return (
+            <Button
+              variant="contained"
+              color="secondary"
+              size="small"
+            >
+              Permission
+            </Button>
+          );
+        }
+        return (
+          <Button
+            variant="contained"
+            color="error"
+            size="small"
+          >
+            Absent
+          </Button>
+        );
+      },
     },
-    // {
-    //   field: 'address',
-    //   headerName: 'Address',
-    //   width: 160,
-    //   type: 'string',
-    //   valueGetter: (params) => params.row.attributes.address,
-    //   renderCell: (params) => (
-    //     params.row.attributes.address
-    //   ),
-    // },
     {
-      field: 'phone_number',
-      headerName: 'Phone Number',
-      width: 140,
-      sortable: false,
-      valueGetter: (params) => params.row.attributes.phone_number,
-      renderCell: (params) => (
-        params.row.attributes.phone_number
-      ),
+      field: 'remark',
+      headerName: 'Remark',
+      width: 200,
+      type: 'string',
+      valueGetter: (params) => params.row.attributes.remark,
+      renderCell: (valueReceived) => valueReceived.row.remark,
     },
-    // {
-    //   field: 'joined_at',
-    //   headerName: 'Member Since',
-    //   type: 'Date',
-    //   width: 130,
-    //   valueGetter: (params) => moment(params.row.attributes.joined_at).format('YYYY/MM/DD'),
-    //   renderCell: (params) => moment(params.row.attributes.joined_at).format('DD/MM/YYYY'),
-    // },
-    // {
-    //   field: 'detail',
-    //   headerName: '',
-    //   sortable: false,
-    //   width: 100,
-    //   renderCell: (params) => (
-    //     <Link to={`/members/${params.row.attributes.id}`}>
-    //       <Button
-    //         variant="contained"
-    //         size="small"
-    //         startIcon={<InfoIcon />}
-    //       >
-    //         Detail
-    //       </Button>
-    //     </Link>
-    //   ),
-    // },
-    // {
-    //   field: 'delete',
-    //   headerName: '',
-    //   sortable: false,
-    //   width: 110,
-    //   renderCell: (params) => (
-    //     <Button
-    //       variant="contained"
-    //       sx={{ color: 'white', background: 'red',
-    // ':hover': { color: 'red', background: 'white' } }}
-    //       size="small"
-    //       startIcon={<DeleteIcon />}
-    //       onClick={(e) => handleDeleteMember(e, params.row.attributes.id)}
-    //     >
-    //       Delete
-    //     </Button>
-    //   ),
-    // },
+    {
+      field: 'updated_at',
+      headerName: 'Date',
+      type: 'Date',
+      width: 130,
+      valueGetter: (params) => moment(params.row.attributes.updated_at).format('YYYY/MM/DD'),
+      renderCell: (params) => moment(params.row.attributes.updated_at).format('DD/MM/YYYY'),
+    },
+    {
+      field: 'time',
+      headerName: 'Time',
+      type: 'Date',
+      width: 130,
+      valueGetter: (params) => moment(params.row.attributes.updated_at).format('HH:mm:ss'),
+      renderCell: (params) => moment(params.row.attributes.updated_at).format('HH:mm:ss'),
+    },
+    //   {
+    //     field: 'photo_url',
+    //     headerName: 'Photo',
+    //     width: 80,
+    //     sortable: false,
+    //     renderCell: (params) => (
+    //       <img
+    //         src={params.row.attributes.photo_url}
+    //         alt={params.row.attributes.name}
+    //         className={styles.photo}
+    //       />
+    //     ),
+    //     filterable: false,
+    //   },
+    //   {
+    //     field: 'phone_number',
+    //     headerName: 'Phone Number',
+    //     width: 140,
+    //     sortable: false,
+    //     valueGetter: (params) => params.row.attributes.phone_number,
+    //     renderCell: (params) => (
+    //       params.row.attributes.phone_number
+    //     ),
+    //   },
+    //   {
+    //     field: 'detail',
+    //     headerName: '',
+    //     sortable: false,
+    //     width: 100,
+    //     renderCell: (params) => (
+    //       <Link to={`/members/${params.row.attributes.id}`}>
+    //         <Button
+    //           variant="contained"
+    //           size="small"
+    //           startIcon={<InfoIcon />}
+    //         >
+    //           Detail
+    //         </Button>
+    //       </Link>
+    //     ),
+    //   },
+    //   {
+    //     field: 'attendance',
+    //     headerName: '',
+    //     sortable: false,
+    //     width: 100,
+    //     renderCell: (params) => (
+
+    //       <>
+    //         <Button
+    //           id="basic-button"
+    //           aria-controls={open ? 'basic-menu' : undefined}
+    //           aria-haspopup="true"
+    //           aria-expanded={open ? 'true' : undefined}
+    //           onClick={handleClick}
+    //         >
+    //           {attendanceText}
+    //         </Button>
+    //         <Menu
+    //           id="basic-menu"
+    //           anchorEl={anchorEl}
+    //           open={open}
+    //           onClose={handleClose}
+    //           MenuListProps={{
+    //             'aria-labelledby': 'basic-button',
+    //           }}
+    //         >
+    //           <MenuItem onClick={(e) => handleClose(e, params.row)}
+    // data-my-value="Present">Present</MenuItem>
+    //           <MenuItem onClick={handleClose} data-my-value="Permission">Permission</MenuItem>
+    //           <MenuItem onClick={handleClose} data-my-value="Absent">Absent</MenuItem>
+    //           {/* <MenuItem onClick={handleClose}>Logout</MenuItem> */}
+    //         </Menu>
+
+  //       </>
+  //     ),
+  //   },
   ];
 
   useEffect(() => {
-    dispatch(getMembers());
+    dispatch(getAttendances());
   }, [dispatch]);
 
   if (error) {
@@ -140,45 +239,16 @@ const Attendances = () => {
     );
   }
 
+  // eslint-disable-next-line implicit-arrow-linebreak
   return isLoading ? (
     <h2>Loading...</h2>
   ) : (
-    <div>
+    <>
       <h2>Attendance</h2>
-      {/* <Button onClick={handleModalOpen} variant="contained">Add Member</Button>
-      <Modal
-        open={modalOpen}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box
-          sx={{
-            position: 'absolute',
-            left: '19%',
-            transform: 'translate(-50%; -50%)',
-            width: 600,
-            bgcolor: 'background.paper',
-            boxShadow: 24,
-            p: 4,
-          }}
-        >
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Member Form
-          </Typography>
-          <Typography
-            id="modal-modal-description"
-            sx={{ mt: 2 }}
-            component="div"
-          >
-            <NewMember />
-            <Button onClick={handleModalClose}>Close</Button>
-          </Typography>
-        </Box>
-      </Modal> */}
       <div style={{ height: 260, width: '100%' }}>
-        {members && (
+        {attendances.data && (
         <DataGrid
-          rows={members?.data}
+          rows={attendances.data}
           columns={columns}
           getRowId={(row) => row.id}
           initialState={{
@@ -191,8 +261,25 @@ const Attendances = () => {
         />
         )}
       </div>
-    </div>
+      <MemberAttendance
+        saveAttendance={saveAttendance}
+        // setNewAttendance={setNewAttendance}
+        programTeams={programTeams}
+        programId={programId}
+      />
+    </>
   );
+};
+Attendances.propTypes = {
+  programTeams: PropTypes.arrayOf(
+    PropTypes.oneOfType([
+      PropTypes.func,
+      PropTypes.number,
+      PropTypes.string,
+      PropTypes.object,
+    ]),
+  ).isRequired,
+  programId: PropTypes.string.isRequired,
 };
 
 export default Attendances;
