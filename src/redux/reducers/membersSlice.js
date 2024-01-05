@@ -48,7 +48,7 @@ const membersSlice = createSlice({
       })
       .addCase(createMember.fulfilled, (state, action) => {
         state.members.data = [action.payload.member.data, ...state.members.data];
-        state.members.included = [action.payload.included, ...state.members.included];
+        state.members.included = [action.payload.member.included, ...state.members.included];
         state.isLoading = false;
       })
       .addCase(createMember.rejected, (state, { error }) => ({

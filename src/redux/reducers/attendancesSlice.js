@@ -19,6 +19,7 @@ const attendancesSlice = createSlice({
       .addCase(getAttendances.fulfilled, (state, action) => {
         state.isLoading = false;
         state.error = false;
+        // console.log(action.payload);
         state.attendances = action.payload.attendance;
       })
       .addCase(getAttendances.rejected, (state, action) => {
@@ -30,9 +31,15 @@ const attendancesSlice = createSlice({
         // console.log(action);
         // state.attendances.filter((att) => console.log(att));
         // const oldState = state.attendances;
-        // console.log(attendances);
-        const newAtt = action.payload.attendance;
-        state.attendances.push(newAtt);
+        // console.log(action.payload.attendance.data);
+        // const newAtt = action.payload.attendance;
+        // state.attendances.push(newAtt);
+        const data = [action.payload.attendance.data, ...state.attendances.data];
+        const included = [action.payload.attendance.included,
+          ...state.attendances.included];
+        // state.attendances.data = Array.from(new Set(data));
+        state.attendances = { data, included };
+        // state.attendances.included = Array.from(new Set(included));
         state.isLoading = false;
         state.error = false;
       })
