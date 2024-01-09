@@ -126,8 +126,6 @@ const Attendances = ({ programTeams, programId }) => {
         )}
       </div>
       <MemberAttendance
-        // saveAttendance={saveAttendance}
-        // setNewAttendance={setNewAttendance}
         programTeams={programTeams}
         programId={programId}
       />
