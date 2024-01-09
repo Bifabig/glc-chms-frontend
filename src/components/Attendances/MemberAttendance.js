@@ -1,45 +1,56 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React, { useEffect, useState } from 'react';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import {
-  Button, Menu, MenuItem,
+  Button, Modal, Box, Typography,
 } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
+import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
-import { getMembers } from '../../redux/thunk';
+import { createAttendance, getMembers } from '../../redux/thunk';
 import styles from '../../styles/Members.module.css';
 
 const MemberAttendance = ({
-  saveAttendance, programTeams, programId,
+  programTeams, programId,
 }) => {
   const {
     members, isLoading, error, errorMsg,
   } = useSelector((store) => store.members);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [attendanceData, setAttendanceData] = useState({});
   const dispatch = useDispatch();
 
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [attendanceText, setAttendanceText] = useState('Attendance');
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = (e, row) => {
-    e.stopPropagation();
-    // const attendance = new FormData();
-    // attendance.append('attendance[member_name]', row.attributes.name);
-    // attendance.append('attendance[status]', e.currentTarget.dataset.myValue);
-    // attendance.append('attendance[remark]', 'good');
-    // attendance.append('attendance[program_id]', programId);
+  const form = useForm();
+  const {
+    register, handleSubmit, formState,
+  } = form;
+  const { errors } = formState;
 
-    // dispatch(createAttendance(attendance));
-    // setNewAttendance(attendance);
-    // saveAttendance(attendance);
-    saveAttendance({
-      name: row.attributes.name, status: e.currentTarget.dataset.myValue, remark: 'good', programId,
-    });
-    setAttendanceText(e.currentTarget.dataset.myValue);
-    setAnchorEl(null);
+  const handleModalOpen = (params) => {
+    setModalOpen(true);
+    setAttendanceData(params);
+  };
+  const handleModalClose = () => setModalOpen(false);
+
+  const onSubmit = (data) => {
+    // setRemark(data.remark);
+    const attendance = new FormData();
+    attendance.append('attendance[member_name]', attendanceData.row.attributes.name);
+    attendance.append('attendance[status]', attendanceData.field);
+    attendance.append('attendance[remark]', data.remark);
+    attendance.append('attendance[program_id]', programId);
+    dispatch(createAttendance(attendance));
+  };
+  const handleAttendancePresent = (e, params) => {
+    e.stopPropagation();
+    const attendance = new FormData();
+    attendance.append('attendance[member_name]', params.row.attributes.name);
+    attendance.append('attendance[status]', params.field);
+    attendance.append('attendance[remark]', '-');
+    attendance.append('attendance[program_id]', programId);
+    dispatch(createAttendance(attendance));
   };
 
   const columns = [
@@ -103,38 +114,52 @@ const MemberAttendance = ({
       ),
     },
     {
-      field: 'attendance',
+      field: 'present',
       headerName: '',
       sortable: false,
       width: 100,
       renderCell: (params) => (
-
-        <>
-          <Button
-            id="basic-button"
-            aria-controls={open ? 'basic-menu' : undefined}
-            aria-haspopup="true"
-            aria-expanded={open ? 'true' : undefined}
-            onClick={handleClick}
-          >
-            {attendanceText}
-          </Button>
-          <Menu
-            id="basic-menu"
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
-            MenuListProps={{
-              'aria-labelledby': 'basic-button',
-            }}
-          >
-            <MenuItem onClick={(e) => handleClose(e, params.row)} data-my-value="Present">Present</MenuItem>
-            <MenuItem onClick={handleClose} data-my-value="Permission">Permission</MenuItem>
-            <MenuItem onClick={handleClose} data-my-value="Absent">Absent</MenuItem>
-            {/* <MenuItem onClick={handleClose}>Logout</MenuItem> */}
-          </Menu>
-
-        </>
+        <Button
+          variant="contained"
+          size="small"
+          color="success"
+          onClick={(e) => handleAttendancePresent(e, params)}
+        >
+          Present
+        </Button>
+      ),
+    },
+    {
+      field: 'permission',
+      headerName: '',
+      sortable: false,
+      width: 100,
+      renderCell: (params) => (
+        <Button
+          variant="contained"
+          size="small"
+          color="secondary"
+          onClick={() => handleModalOpen(params)}
+          // onClick={handleModalOpen}
+        >
+          Permission
+        </Button>
+      ),
+    },
+    {
+      field: 'absent',
+      headerName: '',
+      sortable: false,
+      width: 100,
+      renderCell: (params) => (
+        <Button
+          variant="contained"
+          size="small"
+          color="error"
+          onClick={() => handleModalOpen(params)}
+        >
+          Absent
+        </Button>
       ),
     },
   ];
@@ -158,6 +183,60 @@ const MemberAttendance = ({
     <h2>Loading...</h2>
   ) : (
     <div>
+      <Modal
+        open={modalOpen}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box
+          sx={{
+            position: 'absolute',
+            left: '20%',
+            transform: 'translate(-50%; -50%)',
+            width: 400,
+            bgcolor: 'background.paper',
+            boxShadow: 24,
+            p: 4,
+          }}
+        >
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Remark
+          </Typography>
+          <Typography
+            id="modal-modal-description"
+            sx={{ mt: 2 }}
+            component="div"
+          >
+            <form onSubmit={handleSubmit(onSubmit)} className={styles.form} noValidate>
+              <textarea
+                type="text"
+                id="remark"
+                {...register('remark', {
+                  required:
+                    {
+                      value: true,
+                      message: 'Remark is required',
+                    },
+                })
+                }
+                placeholder="Remark"
+                className="inputField"
+              />
+              <span className="errorMsg">{ errors.name?.message }</span>
+              <div className="submitBtn">
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="success"
+                >
+                  Add Remark
+                </Button>
+              </div>
+              <Button onClick={handleModalClose}>Close</Button>
+            </form>
+          </Typography>
+        </Box>
+      </Modal>
       <h2>Members</h2>
       <div style={{ height: 260, width: '100%' }}>
         {members.data && (
@@ -195,8 +274,6 @@ MemberAttendance.propTypes = {
     ]),
   ).isRequired,
   programId: PropTypes.string.isRequired,
-  // setNewAttendance: PropTypes.func.isRequired,
-  saveAttendance: PropTypes.func.isRequired,
 };
 
 export default MemberAttendance;
