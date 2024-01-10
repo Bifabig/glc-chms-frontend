@@ -2,7 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
-  Box, Button, Modal, Typography,
+  Box,
+  Button,
+  Modal,
+  Typography,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
 } from '@mui/material';
 import { ArrowBack } from '@mui/icons-material';
 import { fetchMemberDetail } from '../../redux/thunk';
@@ -49,74 +59,8 @@ const MemberDetail = () => {
         size="medium"
         startIcon={<ArrowBack />}
       />
-      <Modal
-        className={styles.modal}
-        open={modalOpen}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box
-          sx={{
-            position: 'absolute',
-            left: '19%',
-            transform: 'translate(-50%; -50%)',
-            width: 600,
-            bgcolor: 'background.paper',
-            boxShadow: 24,
-            p: 4,
-          }}
-        >
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Update Member
-          </Typography>
-          <Typography
-            id="modal-modal-description"
-            sx={{ mt: 2 }}
-            component="div"
-          >
-            <UpdateMember memberDetail={memberDetail} />
-            {' '}
-            <Button onClick={handleModalClose}>Close</Button>
-          </Typography>
-        </Box>
-      </Modal>
-      <div className={styles.memberDetail}>
-        <div className={styles.memberDetailHeader}>
-          <h2>Member Detail</h2>
-          <img src={memberDetail.attributes.photo_url} alt="member detail" className={styles.memberDetailImg} />
-        </div>
-        <div className={styles.memberInfo}>
-          <strong>
-            {`Full Name: ${memberDetail.attributes.name}`}
-          </strong>
-          <strong>
-            {`Address: ${memberDetail.attributes.address}`}
-          </strong>
-          <strong>
-            {`Phone Number: ${memberDetail.attributes.phone_number}`}
-          </strong>
-          <strong>
-            {`Member Since: ${memberDetail.attributes.joined_at}`}
-          </strong>
-          <div className={styles.memberDetailExtra}>
-            <strong>Church</strong>
-            <ul>
-              {memberDetail.memberChurch.map((church) => (
-                <li key={church.id}>
-                  {church.attributes.name}
-                </li>
-              ))}
-            </ul>
-            <strong>Teams</strong>
-            <ul>
-              {memberDetail.memberTeams.map((team) => (
-                <li key={team.id}>
-                  {team.attributes.name}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
+      <div>
+        <h2>Member Detail</h2>
         <Button
           onClick={handleModalOpen}
           variant="outlined"
@@ -125,6 +69,88 @@ const MemberDetail = () => {
         >
           Update
         </Button>
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 250, minHeight: 50 }} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>{memberDetail.attributes.name}</TableCell>
+                <TableCell align="right" sx={{ width: 300 }}><img src={memberDetail.attributes.photo_url} alt="member detail" className={styles.memberDetailImg} /></TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              <TableRow
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell>Address</TableCell>
+                <TableCell align="right">{memberDetail.attributes.address}</TableCell>
+              </TableRow>
+              <TableRow
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell>Phone Number</TableCell>
+                <TableCell align="right">{memberDetail.attributes.phone_number}</TableCell>
+              </TableRow>
+              <TableRow
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell>Member Since</TableCell>
+                <TableCell align="right">{memberDetail.attributes.joined_at}</TableCell>
+              </TableRow>
+              <TableRow
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell>Church</TableCell>
+                <TableCell align="right">
+                  {memberDetail.memberChurch.map((church) => (
+                    `${church.attributes.name}, `
+                  ))}
+                </TableCell>
+              </TableRow>
+              <TableRow
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell>Teams</TableCell>
+                <TableCell align="right">
+                  {memberDetail.memberTeams.map((team) => (
+                    `${team.attributes.name}, `
+                  ))}
+
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <Modal
+          className={styles.modal}
+          open={modalOpen}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box
+            sx={{
+              position: 'absolute',
+              left: '19%',
+              transform: 'translate(-50%; -50%)',
+              width: 600,
+              bgcolor: 'background.paper',
+              boxShadow: 24,
+              p: 4,
+            }}
+          >
+            <Typography id="modal-modal-title" variant="h6" component="h2">
+              Update Member
+            </Typography>
+            <Typography
+              id="modal-modal-description"
+              sx={{ mt: 2 }}
+              component="div"
+            >
+              <UpdateMember memberDetail={memberDetail} />
+              {' '}
+              <Button onClick={handleModalClose}>Close</Button>
+            </Typography>
+          </Box>
+        </Modal>
       </div>
 
     </div>

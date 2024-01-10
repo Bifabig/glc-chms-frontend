@@ -2,11 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
-  Box, Button, Modal, Typography,
+  Box,
+  Button,
+  Modal,
+  Typography,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
 } from '@mui/material';
-// import {
-//   Button,
-// } from '@mui/material';
 import { ArrowBack } from '@mui/icons-material';
 import { fetchTeamDetail } from '../../redux/thunk';
 import styles from '../../styles/Churches.module.css';
@@ -52,81 +59,8 @@ const TeamDetail = () => {
         size="medium"
         startIcon={<ArrowBack />}
       />
-      <Modal
-        className={styles.modal}
-        open={modalOpen}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box
-          sx={{
-            position: 'absolute',
-            left: '19%',
-            transform: 'translate(-50%; -50%)',
-            width: 600,
-            bgcolor: 'background.paper',
-            boxShadow: 24,
-            p: 4,
-          }}
-        >
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Update Team
-          </Typography>
-          <Typography
-            id="modal-modal-description"
-            sx={{ mt: 2 }}
-            component="div"
-          >
-            <UpdateTeam teamDetail={teamDetail} />
-            {' '}
-            <Button onClick={handleModalClose}>Close</Button>
-          </Typography>
-        </Box>
-      </Modal>
-      <div className={styles.chruchDetail}>
-        <div className={styles.churchDetailHeader}>
-          <h2>Church Detail</h2>
-          {/* <img src={churchDetail.attributes.photo_url}
-          alt="member detail" className={styles.memberDetailImg} /> */}
-        </div>
-        <div className={styles.churchInfo}>
-          <strong>
-            {`Church Name: ${teamDetail.name}`}
-          </strong>
-          <strong>
-            {`Main Leader: ${teamDetail.main_leader_name}`}
-          </strong>
-          <strong>
-            {`Sub Leader: ${teamDetail.sub_leader_name}`}
-          </strong>
-          <strong>
-            {`Established In: ${teamDetail.established_at}`}
-          </strong>
-          {/* <strong>
-            {`Established In: ${teamDetail.sub_leader_name}`}
-          </strong> */}
-          {/* <strong>
-            {`Member Since: ${memberDetail.attributes.joined_at}`}
-          </strong> */}
-          {/* <div className={styles.memberDetailExtra}>
-            <strong>Church</strong>
-            <ul>
-              {memberDetail.memberChurch.map((church) => (
-                <li key={church.id}>
-                  {church.attributes.name}
-                </li>
-              ))}
-            </ul>
-            <strong>Teams</strong>
-            <ul>
-              {memberDetail.memberTeams.map((team) => (
-                <li key={team.id}>
-                  {team.attributes.name}
-                </li>
-              ))}
-            </ul>
-          </div> */}
-        </div>
+      <div>
+        <h2>Team Detail</h2>
         <Button
           onClick={handleModalOpen}
           variant="outlined"
@@ -135,6 +69,67 @@ const TeamDetail = () => {
         >
           Update
         </Button>
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 450, minHeight: 50 }} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>Team Name</TableCell>
+                <TableCell align="right">{teamDetail.name}</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              <TableRow
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell>Main Leader Name</TableCell>
+                <TableCell align="right">{teamDetail.main_leader_name}</TableCell>
+              </TableRow>
+
+              <TableRow
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell>Sub Leader Name</TableCell>
+                <TableCell align="right">{teamDetail.sub_leader_name}</TableCell>
+              </TableRow>
+              <TableRow
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell>Established In</TableCell>
+                <TableCell align="right">{teamDetail.established_at}</TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <Modal
+          className={styles.modal}
+          open={modalOpen}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box
+            sx={{
+              position: 'absolute',
+              left: '19%',
+              transform: 'translate(-50%; -50%)',
+              width: 400,
+              bgcolor: 'background.paper',
+              boxShadow: 24,
+              p: 4,
+            }}
+          >
+            <Typography id="modal-modal-title" variant="h6" component="h2">
+              Update Team
+            </Typography>
+            <Typography
+              id="modal-modal-description"
+              sx={{ mt: 2 }}
+              component="div"
+            >
+              <UpdateTeam teamDetail={teamDetail} />
+              <Button onClick={handleModalClose}>Close</Button>
+            </Typography>
+          </Box>
+        </Modal>
       </div>
     </div>
   );
