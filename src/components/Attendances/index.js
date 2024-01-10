@@ -1,21 +1,13 @@
-// import React from 'react';
-import React, { useEffect } from 'react';
+import React from 'react';
 import moment from 'moment';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import {
   Chip, Stack,
 } from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import MemberAttendance from './MemberAttendance';
-import { getAttendances } from '../../redux/thunk';
 
-const Attendances = ({ programTeams, programId }) => {
-  const {
-    attendances, isLoading, error, errorMsg,
-  } = useSelector((store) => store.attendances);
-  const dispatch = useDispatch();
-
+const Attendances = ({ programAttendance, programTeams, programId }) => {
   const columns = [
     {
       field: 'id',
@@ -88,31 +80,13 @@ const Attendances = ({ programTeams, programId }) => {
     },
   ];
 
-  useEffect(() => {
-    dispatch(getAttendances());
-  }, [dispatch]);
-
-  if (error) {
-    return (
-      <span>
-        Something Went Wrong...
-        <br />
-        <br />
-        {errorMsg}
-      </span>
-    );
-  }
-
-  // eslint-disable-next-line implicit-arrow-linebreak
-  return isLoading ? (
-    <h2>Loading...</h2>
-  ) : (
+  return (
     <>
       <h2>Attendance</h2>
       <div style={{ height: 260, width: '100%' }}>
-        {attendances.data && (
+        {programAttendance && (
         <DataGrid
-          rows={attendances.data}
+          rows={programAttendance}
           columns={columns}
           getRowId={(row) => row.id}
           initialState={{
@@ -126,6 +100,7 @@ const Attendances = ({ programTeams, programId }) => {
         )}
       </div>
       <MemberAttendance
+        programAttendance={programAttendance}
         programTeams={programTeams}
         programId={programId}
       />
@@ -134,6 +109,14 @@ const Attendances = ({ programTeams, programId }) => {
 };
 Attendances.propTypes = {
   programTeams: PropTypes.arrayOf(
+    PropTypes.oneOfType([
+      PropTypes.func,
+      PropTypes.number,
+      PropTypes.string,
+      PropTypes.object,
+    ]),
+  ).isRequired,
+  programAttendance: PropTypes.arrayOf(
     PropTypes.oneOfType([
       PropTypes.func,
       PropTypes.number,
