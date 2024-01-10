@@ -2,16 +2,22 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
-  Box, Button, Modal, Typography,
+  Box,
+  Button,
+  Modal,
+  Typography,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
 } from '@mui/material';
-// import {
-//   Button,
-// } from '@mui/material';
 import { ArrowBack } from '@mui/icons-material';
 import { fetchChurchDetail } from '../../redux/thunk';
 import styles from '../../styles/Churches.module.css';
 import UpdateChurch from './UpdateChurch';
-// import UpdateChurch from './UpdateChurch';
 
 const ChurchDetail = () => {
   const { churchId } = useParams();
@@ -53,75 +59,8 @@ const ChurchDetail = () => {
         size="medium"
         startIcon={<ArrowBack />}
       />
-      <Modal
-        className={styles.modal}
-        open={modalOpen}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box
-          sx={{
-            position: 'absolute',
-            left: '19%',
-            transform: 'translate(-50%; -50%)',
-            width: 600,
-            bgcolor: 'background.paper',
-            boxShadow: 24,
-            p: 4,
-          }}
-        >
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Update Member
-          </Typography>
-          <Typography
-            id="modal-modal-description"
-            sx={{ mt: 2 }}
-            component="div"
-          >
-            <UpdateChurch churchDetail={churchDetail} />
-            {' '}
-            <Button onClick={handleModalClose}>Close</Button>
-          </Typography>
-        </Box>
-      </Modal>
-      <div className={styles.chruchDetail}>
-        <div className={styles.churchDetailHeader}>
-          <h2>Church Detail</h2>
-          {/* <img src={churchDetail.attributes.photo_url}
-          alt="member detail" className={styles.memberDetailImg} /> */}
-        </div>
-        <div className={styles.churchInfo}>
-          <strong>
-            {`Church Name: ${churchDetail.name}`}
-          </strong>
-          <strong>
-            {`Location: ${churchDetail.location}`}
-          </strong>
-          <strong>
-            {`Established In: ${churchDetail.established_at}`}
-          </strong>
-          {/* <strong>
-            {`Member Since: ${memberDetail.attributes.joined_at}`}
-          </strong> */}
-          {/* <div className={styles.memberDetailExtra}>
-            <strong>Church</strong>
-            <ul>
-              {memberDetail.memberChurch.map((church) => (
-                <li key={church.id}>
-                  {church.attributes.name}
-                </li>
-              ))}
-            </ul>
-            <strong>Teams</strong>
-            <ul>
-              {memberDetail.memberTeams.map((team) => (
-                <li key={team.id}>
-                  {team.attributes.name}
-                </li>
-              ))}
-            </ul>
-          </div> */}
-        </div>
+      <div>
+        <h2>Church Detail</h2>
         <Button
           onClick={handleModalOpen}
           variant="outlined"
@@ -130,6 +69,62 @@ const ChurchDetail = () => {
         >
           Update
         </Button>
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 450, minHeight: 50 }} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>Church Name</TableCell>
+                <TableCell align="right">{churchDetail.name}</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              <TableRow
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell>Location</TableCell>
+                <TableCell align="right">{churchDetail.location}</TableCell>
+              </TableRow>
+
+              <TableRow
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell>Established In</TableCell>
+                <TableCell align="right">{churchDetail.established_at}</TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <Modal
+          className={styles.modal}
+          open={modalOpen}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box
+            sx={{
+              position: 'absolute',
+              left: '19%',
+              transform: 'translate(-50%; -50%)',
+              width: 600,
+              bgcolor: 'background.paper',
+              boxShadow: 24,
+              p: 4,
+            }}
+          >
+            <Typography id="modal-modal-title" variant="h6" component="h2">
+              Update Member
+            </Typography>
+            <Typography
+              id="modal-modal-description"
+              sx={{ mt: 2 }}
+              component="div"
+            >
+              <UpdateChurch churchDetail={churchDetail} />
+              {' '}
+              <Button onClick={handleModalClose}>Close</Button>
+            </Typography>
+          </Box>
+        </Modal>
       </div>
     </div>
   );
