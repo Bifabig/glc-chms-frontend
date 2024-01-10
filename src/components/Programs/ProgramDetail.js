@@ -139,6 +139,7 @@ const ProgramDetail = () => {
         <Attendances
           programId={programDetail.id}
           programTeams={programDetail.programTeams}
+          programAttendance={programDetail.programAttendance}
         />
       </div>
 

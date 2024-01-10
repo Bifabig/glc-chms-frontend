@@ -18,11 +18,11 @@ const programsSlice = createSlice({
       .addCase(getPrograms.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getPrograms.fulfilled, (state, action) => {
+      .addCase(getPrograms.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.error = false;
         state.errorMsg = '';
-        state.programs = action.payload;
+        state.programs = payload;
       })
       .addCase(getPrograms.rejected, (state, action) => {
         state.isLoading = false;
@@ -36,7 +36,10 @@ const programsSlice = createSlice({
         const { data } = payload;
         const programChurch = payload.included.filter((church) => ((church.type === 'church')));
         const programTeams = payload.included.filter((team) => ((team.type === 'team')));
-        state.programDetail = { ...data, programChurch, programTeams };
+        const programAttendance = payload.included.filter((attendance) => ((attendance.type === 'attendance')));
+        state.programDetail = {
+          ...data, programChurch, programTeams, programAttendance,
+        };
         state.isLoading = false;
         state.error = false;
       })
