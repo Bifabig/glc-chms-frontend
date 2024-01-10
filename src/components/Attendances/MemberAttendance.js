@@ -5,6 +5,7 @@ import {
   Button, Modal, Box, Typography,
 } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
+import BeenhereIcon from '@mui/icons-material/Beenhere';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
@@ -13,7 +14,7 @@ import { createAttendance, getMembers } from '../../redux/thunk';
 import styles from '../../styles/Members.module.css';
 
 const MemberAttendance = ({
-  programTeams, programId,
+  programAttendance, programTeams, programId,
 }) => {
   const {
     members, isLoading, error, errorMsg,
@@ -35,7 +36,6 @@ const MemberAttendance = ({
   const handleModalClose = () => setModalOpen(false);
 
   const onSubmit = (data) => {
-    // setRemark(data.remark);
     const attendance = new FormData();
     attendance.append('attendance[member_name]', attendanceData.row.attributes.name);
     attendance.append('attendance[status]', attendanceData.field);
@@ -119,14 +119,20 @@ const MemberAttendance = ({
       sortable: false,
       width: 100,
       renderCell: (params) => (
-        <Button
-          variant="contained"
-          size="small"
-          color="success"
-          onClick={(e) => handleAttendancePresent(e, params)}
-        >
-          Present
-        </Button>
+        programAttendance.some(
+          (attendance) => attendance.attributes.member_name === params.row.attributes.name,
+        )
+          ? (<BeenhereIcon color="success" />)
+          : (
+            <Button
+              variant="contained"
+              size="small"
+              color="success"
+              onClick={(e) => handleAttendancePresent(e, params)}
+            >
+              Present
+            </Button>
+          )
       ),
     },
     {
@@ -135,15 +141,20 @@ const MemberAttendance = ({
       sortable: false,
       width: 100,
       renderCell: (params) => (
-        <Button
-          variant="contained"
-          size="small"
-          color="secondary"
-          onClick={() => handleModalOpen(params)}
-          // onClick={handleModalOpen}
-        >
-          Permission
-        </Button>
+        programAttendance.some(
+          (attendance) => attendance.attributes.member_name === params.row.attributes.name,
+        )
+          ? ''
+          : (
+            <Button
+              variant="contained"
+              size="small"
+              color="secondary"
+              onClick={() => handleModalOpen(params)}
+            >
+              Permission
+            </Button>
+          )
       ),
     },
     {
@@ -152,14 +163,20 @@ const MemberAttendance = ({
       sortable: false,
       width: 100,
       renderCell: (params) => (
-        <Button
-          variant="contained"
-          size="small"
-          color="error"
-          onClick={() => handleModalOpen(params)}
-        >
-          Absent
-        </Button>
+        programAttendance.some(
+          (attendance) => attendance.attributes.member_name === params.row.attributes.name,
+        )
+          ? ''
+          : (
+            <Button
+              variant="contained"
+              size="small"
+              color="error"
+              onClick={() => handleModalOpen(params)}
+            >
+              Absent
+            </Button>
+          )
       ),
     },
   ];
@@ -266,6 +283,14 @@ const MemberAttendance = ({
 
 MemberAttendance.propTypes = {
   programTeams: PropTypes.arrayOf(
+    PropTypes.oneOfType([
+      PropTypes.func,
+      PropTypes.number,
+      PropTypes.string,
+      PropTypes.object,
+    ]),
+  ).isRequired,
+  programAttendance: PropTypes.arrayOf(
     PropTypes.oneOfType([
       PropTypes.func,
       PropTypes.number,
