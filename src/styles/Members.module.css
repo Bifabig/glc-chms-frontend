@@ -8,28 +8,10 @@
   margin-top: 20px;
 }
 
-.memberDetail {
-  display: flex;
-  margin-top: 20px;
-  gap: 20px;
-  width: 100%;
-}
-
-.memberDetailHeader {
-  display: flex;
-  flex-direction: column;
-  height: 140px;
-  width: 30%;
-  gap: 20px;
-}
-
 .memberDetailImg {
-  display: block;
   width: 25%;
   padding: 2px;
-  border: 1px grey solid;
-
-  /* border-radius: 50%; */
+  border: 1px grey solid; 
 }
 
 .memberUpdateImg {
@@ -39,23 +21,10 @@
   border: 1px grey solid;
 }
 
-.memberInfo {
-  display: flex;
-  flex-direction: column;
-  margin-top: 80px;
-  gap: 10px;
-}
-
-.memberDetailExtra {
-  margin-top: 20px;
-}
-
 .backBtn {
-  /* background: #CC471C; */
   height: 30px;
 }
 
 .updateBtn {
-  /* background: #CC471C; */
   height: 30px;
 }
