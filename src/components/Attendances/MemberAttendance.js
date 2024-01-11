@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import {
-  Button, Modal, Box, Typography,
+  Button, Modal, Box, Typography, Avatar, Chip,
 } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
 import BeenhereIcon from '@mui/icons-material/Beenhere';
@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { createAttendance, getMembers } from '../../redux/thunk';
-import styles from '../../styles/Members.module.css';
+// import styles from '../../styles/Attendances.module.css';
 
 const MemberAttendance = ({
   programAttendance, programTeams, programId,
@@ -70,22 +70,28 @@ const MemberAttendance = ({
       width: 200,
       type: 'string',
       valueGetter: (params) => params.row.attributes.name,
-      renderCell: (valueReceived) => valueReceived.row.attributes.name,
-    },
-    {
-      field: 'photo_url',
-      headerName: 'Photo',
-      width: 80,
-      sortable: false,
-      renderCell: (params) => (
-        <img
-          src={params.row.attributes.photo_url}
-          alt={params.row.attributes.name}
-          className={styles.photo}
+      renderCell: (valueReceived) => (
+        <Chip
+          avatar={<Avatar alt="Natacha" src={valueReceived.row.attributes.photo_url} />}
+          label={valueReceived.row.attributes.name}
+          variant="outlined"
         />
       ),
-      filterable: false,
     },
+    // {
+    //   field: 'photo_url',
+    //   headerName: 'Photo',
+    //   width: 80,
+    //   sortable: false,
+    //   renderCell: (params) => (
+    //     <img
+    //       src={params.row.attributes.photo_url}
+    //       alt={params.row.attributes.name}
+    //       // className={styles.photo}
+    //     />
+    //   ),
+    //   filterable: false,
+    // },
     {
       field: 'phone_number',
       headerName: 'Phone Number',
@@ -224,7 +230,7 @@ const MemberAttendance = ({
             sx={{ mt: 2 }}
             component="div"
           >
-            <form onSubmit={handleSubmit(onSubmit)} className={styles.form} noValidate>
+            <form onSubmit={handleSubmit(onSubmit)} noValidate>
               <textarea
                 type="text"
                 id="remark"
@@ -254,8 +260,8 @@ const MemberAttendance = ({
           </Typography>
         </Box>
       </Modal>
-      <h2>Members</h2>
-      <div style={{ height: 260, width: '100%' }}>
+      <div>
+        <h2>Members</h2>
         {members.data && (
         <DataGrid
           rows={members.data.filter(

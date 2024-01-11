@@ -6,6 +6,7 @@ import {
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import MemberAttendance from './MemberAttendance';
+// import styles from '../../styles/Attendances.module.css';
 
 const Attendances = ({ programAttendance, programTeams, programId }) => {
   const columns = [
@@ -81,30 +82,32 @@ const Attendances = ({ programAttendance, programTeams, programId }) => {
   ];
 
   return (
-    <>
-      <h2>Attendance</h2>
-      <div style={{ height: 260, width: '100%' }}>
+    <div>
+      <div>
+        <h2>Attendance</h2>
         {programAttendance && (
-        <DataGrid
-          rows={programAttendance}
-          columns={columns}
-          getRowId={(row) => row.id}
-          initialState={{
-            pagination: {
-              paginationModel: { page: 0, pageSize: 5 },
-            },
-          }}
-          slots={{ toolbar: GridToolbar }}
-          pageSizeOptions={[5, 10]}
-        />
+          <DataGrid
+            rows={programAttendance}
+            columns={columns}
+            getRowId={(row) => row.id}
+            initialState={{
+              pagination: {
+                paginationModel: { page: 0, pageSize: 5 },
+              },
+            }}
+            slots={{ toolbar: GridToolbar }}
+            pageSizeOptions={[5, 10]}
+          />
         )}
       </div>
-      <MemberAttendance
-        programAttendance={programAttendance}
-        programTeams={programTeams}
-        programId={programId}
-      />
-    </>
+      <div>
+        <MemberAttendance
+          programAttendance={programAttendance}
+          programTeams={programTeams}
+          programId={programId}
+        />
+      </div>
+    </div>
   );
 };
 Attendances.propTypes = {
