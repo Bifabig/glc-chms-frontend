@@ -63,8 +63,8 @@ const ChurchDetail = () => {
         <h2>Church Detail</h2>
         <Button
           onClick={handleModalOpen}
-          variant="outlined"
-          className={styles.updateBtn}
+          variant="contained"
+          // className={styles.updateBtn}
           size="small"
         >
           Update

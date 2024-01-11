@@ -18,6 +18,7 @@ import { ArrowBack } from '@mui/icons-material';
 import { fetchProgramDetail } from '../../redux/thunk';
 import UpdateProgram from './UpdateProgram';
 import Attendances from '../Attendances';
+// import styles from '../../styles/Programs.module.css';
 
 const ProgramDetail = () => {
   const { programId } = useParams();
@@ -55,12 +56,10 @@ const ProgramDetail = () => {
       <Button
         onClick={goBack}
         variant="outlined"
-        // className={styles.backBtn}
         size="medium"
         startIcon={<ArrowBack />}
       />
       <Modal
-        // className={styles.modal}
         open={modalOpen}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
@@ -90,14 +89,17 @@ const ProgramDetail = () => {
         </Box>
       </Modal>
       <div>
-        <h2>Program Detail</h2>
-        <Button
-          onClick={handleModalOpen}
-          variant="contained"
-          size="small"
-        >
-          Update
-        </Button>
+        <div>
+
+          <h2>Program Detail</h2>
+          <Button
+            onClick={handleModalOpen}
+            variant="contained"
+            size="small"
+          >
+            Update
+          </Button>
+        </div>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
