@@ -63,8 +63,8 @@ const MemberDetail = () => {
         <h2>Member Detail</h2>
         <Button
           onClick={handleModalOpen}
-          variant="outlined"
-          className={styles.updateBtn}
+          variant="contained"
+          // className={styles.updateBtn}
           size="small"
         >
           Update
@@ -73,7 +73,7 @@ const MemberDetail = () => {
           <Table sx={{ minWidth: 250, minHeight: 50 }} aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell>{memberDetail.attributes.name}</TableCell>
+                <TableCell><h3>{memberDetail.attributes.name}</h3></TableCell>
                 <TableCell align="right" sx={{ width: 300 }}><img src={memberDetail.attributes.photo_url} alt="member detail" className={styles.memberDetailImg} /></TableCell>
               </TableRow>
             </TableHead>
