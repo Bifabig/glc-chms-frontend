@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import moment from 'moment/moment';
 import {
-  Box, Button, Modal, Typography,
+  Box, Button, Modal, Typography, Chip, Avatar,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import InfoIcon from '@mui/icons-material/Info';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { getMembers, deleteMember } from '../../redux/thunk';
-import styles from '../../styles/Members.module.css';
+// import styles from '../../styles/Members.module.css';
 import NewMember from './NewMember';
 
 const Members = () => {
@@ -44,22 +44,28 @@ const Members = () => {
       width: 200,
       type: 'string',
       valueGetter: (params) => params.row.attributes.name,
-      renderCell: (valueReceived) => valueReceived.row.attributes.name,
-    },
-    {
-      field: 'photo_url',
-      headerName: 'Photo',
-      width: 80,
-      sortable: false,
-      renderCell: (params) => (
-        <img
-          src={params.row.attributes.photo_url}
-          alt={params.row.attributes.name}
-          className={styles.photo}
+      renderCell: (valueReceived) => (
+        <Chip
+          avatar={<Avatar alt="Natacha" src={valueReceived.row.attributes.photo_url} />}
+          label={valueReceived.row.attributes.name}
+          variant="outlined"
         />
       ),
-      filterable: false,
     },
+    // {
+    //   field: 'photo_url',
+    //   headerName: 'Photo',
+    //   width: 80,
+    //   sortable: false,
+    //   renderCell: (params) => (
+    //     <img
+    //       src={params.row.attributes.photo_url}
+    //       alt={params.row.attributes.name}
+    //       className={styles.photo}
+    //     />
+    //   ),
+    //   filterable: false,
+    // },
     {
       field: 'address',
       headerName: 'Address',
