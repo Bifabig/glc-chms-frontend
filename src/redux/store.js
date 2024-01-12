@@ -6,6 +6,7 @@ import churchesReducer from './reducers/churchesSlice';
 import teamsReducer from './reducers/teamsSlice';
 import programsReducer from './reducers/programsSlice';
 import attendanceReducer from './reducers/attendancesSlice';
+import authenticationReducer from '../features/authentication/authenticationSlice';
 
 const persistConfig = {
   key: 'root',
@@ -19,6 +20,7 @@ const reducer = combineReducers({
   teams: teamsReducer,
   programs: programsReducer,
   attendances: attendanceReducer,
+  auth: authenticationReducer,
 });
 
 persistConfig.storage.removeItem('persist:root');

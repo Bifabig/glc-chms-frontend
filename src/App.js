@@ -8,6 +8,8 @@ import MemberDetail from './components/Members/MemberDetail';
 import ChurchDetail from './components/Churches/ChurchDetail';
 import TeamDetail from './components/Teams/TeamDetail';
 import ProgramDetail from './components/Programs/ProgramDetail';
+import Signup from './components/Signup';
+import ConfirmationEmail from './components/EmailConfirmation';
 
 function App() {
   return (
@@ -21,6 +23,9 @@ function App() {
         <Route path="/teams/:teamId" element={<TeamDetail />} />
         <Route path="/programs" element={<Programs />} />
         <Route path="/programs/:programId" element={<ProgramDetail />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/confirmation/:confirmation_token" element={<ConfirmationEmail />} />
+        {/* <Route path="/confirmation" element={<ConfirmationEmail />} /> */}
       </Route>
     </Routes>
   );
