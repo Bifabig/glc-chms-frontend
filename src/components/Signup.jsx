@@ -26,7 +26,7 @@ const RegistrationForm = () => {
   const handleSubmitForm = (event) => {
     event.preventDefault();
     dispatch(registerUserAsync(formData));
-    navigates('/members');
+    navigates('/login');
   };
 
   return (

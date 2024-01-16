@@ -38,4 +38,35 @@ export const confirmAccountApi = (token) => {
   axiosInstance.get(`/confirmation?confirmation_token=${token}`);
 };
 
+export const loginUserApi = async (data) => {
+  const {
+    // name,
+    email, password,
+  } = data;
+  return axiosInstance.post('/login', {
+    user: {
+      // name,
+      email,
+      password,
+      // password_confirmation,
+    },
+  });
+};
+
+export const logoutUserApi = async () =>
+  // const {
+// name,
+// email, password,
+  // } = data;
+  // eslint-disable-next-line implicit-arrow-linebreak
+  axiosInstance.delete('/logout');
+  // , {
+// user: {
+// name,
+// email,
+// password,
+// password_confirmation,
+// },
+  // );
+
 export default axiosInstance;

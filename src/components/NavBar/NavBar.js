@@ -8,6 +8,7 @@ const links = [
   { path: '/teams', text: 'Teams' },
   { path: '/programs', text: 'Programs' },
   { path: '/signup', text: 'Signup' },
+  { path: '/login', text: 'Login' },
 ];
 
 const NavBar = () => (

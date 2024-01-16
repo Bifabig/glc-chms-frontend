@@ -1,7 +1,9 @@
 // authenticationSlice.js
 
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { registerUserApi, confirmAccountApi } from './authenticationApi';
+import {
+  registerUserApi, confirmAccountApi, loginUserApi, logoutUserApi,
+} from './authenticationApi';
 
 const initialState = {
   error: null,
@@ -15,6 +17,28 @@ export const registerUserAsync = createAsyncThunk(
     const response = await registerUserApi(data);
     const authToken = response.headers.authorization;
     window.localStorage.setItem('authToken', authToken);
+    return response.data;
+  },
+);
+
+export const loginUserAsync = createAsyncThunk(
+  'authentication/userSession',
+  async (data) => {
+    const response = await loginUserApi(data);
+    const authToken = response.headers.authorization;
+    window.localStorage.setItem('authToken', authToken);
+    // console.log(response);
+    return response;
+  },
+);
+
+export const logoutUserAsync = createAsyncThunk(
+  'authentication/logout',
+  async () => {
+    const response = await logoutUserApi();
+    // const authToken = response.headers.authorization;
+    // window.localStorage.setItem('authToken', authToken);
+    // console.log(response);
     return response.data;
   },
 );
@@ -40,6 +64,28 @@ const authenticationSlice = createSlice({
         state.status = 'success';
       })
       .addCase(registerUserAsync.rejected, (state) => {
+        state.status = 'failed';
+      })
+      .addCase(loginUserAsync.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(loginUserAsync.fulfilled, (state, response) => {
+        state.status = 'success';
+        console.log(response);
+        state.authToken = response.payload.headers.authorization;
+      })
+      .addCase(loginUserAsync.rejected, (state) => {
+        state.status = 'failed';
+      })
+      .addCase(logoutUserAsync.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(logoutUserAsync.fulfilled, (state) => {
+        state.status = 'success';
+        // console.log(response);
+        state.authToken = null;
+      })
+      .addCase(logoutUserAsync.rejected, (state) => {
         state.status = 'failed';
       })
       .addCase(confirmAccountAsync.pending, (state) => {
