@@ -3,11 +3,14 @@ import { Navigate, Outlet } from 'react-router-dom';
 // import Layout from './Layout';
 
 const ProtectedRoutes = () => {
-  const auth = useSelector((state) => state.auth);
-  // const auth = localStorage.getItem('authToken');
-  console.log(auth);
-  return (
-    auth.authToken !== null ? <Outlet /> : <Navigate to="/login" />
+  const { isLoading } = useSelector((state) => state.auth);
+  const auth = localStorage.getItem('authToken');
+  // console.log(status, authToken);
+  // console.log(status, authToken);
+  return isLoading ? <h2>Loading...</h2> : (
+    <div>
+      {auth && auth.length > 0 ? <Outlet /> : <Navigate to="/login" />}
+    </div>
   );
 };
 
