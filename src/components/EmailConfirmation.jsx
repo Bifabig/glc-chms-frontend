@@ -1,14 +1,12 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link, useLocation } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { confirmAccountAsync } from '../features/authentication/authenticationSlice';
 
 const ConfirmationEmail = () => {
-  const message = useSelector((state) => state.auth.message);
+  const { isLoading } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const location = useLocation();
-
-  console.log(message);
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -16,16 +14,8 @@ const ConfirmationEmail = () => {
     dispatch(confirmAccountAsync(confirmationToken));
   }, [location.search, dispatch]);
 
-  return (
-    <>
-      <section>
-        <div>
-          <Link to="/login">
-            Login
-          </Link>
-        </div>
-      </section>
-    </>
+  return isLoading ? <h2>Loading...</h2> : (
+    <Navigate to="/login" />
   );
 };
 
