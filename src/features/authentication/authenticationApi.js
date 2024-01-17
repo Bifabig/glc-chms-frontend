@@ -18,55 +18,40 @@ axiosInstance.interceptors.request.use((config) => {
   return config;
 });
 
-export const registerUserApi = async (data) => {
-  const {
-    // name,
-    email, password, password_confirmation,
-  } = data;
-  return axiosInstance.post('/signup', {
-    user: {
-      // name,
-      email,
-      password,
-      password_confirmation,
-    },
-  });
-};
+export const registerUserApi = async (user) => axiosInstance.post('/signup', user);
 
 // email confirmation
-export const confirmAccountApi = (token) => {
+export const confirmAccountApi = async (token) => {
   axiosInstance.get(`/confirmation?confirmation_token=${token}`);
 };
 
-export const loginUserApi = async (data) => {
-  const {
-    // name,
-    email, password,
-  } = data;
-  return axiosInstance.post('/login', {
-    user: {
-      // name,
-      email,
-      password,
-      // password_confirmation,
-    },
-  });
-};
-
-export const logoutUserApi = async () =>
-  // const {
+export const loginUserApi = async (data) => axiosInstance.post('/login', data);
+// const {
 // name,
 // email, password,
-  // } = data;
-  // eslint-disable-next-line implicit-arrow-linebreak
-  axiosInstance.delete('/logout');
-  // , {
+// } = data;
+// return axiosInstance.post('/login', {
 // user: {
 // name,
 // email,
 // password,
 // password_confirmation,
 // },
-  // );
+// });
+export const logoutUserApi = async (authToken) =>
+  // const {
+// name,
+// email, password,
+  // } = data;
+  // eslint-disable-next-line implicit-arrow-linebreak
+  axiosInstance.delete('/logout', { headers: authToken });
+// , {
+// user: {
+// name,
+// email,
+// password,
+// password_confirmation,
+// },
+// );
 
 export default axiosInstance;

@@ -8,26 +8,24 @@ import {
 const initialState = {
   error: null,
   status: 'idle',
+  isLoading: false,
   authToken: null,
 };
 
 export const registerUserAsync = createAsyncThunk(
   'authentication/userRegistration',
-  async (data) => {
-    const response = await registerUserApi(data);
-    const authToken = response.headers.authorization;
-    window.localStorage.setItem('authToken', authToken);
+  async (user) => {
+    const response = await registerUserApi(user);
     return response.data;
   },
 );
 
 export const loginUserAsync = createAsyncThunk(
   'authentication/userSession',
-  async (data) => {
-    const response = await loginUserApi(data);
+  async (user) => {
+    const response = await loginUserApi(user);
     const authToken = response.headers.authorization;
-    window.localStorage.setItem('authToken', authToken);
-    // console.log(response);
+    localStorage.setItem('authToken', authToken);
     return response;
   },
 );
@@ -35,10 +33,8 @@ export const loginUserAsync = createAsyncThunk(
 export const logoutUserAsync = createAsyncThunk(
   'authentication/logout',
   async () => {
-    const response = await logoutUserApi();
-    // const authToken = response.headers.authorization;
-    // window.localStorage.setItem('authToken', authToken);
-    // console.log(response);
+    const authToken = localStorage.getItem('authToken');
+    const response = await logoutUserApi(authToken);
     return response.data;
   },
 );
@@ -46,7 +42,7 @@ export const logoutUserAsync = createAsyncThunk(
 export const confirmAccountAsync = createAsyncThunk(
   'authentication/confirmAccount',
   async (token) => {
-    const response = confirmAccountApi(token);
+    const response = await confirmAccountApi(token);
     return response;
   },
 );
@@ -68,36 +64,40 @@ const authenticationSlice = createSlice({
       })
       .addCase(loginUserAsync.pending, (state) => {
         state.status = 'loading';
+        state.isLoading = true;
       })
-      .addCase(loginUserAsync.fulfilled, (state, response) => {
+      .addCase(loginUserAsync.fulfilled, (state) => {
         state.status = 'success';
-        console.log(response);
-        state.authToken = response.payload.headers.authorization;
+        state.isLoading = false;
       })
-      .addCase(loginUserAsync.rejected, (state) => {
+      .addCase(loginUserAsync.rejected, (state, action) => {
+        state.isLoading = false;
         state.status = 'failed';
+        state.error = action.error;
       })
       .addCase(logoutUserAsync.pending, (state) => {
         state.status = 'loading';
+        state.isLoading = true;
       })
       .addCase(logoutUserAsync.fulfilled, (state) => {
         state.status = 'success';
-        // console.log(response);
-        state.authToken = null;
+        state.isLoading = false;
+        localStorage.removeItem('authToken');
       })
       .addCase(logoutUserAsync.rejected, (state) => {
+        state.isLoading = false;
         state.status = 'failed';
       })
       .addCase(confirmAccountAsync.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(confirmAccountAsync.fulfilled, (state, action) => {
+        state.status = action.payload;
         state.isLoading = false;
-        state.message = action.payload;
       })
       .addCase(confirmAccountAsync.rejected, (state, action) => {
+        state.status = action.error;
         state.isLoading = false;
-        state.error = action.error;
       });
   },
 });
