@@ -7,7 +7,7 @@ const links = [
   { path: '/churches', text: 'Churches' },
   { path: '/teams', text: 'Teams' },
   { path: '/programs', text: 'Programs' },
-  { path: '/signup', text: 'Signup' },
+  { path: '/signup', text: 'Add User' },
   { path: '/login', text: 'Login' },
 ];
 

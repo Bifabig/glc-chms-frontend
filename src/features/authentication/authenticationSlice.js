@@ -8,6 +8,7 @@ import {
 const initialState = {
   error: null,
   status: 'idle',
+  user: {},
   isLoading: false,
   authToken: null,
 };
@@ -21,11 +22,12 @@ export const registerUserAsync = createAsyncThunk(
 );
 
 export const loginUserAsync = createAsyncThunk(
-  'authentication/userSession',
+  'authentication/login',
   async (user) => {
     const response = await loginUserApi(user);
     const authToken = response.headers.authorization;
     localStorage.setItem('authToken', authToken);
+    console.log(response);
     return response;
   },
 );
@@ -35,6 +37,7 @@ export const logoutUserAsync = createAsyncThunk(
   async () => {
     const authToken = localStorage.getItem('authToken');
     const response = await logoutUserApi(authToken);
+    console.log(response);
     return response.data;
   },
 );
@@ -46,6 +49,15 @@ export const confirmAccountAsync = createAsyncThunk(
     return response;
   },
 );
+
+// export const getCurrentUserAsync = createAsyncThunk(
+//   'authentication/currentUser',
+//   async () => {
+//     const response = await getCurrentUser();
+//     console.log(response);
+//     return response;
+//   },
+// );
 
 const authenticationSlice = createSlice({
   name: 'auth',
@@ -69,6 +81,8 @@ const authenticationSlice = createSlice({
       .addCase(loginUserAsync.fulfilled, (state) => {
         state.status = 'success';
         state.isLoading = false;
+        // console.log(action);
+        // state.user = payload.data.user;
       })
       .addCase(loginUserAsync.rejected, (state, action) => {
         state.isLoading = false;

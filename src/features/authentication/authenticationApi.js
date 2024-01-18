@@ -25,33 +25,12 @@ export const confirmAccountApi = async (token) => {
   axiosInstance.get(`/confirmation?confirmation_token=${token}`);
 };
 
+// User login/logout
 export const loginUserApi = async (data) => axiosInstance.post('/login', data);
-// const {
-// name,
-// email, password,
-// } = data;
-// return axiosInstance.post('/login', {
-// user: {
-// name,
-// email,
-// password,
-// password_confirmation,
-// },
-// });
-export const logoutUserApi = async (authToken) =>
-  // const {
-// name,
-// email, password,
-  // } = data;
-  // eslint-disable-next-line implicit-arrow-linebreak
-  axiosInstance.delete('/logout', { headers: authToken });
-// , {
-// user: {
-// name,
-// email,
-// password,
-// password_confirmation,
-// },
-// );
+
+export const logoutUserApi = async (authToken) => axiosInstance.delete('/logout', { headers: authToken });
+
+// current user
+// export const getCurrentUser = async () => axiosInstance.get('/current_user');
 
 export default axiosInstance;
