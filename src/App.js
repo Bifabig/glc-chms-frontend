@@ -26,11 +26,11 @@ function App() {
           <Route path="/teams/:teamId" element={<TeamDetail />} />
           <Route path="/programs" element={<Programs />} />
           <Route path="/programs/:programId" element={<ProgramDetail />} />
+          <Route path="/signup" element={<Signup />} />
         </Route>
         {/* <Route path="/confirmation" element={<ConfirmationEmail />} /> */}
       </Route>
       <Route path="/confirmation/:confirmation_token" element={<ConfirmationEmail />} />
-      <Route path="/signup" element={<Signup />} />
       <Route path="/login" element={<Login />} />
     </Routes>
   );
