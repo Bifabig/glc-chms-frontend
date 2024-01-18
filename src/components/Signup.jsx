@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 // import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  Box, Button, Checkbox, FormControlLabel, TextField, Typography,
+  Box, Button, TextField, Typography,
 } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { registerUserAsync } from '../features/authentication/authenticationSlice';
@@ -99,11 +99,6 @@ const RegistrationForm = () => {
           helperText={errors.passwordConfirmation?.message}
           margin="normal"
           sx={{ mt: 2 }}
-        />
-        <FormControlLabel
-          control={<Checkbox {...register('rememberMe')} color="primary" />}
-          label="Remember Me"
-          sx={{ mt: 1, textAlign: 'left' }}
         />
         <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
           Register
