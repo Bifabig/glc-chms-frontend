@@ -1,6 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { useDispatch, useSelector } from 'react-redux';
-// import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Box, Button, Checkbox, FormControlLabel, TextField, Typography,
@@ -11,7 +10,7 @@ import { loginUserAsync, logoutUserAsync } from '../features/authentication/auth
 const Login = () => {
   const dispatch = useDispatch();
   const navigates = useNavigate();
-  const { isLoading, error } = useSelector((state) => state.auth);
+  const { isLoading, error, user } = useSelector((state) => state.auth);
   const auth = localStorage.getItem('authToken');
   const { register, handleSubmit, formState: { errors } } = useForm();
 
@@ -52,6 +51,7 @@ const Login = () => {
             variant="contained"
             size="small"
           >
+            {user.email}
             Logout
           </Button>
         )
