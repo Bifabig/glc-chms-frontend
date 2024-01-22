@@ -12,6 +12,8 @@ import Signup from './components/Signup';
 import ConfirmationEmail from './components/EmailConfirmation';
 import Login from './components/Login';
 import ProtectedRoutes from './components/ProtectedRoutes';
+import ForgotPassword from './components/ForgotPassword';
+import ResetPassword from './components/ResetPassword';
 
 function App() {
   return (
@@ -32,6 +34,8 @@ function App() {
       </Route>
       <Route path="/confirmation/:confirmation_token" element={<ConfirmationEmail />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/forgotPassword" element={<ForgotPassword />} />
+      <Route path="/password/:reset_password_token" element={<ResetPassword />} />
     </Routes>
   );
 }

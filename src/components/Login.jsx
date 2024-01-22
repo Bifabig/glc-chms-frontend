@@ -108,7 +108,7 @@ const Login = () => {
               Login
             </Button>
             <Box sx={{ mt: 2, textAlign: 'center' }}>
-              <Button onClick={() => navigates('/')} variant="body2">
+              <Button onClick={() => navigates('/forgotPassword')} variant="body2">
                 Forgot Password?
               </Button>
               <Box mt={1}>
