@@ -2,7 +2,12 @@
 
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import {
-  registerUserApi, confirmAccountApi, loginUserApi, logoutUserApi,
+  registerUserApi,
+  confirmAccountApi,
+  loginUserApi,
+  logoutUserApi,
+  resetPasswordApi,
+  forgotPasswordApi,
 } from './authenticationApi';
 
 const initialState = {
@@ -27,7 +32,7 @@ export const loginUserAsync = createAsyncThunk(
     const response = await loginUserApi(user);
     const authToken = response.headers.authorization;
     localStorage.setItem('authToken', authToken);
-    console.log(response);
+    // console.log(response);
     return response;
   },
 );
@@ -37,7 +42,7 @@ export const logoutUserAsync = createAsyncThunk(
   async () => {
     const authToken = localStorage.getItem('authToken');
     const response = await logoutUserApi(authToken);
-    console.log(response);
+    // console.log(response);
     return response.data;
   },
 );
@@ -47,6 +52,25 @@ export const confirmAccountAsync = createAsyncThunk(
   async (token) => {
     const response = await confirmAccountApi(token);
     return response;
+  },
+);
+
+export const forgotPasswordAsync = createAsyncThunk(
+  'authentication/forgotPassword',
+  async (user) => {
+    const response = await forgotPasswordApi(user);
+    // const authToken = response.headers.authorization;
+    // localStorage.setItem('authToken', authToken);
+    // console.log(response);
+    return response;
+  },
+);
+
+export const resetPasswordAsync = createAsyncThunk(
+  'authentication/resetPassword',
+  async ({ password, resetPasswordToken }) => {
+    const response = await resetPasswordApi({ password, resetPasswordToken });
+    return response.data;
   },
 );
 
@@ -112,6 +136,36 @@ const authenticationSlice = createSlice({
       .addCase(confirmAccountAsync.rejected, (state, action) => {
         state.status = action.error;
         state.isLoading = false;
+      })
+      .addCase(forgotPasswordAsync.pending, (state) => {
+        state.status = 'loading';
+        state.isLoading = true;
+      })
+      .addCase(forgotPasswordAsync.fulfilled, (state) => {
+        state.status = 'success';
+        state.isLoading = false;
+        // console.log(action);
+        // state.user = payload.data.user;
+      })
+      .addCase(forgotPasswordAsync.rejected, (state, action) => {
+        state.isLoading = false;
+        state.status = 'failed';
+        state.error = action.error;
+      })
+      .addCase(resetPasswordAsync.pending, (state) => {
+        state.status = 'loading';
+        state.isLoading = true;
+      })
+      .addCase(resetPasswordAsync.fulfilled, (state) => {
+        state.status = 'success';
+        state.isLoading = false;
+        // console.log(payload);
+        // state.user = payload.data.user;
+      })
+      .addCase(resetPasswordAsync.rejected, (state, action) => {
+        state.isLoading = false;
+        state.status = 'failed';
+        state.error = action.error;
       });
   },
 });
