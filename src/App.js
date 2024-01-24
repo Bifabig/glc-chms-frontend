@@ -14,6 +14,7 @@ import Login from './components/Login';
 import ProtectedRoutes from './components/ProtectedRoutes';
 import ForgotPassword from './components/ForgotPassword';
 import ResetPassword from './components/ResetPassword';
+import Calendar from './components/Calendar';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <Route path="/teams" element={<Teams />} />
           <Route path="/teams/:teamId" element={<TeamDetail />} />
           <Route path="/programs" element={<Programs />} />
+          <Route path="/calendar" element={<Calendar />} />
           <Route path="/programs/:programId" element={<ProgramDetail />} />
           <Route path="/signup" element={<Signup />} />
         </Route>

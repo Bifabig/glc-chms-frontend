@@ -7,8 +7,9 @@ const links = [
   { path: '/churches', text: 'Churches' },
   { path: '/teams', text: 'Teams' },
   { path: '/programs', text: 'Programs' },
+  { path: '/calendar', text: 'Calendar' },
   { path: '/signup', text: 'Add User' },
-  { path: '/login', text: 'Login' },
+  { path: '/login', text: 'Account' },
 ];
 
 const NavBar = () => (
@@ -30,9 +31,6 @@ const NavBar = () => (
           </li>
         ))}
       </ul>
-    </div>
-    <div>
-      <h3>Logout</h3>
     </div>
   </nav>
 );
