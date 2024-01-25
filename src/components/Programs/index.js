@@ -2,11 +2,18 @@ import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  Box, Button, Modal, Typography,
+  Box, Button, Modal, Typography, List, ListItem, ListItemText,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import InfoIcon from '@mui/icons-material/Info';
-import { Link } from 'react-router-dom';
+import { green } from '@mui/material/colors';
+import FullCalendar from '@fullcalendar/react';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import interactionPlugin from '@fullcalendar/interaction';
+import listPlugin from '@fullcalendar/list';
+import { formatDate } from '@fullcalendar/core';
+import { Link, useNavigate } from 'react-router-dom';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import { deleteProgram, getPrograms } from '../../redux/thunk';
 import NewProgram from './NewProgram';
@@ -18,11 +25,20 @@ const Programs = () => {
   } = useSelector((store) => store.programs);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const handleModalOpen = () => setModalOpen(true);
   const handleModalClose = () => setModalOpen(false);
   const handleDeleteProgram = (e, id) => {
     e.stopPropagation();
     dispatch(deleteProgram(id));
+  };
+
+  const handleEventClick = (e) => {
+    // console.log(e.event._def.publicId);
+    // e.stopPropagation();
+    // dispatch(deleteProgram(id));
+    // eslint-disable-next-line no-underscore-dangle
+    navigate(`/programs/${e.event._def.publicId}`);
   };
 
   const columns = [
@@ -166,6 +182,72 @@ const Programs = () => {
             checkboxSelection
           />
         </div>
+        <Box m="20px">
+          Calendar
+          <Box display="flex" justifyContent="space-between">
+            {/* Calendar Sidebar */}
+            <Box flex="1 1 20%" backgroundColor="grey" p="15px" borderRadius="4px">
+              <Typography variant="h5">
+                Events
+              </Typography>
+
+              <List>
+                {/* {currentEvents.map((event) => ( */}
+                {programs.data.map((event) => (
+                  <ListItem key={event.attributes.id} sx={{ backgroundColor: green, margin: '10px 0', borderRadius: '2px' }}>
+                    <ListItemText
+                      primary={event.attributes.name}
+                      secondary={(
+                        <Typography>
+                          {formatDate(event.attributes.date, {
+                            year: 'numeric',
+                            month: 'short',
+                            day: 'numeric',
+                          })}
+
+                        </Typography>
+                  )}
+                    />
+                  </ListItem>
+                ))}
+              </List>
+            </Box>
+            {/* Calendar */}
+            <Box flex="1 1 100%" ml="15px">
+              <FullCalendar
+                height="75vh"
+                plugins={[
+                  dayGridPlugin,
+                  timeGridPlugin,
+                  interactionPlugin,
+                  listPlugin,
+                ]}
+                headerToolbar={{
+                  left: 'prev,next today',
+                  center: 'title',
+                  right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth',
+                }}
+                initialView="dayGridMonth"
+                editable
+                selectable
+                selectMirror
+                dayMaxEvents
+                // select={handleDateClick}
+                select={handleModalOpen}
+                // eventClick={handleEventClick}
+                eventClick={(event) => handleEventClick(event)}
+                // eventsSet={(event) => setCurrentEvents(event)}
+                initialEvents={programs.data.map((program) => (
+                  {
+                    id: program.attributes.id,
+                    title: program.attributes.name,
+                    date: program.attributes.date,
+                  }
+                ))}
+              />
+            </Box>
+          </Box>
+        </Box>
       </div>
     );
 };
