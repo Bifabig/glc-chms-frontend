@@ -1,11 +1,16 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import NavBar from './NavBar/NavBar';
+import Topbar from './TopBar';
 
 const Layout = () => (
-  <div className="wrapper">
+  <div className="app">
     <NavBar />
-    <Outlet />
+    <main className="content">
+      <Topbar />
+      <Outlet />
+    </main>
+
   </div>
 );
 
