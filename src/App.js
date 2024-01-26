@@ -17,6 +17,7 @@ import ForgotPassword from './components/ForgotPassword';
 import ResetPassword from './components/ResetPassword';
 import Calendar from './components/Calendar';
 import { ColorModeContext, useMode } from './theme';
+import Dashboard from './components/Dashboard';
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -28,6 +29,7 @@ function App() {
         <Routes>
           <Route element={<ProtectedRoutes />}>
             <Route path="/" element={<Layout />}>
+              <Route index element={<Dashboard />} />
               <Route path="/members" element={<Members />} />
               <Route path="/members/:memberId" element={<MemberDetail />} />
               <Route path="/churches" element={<Churches />} />
