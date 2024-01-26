@@ -2,11 +2,10 @@ import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  Box, Button, Modal, Typography, List, ListItem, ListItemText,
+  Box, Button, Modal, Typography, List, ListItem, ListItemText, useTheme,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import InfoIcon from '@mui/icons-material/Info';
-import { green } from '@mui/material/colors';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -17,9 +16,15 @@ import { Link, useNavigate } from 'react-router-dom';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import { deleteProgram, getPrograms } from '../../redux/thunk';
 import NewProgram from './NewProgram';
+import { tokens } from '../../theme';
+import Header from '../Header';
 
 const Programs = () => {
   const [modalOpen, setModalOpen] = useState(false);
+
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+
   const {
     programs, isLoading, error, errorMsg,
   } = useSelector((store) => store.programs);
@@ -45,7 +50,6 @@ const Programs = () => {
     {
       field: 'id',
       headerName: 'ID',
-      width: 70,
       type: 'number',
       renderCell: (params) => (
         params.row.attributes.id
@@ -55,7 +59,7 @@ const Programs = () => {
     {
       field: 'name',
       headerName: 'Name',
-      width: 200,
+      flex: 1,
       type: 'string',
       valueGetter: (params) => params.row.attributes.name,
       renderCell: (valueReceived) => valueReceived.row.attributes.name,
@@ -63,7 +67,7 @@ const Programs = () => {
     {
       field: 'attendance_taker',
       headerName: 'Attendance Taker',
-      width: 200,
+      flex: 1,
       type: 'string',
       valueGetter: (params) => (params.row.attributes.attendance_taker),
       renderCell: (valueReceived) => {
@@ -77,7 +81,7 @@ const Programs = () => {
       field: 'date',
       headerName: 'Date',
       type: 'Date',
-      width: 130,
+      flex: 1,
       valueGetter: (params) => moment(params.row.attributes.date).format('YYYY/MM/DD'),
       renderCell: (params) => moment(params.row.attributes.date).format('DD/MM/YYYY'),
     },
@@ -85,34 +89,43 @@ const Programs = () => {
       field: 'detail',
       headerName: '',
       sortable: false,
-      width: 100,
+      flex: 1,
       renderCell: (params) => (
-        <Link to={`/programs/${params.row.attributes.id}`}>
-          <Button
-            variant="contained"
-            size="small"
-            startIcon={<InfoIcon />}
-          >
-            Detail
-          </Button>
-        </Link>
+        <Box>
+          <Link to={`/programs/${params.row.attributes.id}`}>
+            <Button
+              variant="contained"
+              size="small"
+              startIcon={<InfoIcon />}
+              sx={{ background: colors.greenAccent[700], ':hover': { background: colors.greenAccent[600] } }}
+            >
+              <Typography>
+                Detail
+              </Typography>
+            </Button>
+          </Link>
+        </Box>
       ),
     },
     {
       field: 'delete',
       headerName: '',
       sortable: false,
-      width: 110,
+      flex: 1,
       renderCell: (params) => (
-        <Button
-          variant="contained"
-          sx={{ color: 'white', background: 'red', ':hover': { color: 'red', background: 'white' } }}
-          size="small"
-          startIcon={<DeleteIcon />}
-          onClick={(e) => handleDeleteProgram(e, params.row.attributes.id)}
-        >
-          Delete
-        </Button>
+        <Box>
+          <Button
+            variant="contained"
+            size="small"
+            startIcon={<DeleteIcon />}
+            sx={{ background: colors.redAccent[600], ':hover': { background: colors.redAccent[500] } }}
+            onClick={(e) => handleDeleteProgram(e, params.id)}
+          >
+            <Typography>
+              Delete
+            </Typography>
+          </Button>
+        </Box>
       ),
     },
   ];
@@ -134,9 +147,17 @@ const Programs = () => {
 
   return isLoading ? <h2>Loading...</h2>
     : (
-      <div>
-        <h2>Programs</h2>
-        <Button onClick={handleModalOpen} variant="contained">Add Program</Button>
+      <Box p={2}>
+        <Header title="Programs" subtitle="List of programs in a church" />
+        <Button
+          onClick={handleModalOpen}
+          variant="contained"
+          sx={{ background: colors.greenAccent[700], ':hover': { background: colors.greenAccent[600] } }}
+        >
+          <Typography>
+            Add Program
+          </Typography>
+        </Button>
         <Modal
           open={modalOpen}
           aria-labelledby="modal-modal-title"
@@ -167,7 +188,35 @@ const Programs = () => {
             </Typography>
           </Box>
         </Modal>
-        <div style={{ height: 400, width: '100%' }}>
+        <Box
+          m="40px 0 0 0"
+          height="75vh"
+          sx={{
+            '& .MuiDataGrid-root': {
+              border: 'none',
+            },
+            '& .MuiDataGrid-cell': {
+              borderBottom: 'none',
+            },
+            '& .name-column--cell': {
+              color: colors.greenAccent[300],
+            },
+            '& .MuiDataGrid-columnHeaders': {
+              backgroundColor: colors.blueAccent[700],
+              borderBottom: 'none',
+            },
+            '& .MuiDataGrid-virtualScroller': {
+              backgroundColor: colors.primary[400],
+            },
+            '& .MuiDataGrid-footerContainer': {
+              borderTop: 'none',
+              backgroundColor: colors.blueAccent[700],
+            },
+            '& .MuiDataGrid-toolbarContainer .MuiButton-text': {
+              color: `${colors.grey[100]} !important`,
+            },
+          }}
+        >
           <DataGrid
             rows={programs?.data}
             columns={columns}
@@ -181,20 +230,18 @@ const Programs = () => {
             pageSizeOptions={[5, 10]}
             checkboxSelection
           />
-        </div>
+        </Box>
         <Box m="20px">
-          Calendar
           <Box display="flex" justifyContent="space-between">
             {/* Calendar Sidebar */}
-            <Box flex="1 1 20%" backgroundColor="grey" p="15px" borderRadius="4px">
+            <Box flex="1 1 20%" backgroundColor={colors.primary[400]} p="15px" borderRadius="4px">
               <Typography variant="h5">
                 Events
               </Typography>
 
               <List>
-                {/* {currentEvents.map((event) => ( */}
                 {programs.data.map((event) => (
-                  <ListItem key={event.attributes.id} sx={{ backgroundColor: green, margin: '10px 0', borderRadius: '2px' }}>
+                  <ListItem key={event.attributes.id} sx={{ backgroundColor: colors.greenAccent[500], margin: '10px 0', borderRadius: '2px' }}>
                     <ListItemText
                       primary={event.attributes.name}
                       secondary={(
@@ -248,7 +295,7 @@ const Programs = () => {
             </Box>
           </Box>
         </Box>
-      </div>
+      </Box>
     );
 };
 
