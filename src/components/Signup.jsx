@@ -3,12 +3,17 @@ import { useDispatch } from 'react-redux';
 // import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  Box, Button, TextField, Typography,
+  Box, Button, TextField, useTheme,
 } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { registerUserAsync } from '../features/authentication/authenticationSlice';
+import { tokens } from '../theme';
+import Header from './Header';
 
 const RegistrationForm = () => {
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+
   const dispatch = useDispatch();
   const navigates = useNavigate();
   const { register, handleSubmit, formState: { errors } } = useForm();
@@ -40,7 +45,7 @@ const RegistrationForm = () => {
   };
 
   return (
-    <div>
+    <Box p={2}>
       <Box
         component="form"
         onSubmit={handleSubmit(onSubmit)}
@@ -50,13 +55,10 @@ const RegistrationForm = () => {
           padding: '20px',
           borderRadius: '8px',
           boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
-          backgroundColor: 'white',
+          // backgroundColor: 'white',
         }}
       >
-
-        <Typography variant="h5" component="div" sx={{ mb: 2 }}>
-          REGISTER
-        </Typography>
+        <Header title="Register User" subtitle="Register a new user" />
         <TextField
           fullWidth
           label="email"
@@ -87,12 +89,12 @@ const RegistrationForm = () => {
         <TextField
           fullWidth
           type="password"
-          label="passwordConfirmation"
+          label="password confirmation"
           {...register('passwordConfirmation', {
-            required: 'passwordConfirmation is required',
+            required: 'password confirmation is required',
             minLength: {
               value: 6,
-              message: 'passwordConfirmation must be at least 6 characters',
+              message: 'password confirmation must be at least 6 characters',
             },
           })}
           error={Boolean(errors.passwordConfirmation)}
@@ -100,7 +102,13 @@ const RegistrationForm = () => {
           margin="normal"
           sx={{ mt: 2 }}
         />
-        <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          fullWidth
+          sx={{ background: colors.greenAccent[700], ':hover': { background: colors.greenAccent[600] }, mt: 2 }}
+        >
           Register
         </Button>
         <Box sx={{ mt: 2, textAlign: 'center' }}>
@@ -111,7 +119,7 @@ const RegistrationForm = () => {
           </Box>
         </Box>
       </Box>
-    </div>
+    </Box>
   );
 };
 
