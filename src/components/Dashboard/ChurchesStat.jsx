@@ -47,7 +47,7 @@ const ChurchesStat = () => {
         increase="+21%"
         icon={(
           <Church
-            sx={{ color: colors.greenAccent[600], fontSize: '26px' }}
+            sx={{ color: colors.orangeAccent[600], fontSize: '26px' }}
           />
             )}
       />

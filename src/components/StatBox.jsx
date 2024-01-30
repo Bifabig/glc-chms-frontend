@@ -29,8 +29,8 @@ const StatBox = ({
       </Box>
 
       <Box display="flex" justifyContent="space-between">
-        <Typography variant="h7" sx={{ color: colors.greenAccent[500] }}>{subtitle}</Typography>
-        <Typography variant="h7" fontStyle="italic" sx={{ color: colors.greenAccent[600] }}>{increase}</Typography>
+        <Typography variant="h7" sx={{ color: colors.orangeAccent[500] }}>{subtitle}</Typography>
+        <Typography variant="h7" fontStyle="italic" sx={{ color: colors.orangeAccent[600] }}>{increase}</Typography>
       </Box>
     </Box>
   );
