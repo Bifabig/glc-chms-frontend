@@ -18,22 +18,6 @@ const RegistrationForm = () => {
   const navigates = useNavigate();
   const { register, handleSubmit, formState: { errors } } = useForm();
 
-  // const [formData, setFormData] = useState({
-  //   name: '',
-  //   email: '',
-  //   password: '',
-  //   passwordConfirmation: '',
-  //   type: '',
-  // });
-
-  // const handleInputChange = (event) => {
-  //   const { name, value } = event.target;
-  //   setFormData({
-  //     ...formData,
-  //     [name]: value,
-  //   });
-  // };
-
   const onSubmit = (data) => {
     // event.preventDefault();
     const user = new FormData();
@@ -55,7 +39,6 @@ const RegistrationForm = () => {
           padding: '20px',
           borderRadius: '8px',
           boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
-          // backgroundColor: 'white',
         }}
       >
         <Header title="Register User" subtitle="Register a new user" />
@@ -69,6 +52,16 @@ const RegistrationForm = () => {
           error={Boolean(errors.email)}
           helperText={errors.email?.message}
           margin="normal"
+          sx={{
+            '& label.Mui-focused': {
+              color: colors.orangeAccent[500],
+            },
+            '& .MuiOutlinedInput-root': {
+              '&.Mui-focused fieldset': {
+                borderColor: colors.orangeAccent[500],
+              },
+            },
+          }}
         />
         <TextField
           fullWidth
@@ -84,7 +77,16 @@ const RegistrationForm = () => {
           error={Boolean(errors.password)}
           helperText={errors.password?.message}
           margin="normal"
-          sx={{ mt: 2 }}
+          sx={{
+            '& label.Mui-focused': {
+              color: colors.orangeAccent[500],
+            },
+            '& .MuiOutlinedInput-root': {
+              '&.Mui-focused fieldset': {
+                borderColor: colors.orangeAccent[500],
+              },
+            },
+          }}
         />
         <TextField
           fullWidth
@@ -100,7 +102,16 @@ const RegistrationForm = () => {
           error={Boolean(errors.passwordConfirmation)}
           helperText={errors.passwordConfirmation?.message}
           margin="normal"
-          sx={{ mt: 2 }}
+          sx={{
+            '& label.Mui-focused': {
+              color: colors.orangeAccent[500],
+            },
+            '& .MuiOutlinedInput-root': {
+              '&.Mui-focused fieldset': {
+                borderColor: colors.orangeAccent[500],
+              },
+            },
+          }}
         />
         <Button
           type="submit"
