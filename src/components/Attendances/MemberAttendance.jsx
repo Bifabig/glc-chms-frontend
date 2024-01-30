@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import {
-  Button, Modal, Box, Typography, Avatar, Chip,
+  Button, Modal, Box, Typography, Avatar, Chip, useTheme,
 } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
 import BeenhereIcon from '@mui/icons-material/Beenhere';
@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { createAttendance, getMembers } from '../../redux/thunk';
-// import styles from '../../styles/Attendances.module.css';
+import { tokens } from '../../theme';
 
 const MemberAttendance = ({
   programAttendance, programTeams, programId,
@@ -22,6 +22,9 @@ const MemberAttendance = ({
   const [modalOpen, setModalOpen] = useState(false);
   const [attendanceData, setAttendanceData] = useState({});
   const dispatch = useDispatch();
+
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
 
   const form = useForm();
   const {
@@ -67,7 +70,7 @@ const MemberAttendance = ({
     {
       field: 'name',
       headerName: 'Name',
-      width: 200,
+      flex: 1,
       type: 'string',
       valueGetter: (params) => params.row.attributes.name,
       renderCell: (valueReceived) => (
@@ -78,24 +81,10 @@ const MemberAttendance = ({
         />
       ),
     },
-    // {
-    //   field: 'photo_url',
-    //   headerName: 'Photo',
-    //   width: 80,
-    //   sortable: false,
-    //   renderCell: (params) => (
-    //     <img
-    //       src={params.row.attributes.photo_url}
-    //       alt={params.row.attributes.name}
-    //       // className={styles.photo}
-    //     />
-    //   ),
-    //   filterable: false,
-    // },
     {
       field: 'phone_number',
       headerName: 'Phone Number',
-      width: 140,
+      flex: 1,
       sortable: false,
       valueGetter: (params) => params.row.attributes.phone_number,
       renderCell: (params) => (
@@ -106,38 +95,48 @@ const MemberAttendance = ({
       field: 'detail',
       headerName: '',
       sortable: false,
-      width: 100,
+      flex: 1,
       renderCell: (params) => (
-        <Link to={`/members/${params.row.attributes.id}`}>
-          <Button
-            variant="contained"
-            size="small"
-            startIcon={<InfoIcon />}
-          >
-            Detail
-          </Button>
-        </Link>
+        <Box>
+          <Link to={`/members/${params.row.attributes.id}`}>
+            <Button
+              variant="contained"
+              size="small"
+              startIcon={<InfoIcon />}
+              sx={{ background: colors.greenAccent[700], ':hover': { background: colors.greenAccent[600] } }}
+            >
+              <Typography variant="h8">
+                Detail
+              </Typography>
+            </Button>
+          </Link>
+        </Box>
       ),
     },
     {
       field: 'present',
       headerName: '',
       sortable: false,
-      width: 100,
+      flex: 1,
       renderCell: (params) => (
         programAttendance.some(
           (attendance) => attendance.attributes.member_name === params.row.attributes.name,
         )
           ? (<BeenhereIcon color="success" />)
           : (
-            <Button
-              variant="contained"
-              size="small"
-              color="success"
-              onClick={(e) => handleAttendancePresent(e, params)}
-            >
-              Present
-            </Button>
+
+            <Box>
+              <Button
+                variant="contained"
+                size="small"
+                onClick={(e) => handleAttendancePresent(e, params)}
+                sx={{ background: colors.greenAccent[600], ':hover': { background: colors.greenAccent[500] } }}
+              >
+                <Typography variant="h8">
+                  Present
+                </Typography>
+              </Button>
+            </Box>
           )
       ),
     },
@@ -145,21 +144,25 @@ const MemberAttendance = ({
       field: 'permission',
       headerName: '',
       sortable: false,
-      width: 100,
+      flex: 1,
       renderCell: (params) => (
         programAttendance.some(
           (attendance) => attendance.attributes.member_name === params.row.attributes.name,
         )
           ? ''
           : (
-            <Button
-              variant="contained"
-              size="small"
-              color="secondary"
-              onClick={() => handleModalOpen(params)}
-            >
-              Permission
-            </Button>
+            <Box>
+              <Button
+                variant="contained"
+                size="small"
+                onClick={() => handleModalOpen(params)}
+                sx={{ background: colors.blueAccent[600], ':hover': { background: colors.blueAccent[500] } }}
+              >
+                <Typography variant="h8">
+                  Permission
+                </Typography>
+              </Button>
+            </Box>
           )
       ),
     },
@@ -167,21 +170,26 @@ const MemberAttendance = ({
       field: 'absent',
       headerName: '',
       sortable: false,
-      width: 100,
+      flex: 1,
       renderCell: (params) => (
+
         programAttendance.some(
           (attendance) => attendance.attributes.member_name === params.row.attributes.name,
         )
           ? ''
           : (
-            <Button
-              variant="contained"
-              size="small"
-              color="error"
-              onClick={() => handleModalOpen(params)}
-            >
-              Absent
-            </Button>
+            <Box>
+              <Button
+                variant="contained"
+                size="small"
+                onClick={() => handleModalOpen(params)}
+                sx={{ background: colors.redAccent[600], ':hover': { background: colors.redAccent[500] } }}
+              >
+                <Typography variant="h8">
+                  Absent
+                </Typography>
+              </Button>
+            </Box>
           )
       ),
     },
@@ -205,7 +213,7 @@ const MemberAttendance = ({
   return isLoading ? (
     <h2>Loading...</h2>
   ) : (
-    <div>
+    <Box>
       <Modal
         open={modalOpen}
         aria-labelledby="modal-modal-title"
@@ -260,30 +268,61 @@ const MemberAttendance = ({
           </Typography>
         </Box>
       </Modal>
-      <div>
-        <h2>Members</h2>
-        {members.data && (
-        <DataGrid
-          rows={members.data.filter(
-            (memberTeam) => programTeams.some(
-              (programTeam) => memberTeam.relationships.teams.data.some(
-                (data) => data.id === programTeam.id,
-              ),
-            ),
-          )}
-          columns={columns}
-          getRowId={(row) => row.id}
-          initialState={{
-            pagination: {
-              paginationModel: { page: 0, pageSize: 5 },
+      <Box>
+        <Box m="20px 0">
+          <Typography variant="h5">Attendees</Typography>
+          <Typography variant="h6" sx={{ color: colors.greenAccent[400] }}>List of expected people at the program</Typography>
+        </Box>
+        <Box
+          sx={{
+            '& .MuiDataGrid-root': {
+              border: 'none',
+            },
+            '& .MuiDataGrid-cell': {
+              borderBottom: 'none',
+            },
+            '& .name-column--cell': {
+              color: colors.greenAccent[300],
+            },
+            '& .MuiDataGrid-columnHeaders': {
+              backgroundColor: colors.blueAccent[700],
+              borderBottom: 'none',
+            },
+            '& .MuiDataGrid-virtualScroller': {
+              backgroundColor: colors.primary[400],
+            },
+            '& .MuiDataGrid-footerContainer': {
+              borderTop: 'none',
+              backgroundColor: colors.blueAccent[700],
+            },
+            '& .MuiDataGrid-toolbarContainer .MuiButton-text': {
+              color: `${colors.grey[100]} !important`,
             },
           }}
-          slots={{ toolbar: GridToolbar }}
-          pageSizeOptions={[5, 10]}
-        />
-        )}
-      </div>
-    </div>
+        >
+          {members.data && (
+          <DataGrid
+            rows={members.data.filter(
+              (memberTeam) => programTeams.some(
+                (programTeam) => memberTeam.relationships.teams.data.some(
+                  (data) => data.id === programTeam.id,
+                ),
+              ),
+            )}
+            columns={columns}
+            getRowId={(row) => row.id}
+            initialState={{
+              pagination: {
+                paginationModel: { page: 0, pageSize: 5 },
+              },
+            }}
+            slots={{ toolbar: GridToolbar }}
+            pageSizeOptions={[5, 10]}
+          />
+          )}
+        </Box>
+      </Box>
+    </Box>
   );
 };
 

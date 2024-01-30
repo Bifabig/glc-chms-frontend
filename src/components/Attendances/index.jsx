@@ -2,13 +2,18 @@ import React from 'react';
 import moment from 'moment';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import {
-  Chip, Stack,
+  Box,
+  Chip, Stack, Typography, useTheme,
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import MemberAttendance from './MemberAttendance';
+import { tokens } from '../../theme';
 // import styles from '../../styles/Attendances.module.css';
 
 const Attendances = ({ programAttendance, programTeams, programId }) => {
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+
   const columns = [
     {
       field: 'id',
@@ -82,10 +87,40 @@ const Attendances = ({ programAttendance, programTeams, programId }) => {
   ];
 
   return (
-    <div>
-      <div>
-        <h2>Attendance</h2>
-        {programAttendance && (
+    <Box>
+      <Box>
+        <Box m="20px 0">
+
+          <Typography variant="h5">Attendance</Typography>
+          <Typography variant="h6" sx={{ color: colors.greenAccent[400] }}>Attendance List</Typography>
+        </Box>
+        <Box sx={{
+          '& .MuiDataGrid-root': {
+            border: 'none',
+          },
+          '& .MuiDataGrid-cell': {
+            borderBottom: 'none',
+          },
+          '& .name-column--cell': {
+            color: colors.greenAccent[300],
+          },
+          '& .MuiDataGrid-columnHeaders': {
+            backgroundColor: colors.blueAccent[700],
+            borderBottom: 'none',
+          },
+          '& .MuiDataGrid-virtualScroller': {
+            backgroundColor: colors.primary[400],
+          },
+          '& .MuiDataGrid-footerContainer': {
+            borderTop: 'none',
+            backgroundColor: colors.blueAccent[700],
+          },
+          '& .MuiDataGrid-toolbarContainer .MuiButton-text': {
+            color: `${colors.grey[100]} !important`,
+          },
+        }}
+        >
+          {programAttendance && (
           <DataGrid
             rows={programAttendance}
             columns={columns}
@@ -98,16 +133,17 @@ const Attendances = ({ programAttendance, programTeams, programId }) => {
             slots={{ toolbar: GridToolbar }}
             pageSizeOptions={[5, 10]}
           />
-        )}
-      </div>
-      <div>
+          )}
+        </Box>
+      </Box>
+      <Box>
         <MemberAttendance
           programAttendance={programAttendance}
           programTeams={programTeams}
           programId={programId}
         />
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 Attendances.propTypes = {
