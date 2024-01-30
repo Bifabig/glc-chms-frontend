@@ -17,7 +17,7 @@ const Header = ({ title, subtitle }) => {
       </Typography>
       <Typography
         variant="h6"
-        color={colors.greenAccent[400]}
+        color={colors.orangeAccent[400]}
       >
         {subtitle}
       </Typography>
