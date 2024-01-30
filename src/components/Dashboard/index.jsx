@@ -61,7 +61,7 @@ const Dashboard = () => {
             increase="+5%"
             icon={(
               <PersonAdd
-                sx={{ color: colors.greenAccent[600], fontSize: '26px' }}
+                sx={{ color: colors.orangeAccent[600], fontSize: '26px' }}
               />
             )}
           />
@@ -80,7 +80,7 @@ const Dashboard = () => {
             increase="+21%"
             icon={(
               <Traffic
-                sx={{ color: colors.greenAccent[600], fontSize: '26px' }}
+                sx={{ color: colors.orangeAccent[600], fontSize: '26px' }}
               />
             )}
           />
@@ -88,7 +88,7 @@ const Dashboard = () => {
 
         {/* ROW 2 */}
         <Box
-          gridColumn="span 8"
+          gridColumn="span 6"
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
         >
@@ -101,14 +101,14 @@ const Dashboard = () => {
           >
             <Box>
               <Typography variant="h5" fontWeight="600" color={colors.grey[100]}>Revenue</Typography>
-              <Typography variant="h3" fontWeight="bold" color={colors.greenAccent[500]}>$55,555,666</Typography>
+              <Typography variant="h3" fontWeight="bold" color={colors.orangeAccent[500]}>$55,555,666</Typography>
             </Box>
             <Box>
               <IconButton>
                 <DownloadOutlined
                   sx={{
                     fontSize: '26px',
-                    color: colors.greenAccent[500],
+                    color: colors.orangeAccent[500],
                   }}
                 />
               </IconButton>

@@ -32,7 +32,7 @@ const ProgramStat = () => {
   return isLoading ? <h2>Loading...</h2>
     : (
       <Box
-        gridColumn="span 4"
+        gridColumn="span 6"
         gridRow="span 2"
         backgroundColor={colors.primary[400]}
         overflow="auto"
@@ -64,7 +64,7 @@ const ProgramStat = () => {
           >
             <Box>
               <Typography
-                color={colors.greenAccent[500]}
+                color={colors.orangeAccent[500]}
                 variant="h5"
                 fontWeight="600"
               >
@@ -82,7 +82,7 @@ const ProgramStat = () => {
               {program.attributes.date}
             </Box>
             <Box
-              backgroundColor={colors.greenAccent[500]}
+              backgroundColor={colors.orangeAccent[500]}
               p="5px 10px"
               borderRadius="4px"
             >

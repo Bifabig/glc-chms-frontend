@@ -47,7 +47,7 @@ const MembersStat = () => {
         increase="+14%"
         icon={(
           <PersonAdd
-            sx={{ color: colors.greenAccent[600], fontSize: '26px' }}
+            sx={{ color: colors.orangeAccent[600], fontSize: '26px' }}
           />
             )}
       />

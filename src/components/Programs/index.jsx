@@ -241,7 +241,7 @@ const Programs = () => {
 
               <List>
                 {programs.data.map((event) => (
-                  <ListItem key={event.attributes.id} sx={{ backgroundColor: colors.greenAccent[500], margin: '10px 0', borderRadius: '2px' }}>
+                  <ListItem key={event.attributes.id} sx={{ backgroundColor: colors.orangeAccent[600], margin: '10px 0', borderRadius: '2px' }}>
                     <ListItemText
                       primary={event.attributes.name}
                       secondary={(

@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
-// import { NavLink } from 'react-router-dom';
 import {
   Avatar,
   Box, IconButton, Typography, useTheme,
 } from '@mui/material';
 import {
   AddOutlined,
-  CalendarMonthOutlined,
   ChurchOutlined,
   EventOutlined,
   HomeOutlined,
@@ -17,10 +15,8 @@ import {
 import {
   Menu, MenuItem, Sidebar, sidebarClasses,
 } from 'react-pro-sidebar';
-// import styles from '../../styles/NavBar.module.css';
 import { tokens } from '../../theme';
 import Item from './Item';
-// import 'react-pro-sidebar/dist/styles/';
 
 const links = [
   { path: '/', text: 'Dashboard', icon: <HomeOutlined /> },
@@ -28,9 +24,7 @@ const links = [
   { path: '/churches', text: 'Churches', icon: <ChurchOutlined /> },
   { path: '/teams', text: 'Teams', icon: <PeopleOutlined /> },
   { path: '/programs', text: 'Programs', icon: <EventOutlined /> },
-  { path: '/calendar', text: 'Calendar', icon: <CalendarMonthOutlined /> },
   { path: '/signup', text: 'Add User', icon: <AddOutlined /> },
-  { path: '/login', text: 'Account', icon: <Person2Outlined /> },
 ];
 
 const NavBar = () => {
@@ -47,7 +41,7 @@ const NavBar = () => {
         collapsed={isCollapsed}
         rootStyles={{
           [`.${sidebarClasses.container}`]: {
-            backgroundColor: `${colors.primary[400]} !important`,
+            backgroundColor: `${colors.primary[500]} !important`,
           },
         }}
         style={{ height: '100%' }}
@@ -58,8 +52,8 @@ const NavBar = () => {
             if (level === 0) {
               return {
                 backgroundColor: 'transparent',
-                ':hover': { color: '#868dfb', backgroundColor: 'transparent' },
-                color: active ? '#6870fa' : colors.grey[100],
+                ':hover': { color: colors.orangeAccent[300], backgroundColor: 'transparent' },
+                color: active ? colors.orangeAccent[500] : colors.grey[100],
               };
             }
             return 1;
@@ -100,7 +94,7 @@ const NavBar = () => {
                 </Box>
                 <Box textAlign="center">
                   <Typography variant="h4" color={colors.grey[100]} fontWeight="bold" sx={{ m: '10px 0 0 0' }}>Biftu</Typography>
-                  <Typography variant="h6" color={colors.greenAccent[500]}>Admin</Typography>
+                  <Typography variant="h6" color={colors.orangeAccent[500]}>Admin</Typography>
 
                 </Box>
               </Box>
@@ -123,26 +117,6 @@ const NavBar = () => {
 
       </Sidebar>
     </Box>
-  // <nav className={styles.navbar}>
-  //   <div className={styles.logo}>
-  //     <h1>GLC CHMS</h1>
-  //     <h2>LOGO</h2>
-  //   </div>
-  //   <div>
-  //     <ul className={styles.navItems}>
-  //       {links.map((link) => (
-  //         <li key={link.text}>
-  //           <NavLink
-  //             to={link.path}
-  //             className={({ isActive }) => (isActive ? styles.active : styles.none)}
-  //           >
-  //             {link.text}
-  //           </NavLink>
-  //         </li>
-  //       ))}
-  //     </ul>
-  //   </div>
-  // </nav>
   );
 };
 
