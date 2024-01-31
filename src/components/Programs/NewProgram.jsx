@@ -1,35 +1,29 @@
-/* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable jsx-a11y/label-has-associated-control */
+/* eslint-disable react/jsx-props-no-spreading */
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import {
-  Box, Button, InputAdornment, MenuItem, OutlinedInput, TextField, useTheme,
+  Box, Button, MenuItem, OutlinedInput, TextField, useTheme,
 } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
-// import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { PhotoCamera } from '@mui/icons-material';
-// import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { createMember, getChurches } from '../../redux/thunk';
-import styles from '../../styles/Members.module.css';
+import { createProgram, getChurches } from '../../redux/thunk';
 import TeamsDropdown from '../Teams/TeamsDropdown';
 import { tokens } from '../../theme';
 
-const NewMember = () => {
+const NewProgram = () => {
   const [msg, setMsg] = useState('');
+  const [hasAttendance, setHasAttendance] = useState(false);
   const [selectedTeams, setSelectedTeams] = useState([]);
   const [selectedChurch, setSelectedChurch] = useState([]);
-  const [fileImg, setFileImg] = useState('');
 
-  const {
-    churches, isLoading,
-  } = useSelector((store) => store.churches);
-
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  const {
+    churches, isLoading,
+  } = useSelector((store) => store.churches);
 
   const form = useForm();
   const {
@@ -37,8 +31,8 @@ const NewMember = () => {
   } = form;
   const { errors } = formState;
 
-  const handleImgUpload = (e) => {
-    setFileImg(URL.createObjectURL(e.target.files[0]));
+  const onChangeCheckBox = (e) => {
+    setHasAttendance(e.target.checked);
   };
 
   const handleChurchSelect = (event) => {
@@ -52,28 +46,27 @@ const NewMember = () => {
   };
 
   const onSubmit = (data) => {
-    const member = new FormData();
-    member.append('member[name]', data.name);
-    member.append('member[photo]', data.photo[0]);
-    member.append('member[address]', data.address);
-    member.append('member[phone_number]', data.phone_number);
-    member.append('member[joined_at]', data.joined_at);
-    member.append('member[church_id]', data.church_id);
+    const program = new FormData();
+    program.append('program[name]', data.name);
+    program.append('program[date]', data.date);
+    program.append('program[church_id]', data.church_id);
+    program.append('program[attendance_taker]', data.attendance_taker);
     if (selectedTeams.length > 0) {
       selectedTeams.forEach((team) => {
-        member.append('member[teams][]', team.id);
+        program.append('program[teams][]', team.id);
       });
     } else {
-      member.append('member[teams]', '');
+      program.append('program[teams]', '');
     }
-    dispatch(createMember(member)).then(setMsg('Member Added Successfully!'));
+
+    dispatch(createProgram(program)).then(
+      setMsg('Program Added Successfully'),
+    );
+
     setTimeout(() => {
       setMsg('');
     }, 3000);
-
     reset();
-    setFileImg('');
-    navigate('/members');
   };
 
   useEffect(() => {
@@ -92,14 +85,54 @@ const NewMember = () => {
           gap="4%"
           overflow="auto"
         >
+          <Box display="flex" gap="4%" sx={{ width: '100%' }}>
+            <Box display="flex" alignItems="center" sx={{ width: '48%' }}>
+              <span>Take Attendance</span>
+              <input
+                type="checkbox"
+                id="checkbox"
+                checked={hasAttendance}
+                onChange={onChangeCheckBox}
+              />
+            </Box>
+            {hasAttendance && (
+              <TextField
+                label="attendance taker"
+                type="text"
+                {...register('attendance_taker', {
+                  required:
+                      {
+                        value: true,
+                        message: 'Attendance taker is required',
+                      },
+                })
+                  }
+                error={Boolean(errors.attendance_taker)}
+                helperText={errors.attendance_taker?.message}
+                margin="normal"
+                sx={{
+                  '& label.Mui-focused': {
+                    color: colors.orangeAccent[500],
+                  },
+                  '& .MuiOutlinedInput-root': {
+                    '&.Mui-focused fieldset': {
+                      borderColor: colors.orangeAccent[500],
+                    },
+                  },
+                  width: '48%',
+                }}
+              />
+            )}
+          </Box>
+
           <TextField
-            label="name"
+            label="program name"
             type="text"
             {...register('name', {
               required:
                   {
                     value: true,
-                    message: 'Full name is required',
+                    message: 'program name is required',
                   },
             })
               }
@@ -118,91 +151,9 @@ const NewMember = () => {
               width: '48%',
             }}
           />
-          <Box
-            display="flex"
-            sx={{
-              width: '48%',
-            }}
-          >
-            <TextField
-            // label="photo"
-              type="file"
-              variant="outlined"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <PhotoCamera />
-                  </InputAdornment>
-                ),
-              }}
-              {...register('photo', { required: 'Photo is required' })}
-              onChange={handleImgUpload}
-              error={Boolean(errors.photo)}
-              helperText={errors.photo?.message}
-              margin="normal"
-              sx={{
-                '& label.Mui-focused': {
-                  color: colors.orangeAccent[500],
-                },
-                '& .MuiOutlinedInput-root': {
-                  '&.Mui-focused fieldset': {
-                    borderColor: colors.orangeAccent[500],
-                  },
-                },
-                mr: fileImg === '' ? '' : 1,
-              }}
-            />
-            {fileImg === '' ? '' : <img src={fileImg} alt="member" className={styles.memberDetailImg} />}
-          </Box>
-          <TextField
-            label="address"
-            type="text"
-            {...register('address', { required: 'Address is required' })}
-            error={Boolean(errors.address)}
-            helperText={errors.address?.message}
-            margin="normal"
-            sx={{
-              '& label.Mui-focused': {
-                color: colors.orangeAccent[500],
-              },
-              '& .MuiOutlinedInput-root': {
-                '&.Mui-focused fieldset': {
-                  borderColor: colors.orangeAccent[500],
-                },
-              },
-              width: '48%',
-              mt: 1,
-            }}
-          />
-          <TextField
-            label="phone number"
-            type="text"
-            {...register('phone_number', {
-              required: 'Phone number is required',
-              pattern:
-                { value: /^[0-9]*$/, message: 'Add correct phone number' },
-            })}
-            error={Boolean(errors.phone_number)}
-            helperText={errors.phone_number?.message}
-            margin="normal"
-            sx={{
-              '& label.Mui-focused': {
-                color: colors.orangeAccent[500],
-              },
-              '& .MuiOutlinedInput-root': {
-                '&.Mui-focused fieldset': {
-                  borderColor: colors.orangeAccent[500],
-                },
-              },
-              width: '48%',
-              mt: 1,
-            }}
-          />
           <TextField
             type="date"
-            {...register('joined_at', {
-              required: 'Date is required',
-            })}
+            {...register('date', { required: 'Joined date is required' })}
             defaultValue=""
             error={Boolean(errors.joined_at)}
             helperText={errors.joined_at?.message}
@@ -217,7 +168,6 @@ const NewMember = () => {
                 },
               },
               width: '48%',
-              mt: 1,
               '& ::-webkit-calendar-picker-indicator': {
                 filter: 'invert(1)',
               },
@@ -268,8 +218,8 @@ const NewMember = () => {
               ))}
           </TextField>
           <Box
-            width="100%"
-            sx={{ mt: 2 }}
+            width="48%"
+            sx={{ mt: 1 }}
           >
             <Controller
               control={control}
@@ -295,7 +245,7 @@ const NewMember = () => {
             fullWidth
             sx={{ background: colors.greenAccent[700], ':hover': { background: colors.greenAccent[600] }, mt: 2 }}
           >
-            Add Member
+            Add Program
           </Button>
           <span>{msg}</span>
         </Box>
@@ -304,4 +254,4 @@ const NewMember = () => {
   );
 };
 
-export default NewMember;
+export default NewProgram;

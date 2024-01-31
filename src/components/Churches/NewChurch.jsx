@@ -5,8 +5,8 @@ import {
   Box, Button, TextField, useTheme,
 } from '@mui/material';
 import { useForm } from 'react-hook-form';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+// import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+// import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { createChurch } from '../../redux/thunk';
 import { tokens } from '../../theme';
 
@@ -45,7 +45,37 @@ const NewChurch = () => {
         onSubmit={handleSubmit(onSubmit)}
         noValidate
       >
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <TextField
+          type="date"
+          {...register('established_at', {
+            required:
+                 {
+                   value: true,
+                   message: 'Church establishment date is required',
+                 },
+          })
+             }
+          defaultValue=""
+          error={Boolean(errors.established_at)}
+          helperText={errors.established_at?.message}
+          margin="normal"
+          sx={{
+            '& label.Mui-focused': {
+              color: colors.orangeAccent[500],
+            },
+            '& .MuiOutlinedInput-root': {
+              '&.Mui-focused fieldset': {
+                borderColor: colors.orangeAccent[500],
+              },
+            },
+            width: '48%',
+            mt: 1,
+            '& ::-webkit-calendar-picker-indicator': {
+              filter: 'invert(1)',
+            },
+          }}
+        />
+        {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePicker
             label="Established in"
             {...register('established_at', {
@@ -61,7 +91,7 @@ const NewChurch = () => {
             margin="normal"
             sx={{ width: '100%', mt: 2 }}
           />
-        </LocalizationProvider>
+        </LocalizationProvider> */}
         <TextField
           fullWidth
           label="name"
