@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { createAttendance, getAttendances } from '../thunk';
 
 const initialState = {
-  attendances: '',
+  attendances: [],
   isLoading: true,
   error: false,
   errorMsg: '',
@@ -18,7 +18,9 @@ const attendancesSlice = createSlice({
       })
       .addCase(getAttendances.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.churches = action.payload;
+        state.error = false;
+        // console.log(action.payload);
+        state.attendances = action.payload.attendance;
       })
       .addCase(getAttendances.rejected, (state, action) => {
         state.isLoading = false;
@@ -26,8 +28,11 @@ const attendancesSlice = createSlice({
         state.errorMsg = action.payload;
       })
       .addCase(createAttendance.fulfilled, (state, action) => {
-        state.attendances = [action.payload.attendance, ...state.attendances];
+        state.attendances.data = [action.payload.attendance.data, ...state.attendances.data];
+        state.attendances.included = [action.payload.attendance.included,
+          ...state.attendances.included];
         state.isLoading = false;
+        state.error = false;
       })
       .addCase(createAttendance.rejected, (state, { error }) => ({
         ...state,

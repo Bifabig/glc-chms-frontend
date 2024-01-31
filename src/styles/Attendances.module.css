@@ -1,0 +1,21 @@
+.attendance {
+  display: flex;
+  flex-direction: row;
+
+  /* flex-wrap: wrap; */
+  gap: 10px;
+  width: 50%;
+
+  /* border: 2px solid black; */
+}
+
+.attendanceTable {
+  border: 2px solid black;
+  width: 50%;
+  height: 250px;
+}
+
+.memberAttendance {
+  border: 2px solid black;
+  width: 50%;
+}

@@ -2,47 +2,49 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Select from 'react-select';
 import PropTypes from 'prop-types';
-import { getTeams } from '../../redux/thunk';
+import { getMembers } from '../../redux/thunk';
 
-const TeamsDropdown = ({
-  defaultValue, field, selectedTeams, setSelectedTeams,
+const MembersDropdown = ({
+  defaultValue, field, selectedMembers, setSelectedMembers,
 }) => {
   const dispatch = useDispatch();
   const {
-    teams, isLoading,
-  } = useSelector((store) => store.teams);
+    members, isLoading,
+  } = useSelector((store) => store.members);
 
   useEffect(() => {
-    dispatch(getTeams());
+    dispatch(getMembers());
   }, [dispatch]);
 
   const handleOnChange = (selectedOptions) => {
-    const newSelectedTeams = selectedOptions.map((option) => option.value);
-    const selectedTeamObjects = teams.filter((team) => newSelectedTeams.includes(team.id));
-    setSelectedTeams(selectedTeamObjects);
+    const newSelectedMembers = selectedOptions.map((option) => option.value);
+    const selectedMemberObjects = members.filter(
+      (member) => newSelectedMembers.includes(member.id),
+    );
+    setSelectedMembers(selectedMemberObjects);
   };
   return (
     isLoading ? <span>Loading...</span>
       : (
         <>
           <Select
-            key={teams.map((team) => team.id)}
+            key={members.map((member) => member.id)}
             // eslint-disable-next-line react/jsx-props-no-spreading
             {...field}
             isMulti
-            options={teams.map((team) => ({
-              value: team.id,
-              label: team.name,
+            options={members.map((member) => ({
+              value: member.id,
+              label: member.name,
             }))}
             className="selectorDropdown"
             classNamePrefix="select"
             onChange={handleOnChange}
-            value={selectedTeams?.name}
-            defaultValue={teams.filter((val) => defaultValue.includes(`${val.id}`))
+            value={selectedMembers?.name}
+            defaultValue={members.filter((val) => defaultValue.includes(`${val.id}`))
               .map(
-                (team) => ({
-                  value: team.id,
-                  label: team.name,
+                (member) => ({
+                  value: member.id,
+                  label: member.name,
                 }),
               )}
           />
@@ -52,7 +54,7 @@ const TeamsDropdown = ({
   );
 };
 
-TeamsDropdown.propTypes = {
+MembersDropdown.propTypes = {
   field: PropTypes.objectOf(
     PropTypes.oneOfType([
       PropTypes.func,
@@ -69,8 +71,8 @@ TeamsDropdown.propTypes = {
       PropTypes.object,
     ]),
   ).isRequired,
-  setSelectedTeams: PropTypes.func.isRequired,
-  selectedTeams: PropTypes.arrayOf(
+  setSelectedMembers: PropTypes.func.isRequired,
+  selectedMembers: PropTypes.arrayOf(
     PropTypes.oneOfType([
       PropTypes.func,
       PropTypes.number,
@@ -80,4 +82,4 @@ TeamsDropdown.propTypes = {
   ).isRequired,
 };
 
-export default TeamsDropdown;
+export default MembersDropdown;

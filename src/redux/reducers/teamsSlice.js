@@ -1,8 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { createTeam, getTeams } from '../thunk';
+import {
+  createTeam, deleteTeam, fetchTeamDetail, getTeams, updateTeam,
+} from '../thunk';
 
 const initialState = {
-  teams: '',
+  teams: [],
+  teamDetail: '',
   isLoading: true,
   error: false,
   errorMsg: '',
@@ -33,6 +36,37 @@ const teamsSlice = createSlice({
         ...state,
         isLoading: false,
         error: error.stack,
+      }))
+      .addCase(fetchTeamDetail.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchTeamDetail.fulfilled, (state, { payload }) => {
+        state.teamDetail = payload;
+        state.isLoading = false;
+        state.error = false;
+      })
+      .addCase(fetchTeamDetail.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = true;
+        state.errorMsg = action.payload;
+      })
+      .addCase(updateTeam.fulfilled, (state, { payload }) => {
+        state.teamDetail = payload;
+        state.isLoading = false;
+      })
+      .addCase(updateTeam.rejected, (state, { error }) => ({
+        ...state,
+        isLoading: false,
+        error: error.stack,
+      }))
+      .addCase(deleteTeam.fulfilled, (state, { payload }) => {
+        state.teams = payload;
+        state.isLoading = false;
+      })
+      .addCase(deleteTeam.rejected, (state, { payload }) => ({
+        ...state,
+        isLoading: false,
+        error: payload,
       }));
   },
 });

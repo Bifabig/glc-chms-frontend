@@ -60,7 +60,8 @@ export const updateMember = createAsyncThunk(
   'members/updateMember',
   async (member, { rejectWithValue }) => {
     try {
-      const resp = await axios.put(`${url}/members/${member}`);
+      const { id, memberData } = member;
+      const resp = await axios.put(`${url}/members/${id}`, memberData);
       return resp.data;
     } catch (error) {
       return rejectWithValue('Unable to delete member');
@@ -95,6 +96,45 @@ export const createChurch = createAsyncThunk(
   },
 );
 
+export const updateChurch = createAsyncThunk(
+  'churches/updateChurch',
+  async (church, { rejectWithValue }) => {
+    try {
+      const { id, churchData } = church;
+      const resp = await axios.put(`${url}/churches/${id}`, churchData);
+      return resp.data;
+    } catch (error) {
+      return rejectWithValue('Unable to delete church');
+    }
+  },
+);
+
+export const fetchChurchDetail = createAsyncThunk('churches/fetchChurchDetail', async (churchId, { rejectWithValue }) => {
+  try {
+    const response = await axios.get(`${url}/churches/${churchId}`);
+    return response.data;
+  } catch (error) {
+    const message = (error.response
+      && error.response.data
+      && error.response.data.message)
+    || error.message
+    || error.toString();
+    return rejectWithValue(message);
+  }
+});
+
+export const deleteChurch = createAsyncThunk(
+  'churches/deleteChurch',
+  async (church, { rejectWithValue }) => {
+    try {
+      const resp = await axios.delete(`${url}/churches/${church}`);
+      return resp.data;
+    } catch (error) {
+      return rejectWithValue('Unable to delete church');
+    }
+  },
+);
+
 // Teams API
 
 export const getTeams = createAsyncThunk('teams/getTeams', async (_, { rejectWithValue }) => {
@@ -123,6 +163,45 @@ export const createTeam = createAsyncThunk(
   },
 );
 
+export const fetchTeamDetail = createAsyncThunk('teams/fetchTeamDetail', async (teamId, { rejectWithValue }) => {
+  try {
+    const response = await axios.get(`${url}/teams/${teamId}`);
+    return response.data;
+  } catch (error) {
+    const message = (error.response
+      && error.response.data
+      && error.response.data.message)
+    || error.message
+    || error.toString();
+    return rejectWithValue(message);
+  }
+});
+
+export const updateTeam = createAsyncThunk(
+  'teams/updateTeam',
+  async (team, { rejectWithValue }) => {
+    try {
+      const { id, teamData } = team;
+      const resp = await axios.put(`${url}/teams/${id}`, teamData);
+      return resp.data;
+    } catch (error) {
+      return rejectWithValue('Unable to delete team');
+    }
+  },
+);
+
+export const deleteTeam = createAsyncThunk(
+  'teams/deleteTeam',
+  async (team, { rejectWithValue }) => {
+    try {
+      const resp = await axios.delete(`${url}/teams/${team}`);
+      return resp.data;
+    } catch (error) {
+      return rejectWithValue('Unable to delete team');
+    }
+  },
+);
+
 // Programs API
 
 export const getPrograms = createAsyncThunk('programs/getPrograms', async (_, { rejectWithValue }) => {
@@ -139,6 +218,20 @@ export const getPrograms = createAsyncThunk('programs/getPrograms', async (_, { 
   }
 });
 
+export const fetchProgramDetail = createAsyncThunk('programs/fetchProgramDetail', async (programId, { rejectWithValue }) => {
+  try {
+    const response = await axios.get(`${url}/programs/${programId}`);
+    return response.data;
+  } catch (error) {
+    const message = (error.response
+      && error.response.data
+      && error.response.data.message)
+    || error.message
+    || error.toString();
+    return rejectWithValue(message);
+  }
+});
+
 export const createProgram = createAsyncThunk(
   'programs/createProgram',
   async (programData, { rejectWithValue }) => {
@@ -151,6 +244,30 @@ export const createProgram = createAsyncThunk(
   },
 );
 
+export const updateProgram = createAsyncThunk(
+  'programs/updateProgram',
+  async (program, { rejectWithValue }) => {
+    try {
+      const { id, programData } = program;
+      const resp = await axios.put(`${url}/programs/${id}`, programData);
+      return resp.data;
+    } catch (error) {
+      return rejectWithValue('Unable to delete program');
+    }
+  },
+);
+
+export const deleteProgram = createAsyncThunk(
+  'programs/deleteProgram',
+  async (program, { rejectWithValue }) => {
+    try {
+      const resp = await axios.delete(`${url}/programs/${program}`);
+      return resp.data;
+    } catch (error) {
+      return rejectWithValue('Unable to delete program');
+    }
+  },
+);
 // Attendaces API
 
 export const getAttendances = createAsyncThunk('attendances/getAttendaces', async (_, { rejectWithValue }) => {

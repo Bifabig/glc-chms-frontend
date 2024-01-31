@@ -1,0 +1,13 @@
+.churchDetailPage {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.backBtn {
+  height: 30px;
+}
+
+.updateBtn {
+  height: 30px;
+}
