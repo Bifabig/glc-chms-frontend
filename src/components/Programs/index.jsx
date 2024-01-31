@@ -169,7 +169,7 @@ const Programs = () => {
               left: '20%',
               transform: 'translate(-50%; -50%)',
               width: 500,
-              bgcolor: 'background.paper',
+              bgcolor: colors.primary[500],
               boxShadow: 24,
               p: 4,
             }}
@@ -183,8 +183,19 @@ const Programs = () => {
               component="div"
             >
               <NewProgram />
-              {' '}
-              <Button onClick={handleModalClose}>Close</Button>
+              <Box p={2}>
+                <Box>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    fullWidth
+                    onClick={handleModalClose}
+                    sx={{ background: colors.orangeAccent[700], ':hover': { background: colors.orangeAccent[600] }, mt: -4 }}
+                  >
+                    Close
+                  </Button>
+                </Box>
+              </Box>
             </Typography>
           </Box>
         </Modal>
