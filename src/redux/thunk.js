@@ -295,3 +295,15 @@ export const createAttendance = createAsyncThunk(
     }
   },
 );
+
+export const deleteAttendance = createAsyncThunk(
+  'attendances/deleteAttendance',
+  async (attendance, { rejectWithValue }) => {
+    try {
+      const resp = await axios.delete(`${url}/attendances/${attendance}`);
+      return resp.data;
+    } catch (error) {
+      return rejectWithValue('Unable to delete attendance');
+    }
+  },
+);

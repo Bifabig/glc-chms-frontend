@@ -27,10 +27,10 @@ const attendancesSlice = createSlice({
         state.error = true;
         state.errorMsg = action.payload;
       })
-      .addCase(createAttendance.fulfilled, (state, action) => {
-        state.attendances.data = [action.payload.attendance.data, ...state.attendances.data];
-        state.attendances.included = [action.payload.attendance.included,
-          ...state.attendances.included];
+      .addCase(createAttendance.fulfilled, (state) => {
+        // state.attendances.data = [action.payload.attendance.data, ...state.attendances.data];
+        // state.attendances.included = [action.payload.attendance.included,
+        //   ...state.attendances.included];
         state.isLoading = false;
         state.error = false;
       })
