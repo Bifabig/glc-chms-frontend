@@ -1,24 +1,37 @@
-import React from 'react';
+import React, { useState } from 'react';
 import moment from 'moment';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import {
   Box,
+  Button,
   Chip, Stack, Typography, useTheme,
 } from '@mui/material';
 import PropTypes from 'prop-types';
+import { Delete } from '@mui/icons-material';
+import { useDispatch } from 'react-redux';
 import MemberAttendance from './MemberAttendance';
 import { tokens } from '../../theme';
+import { deleteAttendance } from '../../redux/thunk';
 // import styles from '../../styles/Attendances.module.css';
 
 const Attendances = ({ programAttendance, programTeams, programId }) => {
+  const [currentAttendance, setCurrentAttendance] = useState(programAttendance);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const dispatch = useDispatch();
+
+  const handleDeleteMember = (e, id) => {
+    e.stopPropagation();
+    dispatch(deleteAttendance(id));
+    const newAttendance = (programAttendance.filter)((att) => att.attributes.id !== id);
+    setCurrentAttendance(newAttendance);
+  };
 
   const columns = [
     {
       field: 'id',
       headerName: 'ID',
-      width: 60,
+      flex: 1,
       type: 'number',
       renderCell: (params) => (
         params.row.attributes.id
@@ -28,7 +41,7 @@ const Attendances = ({ programAttendance, programTeams, programId }) => {
     {
       field: 'member_name',
       headerName: 'Name',
-      width: 200,
+      flex: 1,
       type: 'string',
       valueGetter: (params) => params.row.attributes.member_name,
       renderCell: (valueReceived) => valueReceived.row.member_name,
@@ -36,7 +49,7 @@ const Attendances = ({ programAttendance, programTeams, programId }) => {
     {
       field: 'status',
       headerName: 'Satus',
-      width: 200,
+      flex: 1,
       type: 'string',
       valueGetter: (params) => params.row.attributes.status,
       renderCell: (valueReceived) => {
@@ -49,7 +62,7 @@ const Attendances = ({ programAttendance, programTeams, programId }) => {
         } if (valueReceived.row.attributes.status === 'permission') {
           return (
             <Stack direction="row" spacing={1}>
-              <Chip label="Permission" color="secondary" />
+              <Chip label="Permission" color="secondary" style={{ color: 'white', background: colors.blueAccent[500] }} />
             </Stack>
           );
         }
@@ -63,7 +76,7 @@ const Attendances = ({ programAttendance, programTeams, programId }) => {
     {
       field: 'remark',
       headerName: 'Remark',
-      width: 200,
+      flex: 1,
       type: 'string',
       valueGetter: (params) => params.row.attributes.remark,
       renderCell: (valueReceived) => valueReceived.row.remark,
@@ -72,7 +85,7 @@ const Attendances = ({ programAttendance, programTeams, programId }) => {
       field: 'created_at',
       headerName: 'Date',
       type: 'Date',
-      width: 130,
+      flex: 1,
       valueGetter: (params) => moment(params.row.attributes.created_at).format('YYYY/MM/DD'),
       renderCell: (params) => moment(params.row.attributes.created_at).format('DD/MM/YYYY'),
     },
@@ -80,9 +93,30 @@ const Attendances = ({ programAttendance, programTeams, programId }) => {
       field: 'time',
       headerName: 'Time',
       type: 'Date',
-      width: 130,
+      flex: 1,
       valueGetter: (params) => moment(params.row.attributes.created_at).format('HH:mm:ss'),
       renderCell: (params) => moment(params.row.attributes.created_at).format('HH:mm:ss'),
+    },
+    {
+      field: 'delete',
+      headerName: '',
+      sortable: false,
+      flex: 1,
+      renderCell: (params) => (
+        <Box>
+          <Button
+            variant="contained"
+            size="small"
+            startIcon={<Delete />}
+            sx={{ background: colors.redAccent[600], ':hover': { background: colors.redAccent[500] } }}
+            onClick={(e) => handleDeleteMember(e, params.row.attributes.id)}
+          >
+            <Typography>
+              Delete
+            </Typography>
+          </Button>
+        </Box>
+      ),
     },
   ];
 
@@ -90,7 +124,6 @@ const Attendances = ({ programAttendance, programTeams, programId }) => {
     <Box>
       <Box>
         <Box m="20px 0">
-
           <Typography variant="h5">Attendance</Typography>
           <Typography variant="h6" sx={{ color: colors.greenAccent[400] }}>Attendance List</Typography>
         </Box>
@@ -122,7 +155,7 @@ const Attendances = ({ programAttendance, programTeams, programId }) => {
         >
           {programAttendance && (
           <DataGrid
-            rows={programAttendance}
+            rows={currentAttendance}
             columns={columns}
             getRowId={(row) => row.id}
             initialState={{
@@ -138,7 +171,7 @@ const Attendances = ({ programAttendance, programTeams, programId }) => {
       </Box>
       <Box>
         <MemberAttendance
-          programAttendance={programAttendance}
+          programAttendance={currentAttendance}
           programTeams={programTeams}
           programId={programId}
         />
