@@ -31,7 +31,7 @@ const UpdateChurch = ({ churchDetail }) => {
     church.append('church[established_at]', data.established_at);
     church.append('church[user_id]', '1');
 
-    dispatch(updateChurch({ id: churchDetail.id, churchData: church })).then(setMsg('Church Added Successfully!'));
+    dispatch(updateChurch({ id: churchDetail.id, churchData: church })).then(setMsg('Church Updated Successfully!'));
     setTimeout(() => {
       setMsg('');
     }, 3000);

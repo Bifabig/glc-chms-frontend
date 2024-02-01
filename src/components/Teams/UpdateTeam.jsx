@@ -1,5 +1,4 @@
 /* eslint-disable react/jsx-props-no-spreading */
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -13,7 +12,7 @@ import { tokens } from '../../theme';
 
 const UpdateTeam = ({ teamDetail }) => {
   const [msg, setMsg] = useState('');
-  const [selectedChurch, setSelectedChurch] = useState([]);
+  const [selectedChurch, setSelectedChurch] = useState(`${teamDetail.id}`);
   const dispatch = useDispatch();
 
   const {
@@ -238,7 +237,7 @@ const UpdateTeam = ({ teamDetail }) => {
         <TextField
           id="church_id"
           select
-          defaultValue={teamDetail.church_id}
+          // defaultValue={teamDetail.church_id}
           {...register('church_id', {
             required:
                   {

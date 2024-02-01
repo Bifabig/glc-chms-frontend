@@ -116,7 +116,7 @@ const TeamDetail = () => {
             position: 'absolute',
             left: '19%',
             transform: 'translate(-50%; -50%)',
-            width: 400,
+            width: 600,
             bgcolor: colors.primary[500],
             boxShadow: 24,
             p: 4,
