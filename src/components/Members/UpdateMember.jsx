@@ -17,7 +17,7 @@ import { tokens } from '../../theme';
 
 const UpdateMember = ({ memberDetail }) => {
   const [msg, setMsg] = useState('');
-  const [selectedChurch, setSelectedChurch] = useState([]);
+  const [selectedChurch, setSelectedChurch] = useState(`${memberDetail.memberChurch[0].id}`);
   const [selectedTeams, setSelectedTeams] = useState(memberDetail.memberTeams);
   const [fileImg, setFileImg] = useState(memberDetail.attributes.photo_url);
 
@@ -136,6 +136,7 @@ const UpdateMember = ({ memberDetail }) => {
           <TextField
             // label="photo"
             type="file"
+            defaultValue={[]}
             variant="outlined"
             InputProps={{
               startAdornment: (
@@ -144,7 +145,7 @@ const UpdateMember = ({ memberDetail }) => {
                 </InputAdornment>
               ),
             }}
-            {...register('photo', { required: 'Photo is required' })}
+            {...register('photo')}
             onChange={handleImgUpload}
             error={Boolean(errors.photo)}
             helperText={errors.photo?.message}
@@ -185,7 +186,7 @@ const UpdateMember = ({ memberDetail }) => {
         </div> */}
         <TextField
           label="address"
-          type="text"
+          // type="text"
           defaultValue={memberDetail.attributes.address}
           {...register('address', { required: 'Address is required' })}
           error={Boolean(errors.address)}
@@ -204,6 +205,7 @@ const UpdateMember = ({ memberDetail }) => {
             mt: 1,
           }}
         />
+        {/* {console.log(selectedChurch)} */}
         {/* <div className="formInput">
           <label htmlFor="address" className="label">Address</label>
           <input
@@ -294,53 +296,76 @@ const UpdateMember = ({ memberDetail }) => {
           />
           <span className="errorMsg">{ errors.joined_at?.message }</span>
         </div> */}
-        {isLoading ? <MenuItem>Loading...</MenuItem>
-          : (
-            <TextField
-              id="church_id"
-              select
-              defaultValue={churches.map((church) => church.id === memberDetail.memberChurch[0].id)}
-              {...register('church_id', {
-                required:
+        {/* <TextField
+          type="church_id"
+          defaultValue={memberDetail.attributes.phone_number}
+          {...register('church_id', {
+            required: 'Church is required',
+          })}
+          error={Boolean(errors.church_id)}
+          helperText={errors.church_id?.message}
+          margin="normal"
+          sx={{
+            '& label.Mui-focused': {
+              color: colors.orangeAccent[500],
+            },
+            '& .MuiOutlinedInput-root': {
+              '&.Mui-focused fieldset': {
+                borderColor: colors.orangeAccent[500],
+              },
+            },
+            width: '48%',
+            mt: 1,
+            '& ::-webkit-calendar-picker-indicator': {
+              filter: 'invert(1)',
+            },
+          }}
+        /> */}
+
+        <TextField
+          id="church_id"
+          select
+          {...register('church_id', {
+            required:
                   {
                     value: true,
                     message: 'Church is required',
                   },
-              })
+          })
               }
-              label="church"
-              variant="outlined"
-              value={selectedChurch}
-              onChange={handleChurchSelect}
-              input={<OutlinedInput label="church" />}
-              error={Boolean(errors.church_id)}
-              helperText={errors.church_id?.message}
-              sx={{
-                '& label.Mui-focused': {
-                  color: colors.orangeAccent[500],
-                },
-                '& .MuiOutlinedInput-root': {
-                  '&.Mui-focused fieldset': {
-                    borderColor: colors.orangeAccent[500],
-                  },
-                },
-                width: '48%',
-                mt: 1,
-              }}
-            >
-              {churches.map((church) => (
-                <MenuItem
-                  value={church.id}
-                  key={church.id}
-                  sx={{
-                    backgroundColor: colors.primary[400],
-                  }}
-                >
-                  {church.name}
-                </MenuItem>
-              ))}
-            </TextField>
-          )}
+          // label="church"
+          variant="outlined"
+          value={selectedChurch}
+          onChange={handleChurchSelect}
+          input={<OutlinedInput label="church" />}
+          error={Boolean(errors.church_id)}
+          helperText={errors.church_id?.message}
+          sx={{
+            '& label.Mui-focused': {
+              color: colors.orangeAccent[500],
+            },
+            '& .MuiOutlinedInput-root': {
+              '&.Mui-focused fieldset': {
+                borderColor: colors.orangeAccent[500],
+              },
+            },
+            width: '48%',
+            mt: 1,
+          }}
+        >
+          {isLoading ? <MenuItem>Loading...</MenuItem>
+            : (churches.map((church) => (
+              <MenuItem
+                value={church.id}
+                key={church.id}
+                sx={{
+                  backgroundColor: colors.primary[400],
+                }}
+              >
+                {church.name}
+              </MenuItem>
+            )))}
+        </TextField>
         {/* <div className="formInput">
           <label htmlFor="church_id" className="label">Branch</label>
           {isLoading ? <option>Loading...</option>
