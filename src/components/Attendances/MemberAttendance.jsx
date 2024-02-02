@@ -270,21 +270,6 @@ const MemberAttendance = ({
                     },
                   }}
                 />
-                {/* <textarea
-                  type="text"
-                  id="remark"
-                  {...register('remark', {
-                    required:
-                      {
-                        value: true,
-                        message: 'Remark is required',
-                      },
-                  })
-                  }
-                  placeholder="Remark"
-                  className="inputField"
-                />
-                <span className="errorMsg">{ errors.name?.message }</span> */}
                 <Button
                   type="submit"
                   variant="contained"
@@ -296,16 +281,6 @@ const MemberAttendance = ({
                 >
                   Add Remark
                 </Button>
-                {/* <div className="submitBtn">
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    color="success"
-                  >
-                    Add Remark
-                  </Button>
-                </div> */}
-                {/* <Box p={2}> */}
                 <Box>
                   <Button
                     type="submit"
@@ -318,7 +293,6 @@ const MemberAttendance = ({
                   </Button>
                 </Box>
               </Box>
-              {/* </Box> */}
             </Box>
           </Typography>
         </Box>
