@@ -17,6 +17,7 @@ import {
 } from 'react-pro-sidebar';
 import { tokens } from '../../theme';
 import Item from './Item';
+import CurrentUser from '../CurrentUser';
 
 const links = [
   { path: '/', text: 'Dashboard', icon: <HomeOutlined /> },
@@ -93,7 +94,7 @@ const NavBar = () => {
                   />
                 </Box>
                 <Box textAlign="center">
-                  <Typography variant="h4" color={colors.grey[100]} fontWeight="bold" sx={{ m: '10px 0 0 0' }}>Biftu</Typography>
+                  <CurrentUser />
                   <Typography variant="h6" color={colors.orangeAccent[500]}>Admin</Typography>
 
                 </Box>

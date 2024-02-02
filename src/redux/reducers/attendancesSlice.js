@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { createAttendance, getAttendances } from '../thunk';
+import { createAttendance, deleteAttendance, getAttendances } from '../thunk';
 
 const initialState = {
   attendances: [],
@@ -27,10 +27,11 @@ const attendancesSlice = createSlice({
         state.error = true;
         state.errorMsg = action.payload;
       })
-      .addCase(createAttendance.fulfilled, (state) => {
+      .addCase(createAttendance.fulfilled, (state, { payload }) => {
         // state.attendances.data = [action.payload.attendance.data, ...state.attendances.data];
         // state.attendances.included = [action.payload.attendance.included,
         //   ...state.attendances.included];
+        state.attendances.data = [...state.attendances.data, payload.attendance.data];
         state.isLoading = false;
         state.error = false;
       })
@@ -38,6 +39,17 @@ const attendancesSlice = createSlice({
         ...state,
         isLoading: false,
         error: error.stack,
+      }))
+      .addCase(deleteAttendance.fulfilled, (state, { payload }) => {
+        state.attendances = payload;
+        state.isLoading = false;
+        state.error = false;
+      })
+      .addCase(deleteAttendance.rejected, (state, { payload }) => ({
+        ...state,
+        isLoading: false,
+        error: true,
+        errorMsg: `something went wrong ${payload}`,
       }));
   },
 });

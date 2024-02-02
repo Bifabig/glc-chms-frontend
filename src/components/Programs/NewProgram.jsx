@@ -82,7 +82,6 @@ const NewProgram = () => {
           display="flex"
           flexWrap="wrap"
           gap="4%"
-          overflow="auto"
         >
           <Box display="flex" gap="4%" sx={{ width: '100%' }}>
             <Box display="flex" alignItems="center" sx={{ width: '48%' }}>
@@ -190,6 +189,7 @@ const NewProgram = () => {
             input={<OutlinedInput label="church" />}
             error={Boolean(errors.church_id)}
             helperText={errors.church_id?.message}
+            overflow="auto"
             sx={{
               '& label.Mui-focused': {
                 color: colors.orangeAccent[500],
