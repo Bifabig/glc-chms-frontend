@@ -19,7 +19,6 @@ const RegistrationForm = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
 
   const onSubmit = (data) => {
-    // event.preventDefault();
     const user = new FormData();
     user.append('user[email]', data.email);
     user.append('user[password]', data.password);
