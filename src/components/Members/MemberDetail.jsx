@@ -15,9 +15,7 @@ import {
   Paper,
   useTheme,
 } from '@mui/material';
-// import { ArrowBack } from '@mui/icons-material';
 import { fetchMemberDetail } from '../../redux/thunk';
-import styles from '../../styles/Members.module.css';
 import UpdateMember from './UpdateMember';
 import { tokens } from '../../theme';
 import Header from '../Header';
@@ -85,7 +83,7 @@ const MemberDetail = () => {
                 <TableCell>
                   <Typography variant="h5">{memberDetail.attributes.name}</Typography>
                 </TableCell>
-                <TableCell align="right" sx={{ width: 300 }}><img src={memberDetail.attributes.photo_url} alt="member detail" className={styles.memberDetailImg} /></TableCell>
+                <TableCell align="right" sx={{ width: 300 }}><img src={memberDetail.attributes.photo_url} alt="member detail" /></TableCell>
               </TableRow>
             </TableHead>
             <TableBody sx={{ backgroundColor: colors.primary[400] }}>
@@ -169,7 +167,6 @@ const MemberDetail = () => {
         </TableContainer>
       </Box>
       <Modal
-        className={styles.modal}
         open={modalOpen}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"

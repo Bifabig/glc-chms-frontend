@@ -1,8 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-// import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
   Box, Button, InputAdornment, MenuItem, OutlinedInput, TextField, useTheme,
@@ -11,7 +9,6 @@ import { Controller, useForm } from 'react-hook-form';
 import { PhotoCamera } from '@mui/icons-material';
 
 import { getChurches, updateMember } from '../../redux/thunk';
-import styles from '../../styles/Members.module.css';
 import TeamsDropdown from '../Teams/TeamsDropdown';
 import { tokens } from '../../theme';
 
@@ -165,7 +162,6 @@ const UpdateMember = ({ memberDetail }) => {
           <img
             src={fileImg}
             alt={memberDetail.attributes.name}
-            className={styles.memberDetailImg}
           />
         </Box>
         {/* <div className="formInput">

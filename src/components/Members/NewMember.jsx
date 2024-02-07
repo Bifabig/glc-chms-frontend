@@ -1,5 +1,4 @@
 /* eslint-disable react/jsx-props-no-spreading */
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -7,11 +6,8 @@ import {
   Box, Button, InputAdornment, MenuItem, OutlinedInput, TextField, useTheme,
 } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
-// import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { PhotoCamera } from '@mui/icons-material';
-// import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { createMember, getChurches } from '../../redux/thunk';
-import styles from '../../styles/Members.module.css';
 import TeamsDropdown from '../Teams/TeamsDropdown';
 import { tokens } from '../../theme';
 
@@ -152,7 +148,7 @@ const NewMember = () => {
                 mr: fileImg === '' ? '' : 1,
               }}
             />
-            {fileImg === '' ? '' : <img src={fileImg} alt="member" className={styles.memberDetailImg} />}
+            {fileImg === '' ? '' : <img src={fileImg} alt="member" />}
           </Box>
           <TextField
             label="address"
