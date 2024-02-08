@@ -8,7 +8,6 @@ import {
 } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { updateChurch } from '../../redux/thunk';
-// import styles from '../../styles/Churches.module.css';
 import { tokens } from '../../theme';
 
 const UpdateChurch = ({ churchDetail }) => {
@@ -73,25 +72,6 @@ const UpdateChurch = ({ churchDetail }) => {
             },
           }}
         />
-        {/* <div className="formInput">
-          <label htmlFor="name" className={styles.label}>Church Name</label>
-          <input
-            type="text"
-            defaultValue={churchDetail.name}
-            id="name"
-            {...register('name', {
-              required:
-                    {
-                      value: true,
-                      message: 'Church name is required',
-                    },
-            })
-                }
-            placeholder="Church Name"
-            className="inputField"
-          />
-          <span className="errorMsg">{ errors.name?.message }</span>
-        </div> */}
         <TextField
           fullWidth
           label="location"
@@ -119,44 +99,6 @@ const UpdateChurch = ({ churchDetail }) => {
             },
           }}
         />
-        {/* <div className="formInput">
-          <label htmlFor="location" className={styles.label}>Location</label>
-          <input
-            type="text"
-            defaultValue={churchDetail.location}
-            id="location"
-            {...register('location', {
-              required:
-                    {
-                      value: true,
-                      message: 'Location is required',
-                    },
-            })
-                }
-            placeholder="Location"
-            className="inputField"
-          />
-          <span className="errorMsg">{ errors.location?.message }</span>
-        </div> */}
-        {/* <div className="formInput">
-          <label htmlFor="established_at" className={styles.label}>Established In</label>
-          <input
-            type="date"
-            defaultValue={churchDetail.established_at}
-            id="established_at"
-            {...register('established_at', {
-              required:
-                    {
-                      value: true,
-                      message: 'Established date is required',
-                    },
-            })
-                }
-            placeholder="Established In"
-            className="inputField"
-          />
-          <span className="errorMsg">{ errors.established_at?.message }</span>
-        </div> */}
         <TextField
           type="date"
           defaultValue={churchDetail.established_at}
