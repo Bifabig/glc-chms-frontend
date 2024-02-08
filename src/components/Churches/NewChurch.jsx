@@ -5,8 +5,6 @@ import {
   Box, Button, TextField, useTheme,
 } from '@mui/material';
 import { useForm } from 'react-hook-form';
-// import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-// import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { createChurch } from '../../redux/thunk';
 import { tokens } from '../../theme';
 
@@ -75,23 +73,6 @@ const NewChurch = () => {
             },
           }}
         />
-        {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DatePicker
-            label="Established in"
-            {...register('established_at', {
-              required:
-                   {
-                     value: true,
-                     message: 'Church establishment date is required',
-                   },
-            })
-               }
-            error={Boolean(errors.established_at)}
-            helperText={errors.established_at?.message}
-            margin="normal"
-            sx={{ width: '100%', mt: 2 }}
-          />
-        </LocalizationProvider> */}
         <TextField
           fullWidth
           label="name"
