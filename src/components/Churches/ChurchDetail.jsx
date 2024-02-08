@@ -15,9 +15,7 @@ import {
   Paper,
   useTheme,
 } from '@mui/material';
-// import { ArrowBack } from '@mui/icons-material';
 import { fetchChurchDetail } from '../../redux/thunk';
-import styles from '../../styles/Churches.module.css';
 import UpdateChurch from './UpdateChurch';
 import Header from '../Header';
 import { tokens } from '../../theme';
@@ -34,13 +32,8 @@ const ChurchDetail = () => {
     churchDetail, isLoading, error, errorMsg,
   } = useSelector((store) => store.churches);
 
-  // const navigate = useNavigate();
   const handleModalOpen = () => setModalOpen(true);
   const handleModalClose = () => setModalOpen(false);
-
-  // const goBack = () => {
-  //   navigate(-1);
-  // };
 
   useEffect(() => {
     dispatch(fetchChurchDetail(churchId));
@@ -106,7 +99,6 @@ const ChurchDetail = () => {
         </TableContainer>
       </Box>
       <Modal
-        className={styles.modal}
         open={modalOpen}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
