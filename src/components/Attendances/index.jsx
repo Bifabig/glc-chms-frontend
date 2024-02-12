@@ -12,10 +12,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import MemberAttendance from './MemberAttendance';
 import { tokens } from '../../theme';
 import { deleteAttendance, getAttendances } from '../../redux/thunk';
-// import styles from '../../styles/Attendances.module.css';
 
 const Attendances = ({ programTeams, programId }) => {
-  // const [currentAttendance, setCurrentAttendance] = useState(programAttendance);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const dispatch = useDispatch();
@@ -27,8 +25,6 @@ const Attendances = ({ programTeams, programId }) => {
   const handleDeleteMember = (e, id) => {
     e.stopPropagation();
     dispatch(deleteAttendance(id));
-    // const newAttendance = (programAttendance.filter)((att) => att.attributes.id !== id);
-    // setCurrentAttendance(newAttendance);
   };
 
   const columns = [
