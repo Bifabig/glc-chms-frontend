@@ -15,9 +15,7 @@ import {
   Paper,
   useTheme,
 } from '@mui/material';
-// import { ArrowBack } from '@mui/icons-material';
 import { fetchMemberDetail } from '../../redux/thunk';
-import styles from '../../styles/Members.module.css';
 import UpdateMember from './UpdateMember';
 import { tokens } from '../../theme';
 import Header from '../Header';
@@ -85,7 +83,7 @@ const MemberDetail = () => {
                 <TableCell>
                   <Typography variant="h5">{memberDetail.attributes.name}</Typography>
                 </TableCell>
-                <TableCell align="right" sx={{ width: 300 }}><img src={memberDetail.attributes.photo_url} alt="member detail" className={styles.memberDetailImg} /></TableCell>
+                <TableCell align="right" sx={{ width: 300 }}><img src={memberDetail.attributes.photo_url} alt="member detail" /></TableCell>
               </TableRow>
             </TableHead>
             <TableBody sx={{ backgroundColor: colors.primary[400] }}>
@@ -169,7 +167,6 @@ const MemberDetail = () => {
         </TableContainer>
       </Box>
       <Modal
-        className={styles.modal}
         open={modalOpen}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
@@ -180,7 +177,7 @@ const MemberDetail = () => {
             left: '19%',
             transform: 'translate(-50%; -50%)',
             width: 600,
-            bgcolor: 'background.paper',
+            bgcolor: colors.primary[500],
             boxShadow: 24,
             p: 4,
           }}
@@ -194,8 +191,19 @@ const MemberDetail = () => {
             component="div"
           >
             <UpdateMember memberDetail={memberDetail} />
-            {' '}
-            <Button onClick={handleModalClose}>Close</Button>
+            <Box p={2}>
+              <Box>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  fullWidth
+                  onClick={handleModalClose}
+                  sx={{ background: colors.orangeAccent[700], ':hover': { background: colors.orangeAccent[600] }, mt: -4 }}
+                >
+                  Close
+                </Button>
+              </Box>
+            </Box>
           </Typography>
         </Box>
       </Modal>

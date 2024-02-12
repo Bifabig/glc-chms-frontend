@@ -8,12 +8,13 @@ import {
   logoutUserApi,
   resetPasswordApi,
   forgotPasswordApi,
+  // fetchCurrentUserApi,
 } from './authenticationApi';
 
 const initialState = {
   error: null,
   status: 'idle',
-  user: {},
+  currentUser: {},
   isLoading: false,
   authToken: null,
 };
@@ -32,7 +33,6 @@ export const loginUserAsync = createAsyncThunk(
     const response = await loginUserApi(user);
     const authToken = response.headers.authorization;
     localStorage.setItem('authToken', authToken);
-    // console.log(response);
     return response;
   },
 );
@@ -65,6 +65,21 @@ export const forgotPasswordAsync = createAsyncThunk(
     return response;
   },
 );
+
+// export const fetchCurrentUser = createAsyncThunk('currentUser/fetchCurrentUser',
+// async ({ rejectWithValue }) => {
+//   try {
+//     const response = await fetchCurrentUserApi();
+//     return response.data;
+//   } catch (error) {
+//     const message = (error.response
+//       && error.response.data
+//       && error.response.data.message)
+//     || error.message
+//     || error.toString();
+//     return rejectWithValue(message);
+//   }
+// });
 
 export const resetPasswordAsync = createAsyncThunk(
   'authentication/resetPassword',
@@ -105,8 +120,6 @@ const authenticationSlice = createSlice({
       .addCase(loginUserAsync.fulfilled, (state) => {
         state.status = 'success';
         state.isLoading = false;
-        // console.log(action);
-        // state.user = payload.data.user;
       })
       .addCase(loginUserAsync.rejected, (state, action) => {
         state.isLoading = false;
@@ -125,6 +138,7 @@ const authenticationSlice = createSlice({
       .addCase(logoutUserAsync.rejected, (state) => {
         state.isLoading = false;
         state.status = 'failed';
+        localStorage.removeItem('authToken');
       })
       .addCase(confirmAccountAsync.pending, (state) => {
         state.isLoading = true;

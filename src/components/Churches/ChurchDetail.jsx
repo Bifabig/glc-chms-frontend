@@ -15,9 +15,7 @@ import {
   Paper,
   useTheme,
 } from '@mui/material';
-// import { ArrowBack } from '@mui/icons-material';
 import { fetchChurchDetail } from '../../redux/thunk';
-import styles from '../../styles/Churches.module.css';
 import UpdateChurch from './UpdateChurch';
 import Header from '../Header';
 import { tokens } from '../../theme';
@@ -34,13 +32,8 @@ const ChurchDetail = () => {
     churchDetail, isLoading, error, errorMsg,
   } = useSelector((store) => store.churches);
 
-  // const navigate = useNavigate();
   const handleModalOpen = () => setModalOpen(true);
   const handleModalClose = () => setModalOpen(false);
-
-  // const goBack = () => {
-  //   navigate(-1);
-  // };
 
   useEffect(() => {
     dispatch(fetchChurchDetail(churchId));
@@ -106,7 +99,6 @@ const ChurchDetail = () => {
         </TableContainer>
       </Box>
       <Modal
-        className={styles.modal}
         open={modalOpen}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
@@ -117,7 +109,7 @@ const ChurchDetail = () => {
             left: '19%',
             transform: 'translate(-50%; -50%)',
             width: 600,
-            bgcolor: 'background.paper',
+            bgcolor: colors.primary[500],
             boxShadow: 24,
             p: 4,
           }}
@@ -133,8 +125,19 @@ const ChurchDetail = () => {
             component="div"
           >
             <UpdateChurch churchDetail={churchDetail} />
-            {' '}
-            <Button onClick={handleModalClose}>Close</Button>
+            <Box p={2}>
+              <Box>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  fullWidth
+                  onClick={handleModalClose}
+                  sx={{ background: colors.orangeAccent[700], ':hover': { background: colors.orangeAccent[600] }, mt: -4 }}
+                >
+                  Close
+                </Button>
+              </Box>
+            </Box>
           </Typography>
         </Box>
       </Modal>

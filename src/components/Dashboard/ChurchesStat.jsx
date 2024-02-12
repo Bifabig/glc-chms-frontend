@@ -1,5 +1,5 @@
 import { Box, useTheme } from '@mui/material';
-import { Church } from '@mui/icons-material';
+import { ChurchOutlined } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import StatBox from '../StatBox';
@@ -43,10 +43,10 @@ const ChurchesStat = () => {
       <StatBox
         title={`${churches?.length}`}
         subtitle="Total Churches"
-        progress="0.5"
-        increase="+21%"
+        progress="0.30"
+        increase="+2%"
         icon={(
-          <Church
+          <ChurchOutlined
             sx={{ color: colors.orangeAccent[600], fontSize: '26px' }}
           />
             )}

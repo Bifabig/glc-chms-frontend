@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import {
-  Button, Modal, Box, Typography, Avatar, Chip, useTheme,
+  Button, Modal, Box, Typography, Avatar, Chip, useTheme, TextField,
 } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
 import BeenhereIcon from '@mui/icons-material/Beenhere';
@@ -225,7 +225,7 @@ const MemberAttendance = ({
             left: '20%',
             transform: 'translate(-50%; -50%)',
             width: 400,
-            bgcolor: 'background.paper',
+            bgcolor: colors.primary[500],
             boxShadow: 24,
             p: 4,
           }}
@@ -238,33 +238,62 @@ const MemberAttendance = ({
             sx={{ mt: 2 }}
             component="div"
           >
-            <form onSubmit={handleSubmit(onSubmit)} noValidate>
-              <textarea
-                type="text"
-                id="remark"
-                {...register('remark', {
-                  required:
-                    {
-                      value: true,
-                      message: 'Remark is required',
+            <Box p={2}>
+              <Box
+                component="form"
+                onSubmit={handleSubmit(onSubmit)}
+                noValidate
+              >
+                <TextField
+                  fullWidth
+                  label="remark"
+                  type="text"
+                  {...register('remark', {
+                    required:
+                      {
+                        value: true,
+                        message: 'Remark is required',
+                      },
+                  })
+                  }
+                  error={Boolean(errors.remark)}
+                  helperText={errors.remark?.message}
+                  margin="normal"
+                  sx={{
+                    '& label.Mui-focused': {
+                      color: colors.orangeAccent[500],
                     },
-                })
-                }
-                placeholder="Remark"
-                className="inputField"
-              />
-              <span className="errorMsg">{ errors.name?.message }</span>
-              <div className="submitBtn">
+                    '& .MuiOutlinedInput-root': {
+                      '&.Mui-focused fieldset': {
+                        borderColor: colors.orangeAccent[500],
+                      },
+                    },
+                  }}
+                />
                 <Button
                   type="submit"
                   variant="contained"
-                  color="success"
+                  color="primary"
+                  fullWidth
+                  sx={{
+                    background: colors.greenAccent[700], ':hover': { background: colors.greenAccent[600] }, mt: 2, mb: 4,
+                  }}
                 >
                   Add Remark
                 </Button>
-              </div>
-              <Button onClick={handleModalClose}>Close</Button>
-            </form>
+                <Box>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    fullWidth
+                    onClick={handleModalClose}
+                    sx={{ background: colors.orangeAccent[700], ':hover': { background: colors.orangeAccent[600] }, mt: -4 }}
+                  >
+                    Close
+                  </Button>
+                </Box>
+              </Box>
+            </Box>
           </Typography>
         </Box>
       </Modal>

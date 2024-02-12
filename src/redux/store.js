@@ -7,6 +7,7 @@ import teamsReducer from './reducers/teamsSlice';
 import programsReducer from './reducers/programsSlice';
 import attendanceReducer from './reducers/attendancesSlice';
 import authenticationReducer from '../features/authentication/authenticationSlice';
+import currentUserReducer from './reducers/currentUserSlice';
 
 const persistConfig = {
   key: 'root',
@@ -21,6 +22,7 @@ const reducer = combineReducers({
   programs: programsReducer,
   attendances: attendanceReducer,
   auth: authenticationReducer,
+  currentUser: currentUserReducer,
 });
 
 persistConfig.storage.removeItem('persist:root');

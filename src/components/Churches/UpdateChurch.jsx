@@ -1,25 +1,27 @@
 /* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import PropTypes from 'prop-types';
 import {
   Box, Button, TextField, useTheme,
 } from '@mui/material';
 import { useForm } from 'react-hook-form';
-import { createChurch } from '../../redux/thunk';
+import { updateChurch } from '../../redux/thunk';
 import { tokens } from '../../theme';
 
-const NewChurch = () => {
+const UpdateChurch = ({ churchDetail }) => {
   const [msg, setMsg] = useState('');
   const dispatch = useDispatch();
-
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
 
   const form = useForm();
   const {
     register, handleSubmit, reset, formState,
   } = form;
   const { errors } = formState;
+
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
 
   const onSubmit = (data) => {
     const church = new FormData();
@@ -28,7 +30,7 @@ const NewChurch = () => {
     church.append('church[established_at]', data.established_at);
     church.append('church[user_id]', '1');
 
-    dispatch(createChurch(church)).then(setMsg('Church Added Successfully!'));
+    dispatch(updateChurch({ id: churchDetail.id, churchData: church })).then(setMsg('Church Updated Successfully!'));
     setTimeout(() => {
       setMsg('');
     }, 3000);
@@ -44,37 +46,8 @@ const NewChurch = () => {
         noValidate
       >
         <TextField
-          type="date"
-          {...register('established_at', {
-            required:
-                 {
-                   value: true,
-                   message: 'Church establishment date is required',
-                 },
-          })
-             }
-          defaultValue=""
-          error={Boolean(errors.established_at)}
-          helperText={errors.established_at?.message}
-          margin="normal"
-          sx={{
-            '& label.Mui-focused': {
-              color: colors.orangeAccent[500],
-            },
-            '& .MuiOutlinedInput-root': {
-              '&.Mui-focused fieldset': {
-                borderColor: colors.orangeAccent[500],
-              },
-            },
-            width: '48%',
-            mt: 1,
-            '& ::-webkit-calendar-picker-indicator': {
-              filter: 'invert(1)',
-            },
-          }}
-        />
-        <TextField
           fullWidth
+          defaultValue={churchDetail.name}
           label="name"
           type="text"
           {...register('name', {
@@ -102,6 +75,7 @@ const NewChurch = () => {
         <TextField
           fullWidth
           label="location"
+          defaultValue={churchDetail.location}
           type="text"
           {...register('location', {
             required:
@@ -125,6 +99,36 @@ const NewChurch = () => {
             },
           }}
         />
+        <TextField
+          type="date"
+          defaultValue={churchDetail.established_at}
+          {...register('established_at', {
+            required:
+                 {
+                   value: true,
+                   message: 'Church establishment date is required',
+                 },
+          })
+             }
+          error={Boolean(errors.established_at)}
+          helperText={errors.established_at?.message}
+          margin="normal"
+          sx={{
+            '& label.Mui-focused': {
+              color: colors.orangeAccent[500],
+            },
+            '& .MuiOutlinedInput-root': {
+              '&.Mui-focused fieldset': {
+                borderColor: colors.orangeAccent[500],
+              },
+            },
+            width: '100%',
+            mt: 1,
+            '& ::-webkit-calendar-picker-indicator': {
+              filter: 'invert(1)',
+            },
+          }}
+        />
         <Button
           type="submit"
           variant="contained"
@@ -132,7 +136,7 @@ const NewChurch = () => {
           fullWidth
           sx={{ background: colors.greenAccent[700], ':hover': { background: colors.greenAccent[600] }, mt: 2 }}
         >
-          Add Church
+          Update Church
         </Button>
         <span>{msg}</span>
       </Box>
@@ -140,4 +144,16 @@ const NewChurch = () => {
   );
 };
 
-export default NewChurch;
+UpdateChurch.propTypes = {
+  churchDetail: PropTypes.objectOf(
+    PropTypes.oneOfType([
+      PropTypes.func,
+      PropTypes.number,
+      PropTypes.string,
+      PropTypes.object,
+      PropTypes.array,
+    ]),
+  ).isRequired,
+};
+
+export default UpdateChurch;

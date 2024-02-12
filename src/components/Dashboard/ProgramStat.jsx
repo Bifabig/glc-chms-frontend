@@ -86,7 +86,11 @@ const ProgramStat = () => {
               p="5px 10px"
               borderRadius="4px"
             >
-              {program.attributes.attendance_taker}
+              {
+                program.attributes.attendance_taker === 'undefined'
+                  ? 'N/A'
+                  : `${program.attributes.attendance_taker}`
+              }
             </Box>
           </Box>
         ))}

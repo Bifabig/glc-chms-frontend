@@ -70,7 +70,7 @@ const ProgramDetail = () => {
             left: '20%',
             transform: 'translate(-50%; -50%)',
             width: 500,
-            bgcolor: 'background.paper',
+            bgcolor: colors.primary[500],
             boxShadow: 24,
             p: 4,
           }}
@@ -84,7 +84,19 @@ const ProgramDetail = () => {
             component="div"
           >
             <UpdateProgram programDetail={programDetail} />
-            <Button onClick={handleModalClose}>Close</Button>
+            <Box p={2}>
+              <Box>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  fullWidth
+                  onClick={handleModalClose}
+                  sx={{ background: colors.orangeAccent[700], ':hover': { background: colors.orangeAccent[600] }, mt: -4 }}
+                >
+                  Close
+                </Button>
+              </Box>
+            </Box>
           </Typography>
         </Box>
       </Modal>
@@ -112,8 +124,8 @@ const ProgramDetail = () => {
                   <TableCell><Typography>Event Name</Typography></TableCell>
                   <TableCell align="right"><Typography>Attendance Taker</Typography></TableCell>
                   <TableCell align="right"><Typography>Date</Typography></TableCell>
-                  <TableCell align="right"><Typography>Church Name</Typography></TableCell>
-                  <TableCell align="right"><Typography>Teams</Typography></TableCell>
+                  <TableCell align="left"><Typography>Church Name</Typography></TableCell>
+                  <TableCell align="left"><Typography>Teams</Typography></TableCell>
                 </TableRow>
               </TableHead>
               <TableBody sx={{ backgroundColor: colors.primary[400] }}>
@@ -132,16 +144,18 @@ const ProgramDetail = () => {
                     }
                   </TableCell>
                   <TableCell align="right">{programDetail.attributes.date}</TableCell>
-                  <TableCell align="right">
+                  <TableCell align="left">
                     {programDetail.programChurch.map((church) => (
                       `${church.attributes.name} `
                     ))}
                   </TableCell>
-                  <TableCell align="right">
+                  <TableCell align="left">
                     {programDetail.programTeams.map((team) => (
-                      <Typography key={team.id} variant="h8">
-                        {team.attributes.name}
-                      </Typography>
+                      <Box key={team.id}>
+                        <Typography variant="h8">
+                          {team.attributes.name}
+                        </Typography>
+                      </Box>
                     ))}
                   </TableCell>
                 </TableRow>
@@ -152,7 +166,6 @@ const ProgramDetail = () => {
         <Attendances
           programId={programDetail.id}
           programTeams={programDetail.programTeams}
-          programAttendance={programDetail.programAttendance}
         />
       </Box>
 

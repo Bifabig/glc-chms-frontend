@@ -133,7 +133,7 @@ export const tokens = (mode) => ({
         400: '#3da58a',
         500: '#4cceac',
         600: '#70d8bd',
-        700: '#94e2cd',
+        700: '#2e7c67',
         800: '#b7ebde',
         900: '#dbf5ee',
       },

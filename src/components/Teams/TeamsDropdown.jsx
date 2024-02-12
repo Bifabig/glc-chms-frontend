@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Select from 'react-select';
+import { Typography, useTheme } from '@mui/material';
 import PropTypes from 'prop-types';
 import { getTeams } from '../../redux/thunk';
+import { tokens } from '../../theme';
 
 const TeamsDropdown = ({
   defaultValue, field, selectedTeams, setSelectedTeams,
@@ -12,6 +14,28 @@ const TeamsDropdown = ({
     teams, isLoading,
   } = useSelector((store) => store.teams);
 
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+
+  const style = {
+    control: (base) => ({
+      ...base,
+      border: `0.1px solid ${colors.grey[500]}`,
+      boxShadow: 'none',
+      '&:hover': {
+        border: `1px solid ${colors.orangeAccent[500]}`,
+      },
+      cursor: 'pointer',
+      backgroundColor: 'transparent',
+      minHeight: '55px',
+      height: '55px',
+    }),
+    menu: (base) => ({
+      ...base,
+      // override border radius to match the box
+      backgroundColor: colors.primary[400],
+    }),
+  };
   useEffect(() => {
     dispatch(getTeams());
   }, [dispatch]);
@@ -27,6 +51,7 @@ const TeamsDropdown = ({
         <>
           <Select
             key={teams.map((team) => team.id)}
+            placeholder={<Typography sx={{ color: colors.grey[200] }}>Select Teams</Typography>}
             // eslint-disable-next-line react/jsx-props-no-spreading
             {...field}
             isMulti
@@ -45,6 +70,22 @@ const TeamsDropdown = ({
                   label: team.name,
                 }),
               )}
+            styles={style}
+            theme={(theme) => ({
+              ...theme,
+              cursor: 'pointer',
+              colors: {
+                ...theme.colors,
+                text: 'orangered',
+                primary25: colors.orangeAccent[500],
+              },
+            })}
+            // styles={{
+            //   control: (baseStyles, state) => ({
+            //     ...baseStyles,
+            //     borderColor: state.isFocused ? colors.orangeAccent[500] : baseStyles.borderColor,
+            //   }),
+            // }}
           />
         </>
       )

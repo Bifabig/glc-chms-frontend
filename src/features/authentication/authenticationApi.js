@@ -33,6 +33,8 @@ export const forgotPasswordApi = async (data) => axiosInstance.post('/password',
 export const resetPasswordApi = async ({ password, resetPasswordToken }) => {
   axiosInstance.put(`/password?reset_password_token=${resetPasswordToken}`, password);
 };
+
+// export const fetchCurrentUserApi = async () => axiosInstance.post('/current_user');
 // current user
 // export const getCurrentUser = async () => axiosInstance.get('/current_user');
 
